@@ -52,15 +52,6 @@ Data processed using the packages [isoreader](http://isoreader.kopflab.org) vers
 # Load Data
 
 ```{r load-data, message=FALSE}
-# # iso_files_raw <-
-#   file.path(
-#     "data_raw/180228_DBN_DIC/180228_DBN_DIC_dxf_files"
-#   ) %>%
-#       # read data files in parallel for fast read
-#   iso_read_continuous_flow(parallel = TRUE) %>% iso_save("180228_DBN_DIC")
-```
-
-```{r load-data, message=FALSE}
 iso_files_raw <- 
   file.path(
     "data_raw/180228_DBN_DIC", "180228_DBN_DIC_data.cf.rds"
