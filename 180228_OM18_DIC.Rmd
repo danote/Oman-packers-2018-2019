@@ -94,6 +94,8 @@ chroms
 
 ## Peak maps
 ```{r peak-maps}
+# note: we do not consider first two sample inject peaks as analyte peaks to be sure that there is no carryover between samples
+
 peak_maps <- 
   tibble::tribble(
     ~compound,          ~ref_nr,    ~`rt`,
@@ -103,7 +105,7 @@ peak_maps <-
     "CO2 ref",          3,      75,
     "CO2 ref",          4,      100,
     "CO2 half inject",  NA,     148,
-    "CO2 analyte",      NA,     169,
+    "CO2 first sample peak",      NA,     169,
     "CO2 analyte",      NA,     219,
     "CO2 analyte",      NA,     269,
     "CO2 analyte",      NA,     319,
@@ -903,8 +905,12 @@ peak_data_summary %>% iso_make_units_explicit() %>% knitr::kable(d = 2)
 # add data about DIC concentration to d13C-calibrated samples
 samples_summ_w_concs <- peak_data_summary %>% left_join(samples_select %>% select(amp44_t0, DIC_uM, DIC_uM_95_confidence, `DIC_uM rounded tens`, quantitatable, name), by = "name")
 
-# add data about LOQ and samples below it
-samples_summ_w_concs_w_LOQ <- union(samples_summ_w_concs, peak_data_summary %>% full_join(samples_select %>% select(n, amp44_t0, `amp44_mean [mV] mean`, DIC_uM, DIC_uM_95_confidence, `DIC_uM rounded tens`, quantitatable, name)))
+samples_summ_w_concs %>% iso_make_units_explicit() %>% knitr::kable(d = 2)
+```
+
+```{r summary-d13C-conc-LOQ}
+# add data about LOQ and samples below LOQ
+samples_summ_w_concs_w_LOQ <- union(samples_summ_w_concs, peak_data_summary %>% full_join(samples_select %>% select(n, amp44_t0, `amp44_mean [mV] mean`, DIC_uM, DIC_uM_95_confidence, `DIC_uM rounded tens`, quantitatable, name)), by = "name")
 
 # arrange summary data by column describing whether it was above limit of quanitation
 samples_summ_w_concs_w_LOQ <- samples_summ_w_concs_w_LOQ %>% arrange(-quantitatable)

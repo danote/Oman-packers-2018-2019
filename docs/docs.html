@@ -1670,21 +1670,31 @@ docs_files %&gt;% select(-target_folder) %&gt;% knitr::kable()</code></pre>
 <td align="left">RMarkdown</td>
 <td align="left">180228_OM18_DIC.Rmd</td>
 <td align="left">docs/rmarkdown/180228_OM18_DIC.Rmd</td>
-<td align="left">79578e130d8b1d1fbd2518bdf2b0ca4a</td>
+<td align="left">212876a7f53f342b58c3ee75c6e59a86</td>
 <td align="left">docs/rmarkdown/180228_OM18_DIC.html</td>
-<td align="left">2020-05-12 10:25:49 MDT</td>
+<td align="left">2020-05-18 17:01:48 MDT</td>
 <td align="left">NA</td>
-<td align="left">FALSE</td>
+<td align="left">TRUE</td>
 </tr>
 <tr class="even">
 <td align="left">RMarkdown</td>
 <td align="left">180306_OM18_DIC.Rmd</td>
 <td align="left">docs/rmarkdown/180306_OM18_DIC.Rmd</td>
-<td align="left">e78bda6b2d0c92f019bb762f109ae529</td>
+<td align="left">2787a7c75e9db83e557ec75b9ffa6da5</td>
 <td align="left">docs/rmarkdown/180306_OM18_DIC.html</td>
-<td align="left">2020-05-12 10:31:32 MDT</td>
+<td align="left">2020-05-18 16:25:37 MDT</td>
 <td align="left">NA</td>
-<td align="left">TRUE</td>
+<td align="left">FALSE</td>
+</tr>
+<tr class="odd">
+<td align="left">RMarkdown</td>
+<td align="left">190208_OM19_DIC.Rmd</td>
+<td align="left">docs/rmarkdown/190208_OM19_DIC.Rmd</td>
+<td align="left">6df306329ce4868406d23b1bece781c4</td>
+<td align="left">docs/rmarkdown/190208_OM19_DIC.html</td>
+<td align="left">2020-05-18 16:25:37 MDT</td>
+<td align="left">NA</td>
+<td align="left">FALSE</td>
 </tr>
 </tbody>
 </table>
@@ -1773,15 +1783,11 @@ rendered_doc_files &lt;- docs_files %&gt;%
     render_file
   ))</code></pre>
 <h1>
-180228_OM18_DIC.Rmd (NC)
-</h1>
-<pre><code>source file has not changed, docs file will not be re-generated (delete file in docs folder to force re-generation)</code></pre>
-<h1>
-180306_OM18_DIC.Rmd (OK)
+180228_OM18_DIC.Rmd (OK)
 </h1>
 <pre><code>
 
-processing file: 180306_OM18_DIC.Rmd
+processing file: 180228_OM18_DIC.Rmd
 
   |                                                                            
   |                                                                      |   0%
@@ -1797,12 +1803,12 @@ List of 2
  $ warning: logi FALSE
  $ message: logi FALSE
 
-── Attaching packages ───────────────────────────────────────────────────────────── tidyverse 1.3.0 ──
+── Attaching packages ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.3.0 ──
 ✓ ggplot2 3.3.0     ✓ purrr   0.3.4
 ✓ tibble  3.0.1     ✓ dplyr   0.8.5
-✓ tidyr   1.0.2     ✓ stringr 1.4.0
+✓ tidyr   1.0.3     ✓ stringr 1.4.0
 ✓ readr   1.3.1     ✓ forcats 0.5.0
-── Conflicts ──────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+── Conflicts ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
 x dplyr::filter() masks stats::filter()
 x dplyr::lag()    masks stats::lag()
 
@@ -1847,18 +1853,18 @@ The following object is masked from &#39;package:graphics&#39;:
 
 
   |                                                                            
-  |...                                                                   |   4%
+  |..                                                                    |   4%
 label: load-data (with options) 
 List of 1
  $ message: logi FALSE
 
 Info: preparing to read 1 data files (all will be cached), setting up 1 par...
-Info (process 1): reading file &#39;data_raw/180306_DBN_DIC/180306_DBN_DIC_data...
-Info (process 1): loaded 38 data files from R Data Storage
-Info: finished reading 1 files in 4.19 secs
+Info (process 1): reading file &#39;data_raw/180228_DBN_DIC/180228_DBN_DIC_data...
+Info (process 1): loaded 47 data files from R Data Storage
+Info: finished reading 1 files in 4.15 secs
 
   |                                                                            
-  |...                                                                   |   5%
+  |...                                                                   |   4%
   ordinary text without R code
 
 
@@ -1890,32 +1896,32 @@ label: peak-maps
 
 
   |                                                                            
-  |........                                                              |  11%
+  |.......                                                               |  11%
 label: peak-table
 
   |                                                                            
-  |........                                                              |  12%
+  |........                                                              |  11%
   ordinary text without R code
 
 
   |                                                                            
-  |.........                                                             |  13%
+  |.........                                                             |  12%
 label: chrom-labeled (with options) 
 List of 1
  $ fig.height: num 5
 
 
   |                                                                            
-  |..........                                                            |  14%
+  |.........                                                             |  13%
   ordinary text without R code
 
 
   |                                                                            
-  |..........                                                            |  15%
+  |..........                                                            |  14%
 label: select-analyte-peaks
 
   |                                                                            
-  |...........                                                           |  15%
+  |..........                                                            |  15%
   ordinary text without R code
 
 
@@ -1929,16 +1935,16 @@ label: mutate-transfer-t
 
 
   |                                                                            
-  |.............                                                         |  18%
+  |............                                                          |  18%
 label: chrom-model-good
 
   |                                                                            
-  |.............                                                         |  19%
+  |.............                                                         |  18%
   ordinary text without R code
 
 
   |                                                                            
-  |..............                                                        |  20%
+  |..............                                                        |  19%
 label: chrom-training (with options) 
 List of 1
  $ warning: logi FALSE
@@ -1947,14 +1953,15 @@ Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;do
 Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
 Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
 Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
 
   |                                                                            
-  |...............                                                       |  21%
+  |..............                                                        |  20%
   ordinary text without R code
 
 
   |                                                                            
-  |...............                                                       |  22%
+  |...............                                                       |  21%
 label: exp-model (with options) 
 List of 1
  $ warning: logi FALSE
@@ -1963,62 +1970,63 @@ Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;do
 Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
 Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
 Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+
+  |                                                                            
+  |...............                                                       |  22%
+  ordinary text without R code
+
 
   |                                                                            
   |................                                                      |  23%
-  ordinary text without R code
-
-
-  |                                                                            
-  |.................                                                     |  24%
 label: save-k
 
   |                                                                            
-  |.................                                                     |  25%
+  |.................                                                     |  24%
   ordinary text without R code
 
 
   |                                                                            
-  |..................                                                    |  25%
+  |.................                                                     |  25%
 label: chrom-model-bad
 
   |                                                                            
-  |..................                                                    |  26%
+  |..................                                                    |  25%
   ordinary text without R code
 
 
   |                                                                            
-  |...................                                                   |  27%
+  |..................                                                    |  26%
 label: weak-inject-chrom-ampls
 
   |                                                                            
-  |....................                                                  |  28%
+  |...................                                                   |  27%
   ordinary text without R code
 
 
   |                                                                            
-  |....................                                                  |  29%
+  |....................                                                  |  28%
 label: weak-inject-chrom-ampls-fit
 
   |                                                                            
-  |.....................                                                 |  30%
+  |....................                                                  |  29%
   ordinary text without R code
 
 
   |                                                                            
-  |......................                                                |  31%
+  |.....................                                                 |  30%
 label: estimate_ampl_t0 (with options) 
 List of 1
  $ warning: logi FALSE
 
 
   |                                                                            
-  |......................                                                |  32%
+  |.....................                                                 |  31%
   ordinary text without R code
 
 
   |                                                                            
-  |.......................                                               |  33%
+  |......................                                                |  32%
 label: amp44-measured-v-expected (with options) 
 List of 2
  $ fig.width : num 15
@@ -2026,21 +2034,21 @@ List of 2
 
 
   |                                                                            
+  |.......................                                               |  32%
+  ordinary text without R code
+
+
+  |                                                                            
+  |.......................                                               |  33%
+label: filter-out-bad-injects
+
+  |                                                                            
   |........................                                              |  34%
   ordinary text without R code
 
 
   |                                                                            
-  |........................                                              |  35%
-label: filter-out-bad-injects
-
-  |                                                                            
   |.........................                                             |  35%
-  ordinary text without R code
-
-
-  |                                                                            
-  |.........................                                             |  36%
 label: plot-good-peaks (with options) 
 List of 2
  $ fig.width : num 15
@@ -2048,22 +2056,31 @@ List of 2
 
 
   |                                                                            
-  |..........................                                            |  37%
+  |.........................                                             |  36%
   ordinary text without R code
 
 
   |                                                                            
-  |...........................                                           |  38%
+  |..........................                                            |  37%
 label: function-ampl-t0
 
   |                                                                            
+  |..........................                                            |  38%
+  ordinary text without R code
+
+
+  |                                                                            
   |...........................                                           |  39%
+label: count-peaks
+
+  |                                                                            
+  |............................                                          |  39%
   ordinary text without R code
 
 
   |                                                                            
   |............................                                          |  40%
-label: count-peaks
+label: keep-min-4-peaks
 
   |                                                                            
   |.............................                                         |  41%
@@ -2072,15 +2089,6 @@ label: count-peaks
 
   |                                                                            
   |.............................                                         |  42%
-label: keep-min-4-peaks
-
-  |                                                                            
-  |..............................                                        |  43%
-  ordinary text without R code
-
-
-  |                                                                            
-  |...............................                                       |  44%
 label: re-calc-ampl-t0 (with options) 
 List of 1
  $ warning: logi FALSE
@@ -2186,14 +2194,111 @@ Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;do
 Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
 Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
 Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double in &#39;mV&#39;&gt; - &lt;double&gt;, converting to double without units to continue
 
   |                                                                            
-  |...............................                                       |  45%
+  |..............................                                        |  43%
   ordinary text without R code
 
 
   |                                                                            
-  |................................                                      |  45%
+  |...............................                                       |  44%
 label: summ-peaks (with options) 
 List of 1
  $ warning: logi FALSE
@@ -2222,15 +2327,43 @@ Warning: don&#39;t know how to calculate &lt;double&gt; / &lt;double in &#39;mV&
 Warning: don&#39;t know how to calculate &lt;double&gt; / &lt;double in &#39;mV&#39;&gt;, converting to double without units to continue
 Warning: don&#39;t know how to calculate &lt;double&gt; / &lt;double in &#39;mV&#39;&gt;, converting to double without units to continue
 Warning: don&#39;t know how to calculate &lt;double&gt; / &lt;double in &#39;mV&#39;&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double&gt; / &lt;double in &#39;mV&#39;&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double&gt; / &lt;double in &#39;mV&#39;&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double&gt; / &lt;double in &#39;mV&#39;&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double&gt; / &lt;double in &#39;mV&#39;&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double&gt; / &lt;double in &#39;mV&#39;&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double&gt; / &lt;double in &#39;mV&#39;&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double&gt; / &lt;double in &#39;mV&#39;&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double&gt; / &lt;double in &#39;mV&#39;&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double&gt; / &lt;double in &#39;mV&#39;&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double&gt; / &lt;double in &#39;mV&#39;&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double&gt; / &lt;double in &#39;mV&#39;&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double&gt; / &lt;double in &#39;mV&#39;&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double&gt; / &lt;double in &#39;mV&#39;&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double&gt; / &lt;double in &#39;mV&#39;&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double&gt; / &lt;double in &#39;mV&#39;&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double&gt; / &lt;double in &#39;mV&#39;&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double&gt; / &lt;double in &#39;mV&#39;&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double&gt; / &lt;double in &#39;mV&#39;&gt;, converting to double without units to continue
+Warning: don&#39;t know how to calculate &lt;double&gt; / &lt;double in &#39;mV&#39;&gt;, converting to double without units to continue
+
+  |                                                                            
+  |...............................                                       |  45%
+  ordinary text without R code
+
 
   |                                                                            
   |................................                                      |  46%
+label: mutate-data-type
+
+  |                                                                            
+  |.................................                                     |  46%
   ordinary text without R code
 
 
   |                                                                            
   |.................................                                     |  47%
-label: mutate-data-type
+label: calc-LOQ
 
   |                                                                            
   |..................................                                    |  48%
@@ -2239,7 +2372,7 @@ label: mutate-data-type
 
   |                                                                            
   |..................................                                    |  49%
-label: calc-LOQ
+label: make-units-explicit
 
   |                                                                            
   |...................................                                   |  50%
@@ -2248,7 +2381,7 @@ label: calc-LOQ
 
   |                                                                            
   |....................................                                  |  51%
-label: make-units-explicit
+label: check-if-quantitatable
 
   |                                                                            
   |....................................                                  |  52%
@@ -2257,16 +2390,16 @@ label: make-units-explicit
 
   |                                                                            
   |.....................................                                 |  53%
-label: check-if-quantitatable
+label: input-sample-params
 
   |                                                                            
-  |......................................                                |  54%
+  |.....................................                                 |  54%
   ordinary text without R code
 
 
   |                                                                            
-  |......................................                                |  55%
-label: input-sample-params
+  |......................................                                |  54%
+label: select-stnds
 
   |                                                                            
   |.......................................                               |  55%
@@ -2275,7 +2408,7 @@ label: input-sample-params
 
   |                                                                            
   |.......................................                               |  56%
-label: select-stnds
+label: plot-calib-mass-loaded
 
   |                                                                            
   |........................................                              |  57%
@@ -2284,7 +2417,7 @@ label: select-stnds
 
   |                                                                            
   |.........................................                             |  58%
-label: plot-calib-mass-loaded
+label: chrom-bad-stnd
 
   |                                                                            
   |.........................................                             |  59%
@@ -2293,34 +2426,34 @@ label: plot-calib-mass-loaded
 
   |                                                                            
   |..........................................                            |  60%
-label: constants
+label: cull-bad-stnd
+
+  |                                                                            
+  |..........................................                            |  61%
+  ordinary text without R code
+
 
   |                                                                            
   |...........................................                           |  61%
-  ordinary text without R code
-
+label: plot-calib-mass-loaded-culled
 
   |                                                                            
-  |...........................................                           |  62%
-label: calc-pCO2-expected
+  |............................................                          |  62%
+  ordinary text without R code
+
 
   |                                                                            
   |............................................                          |  63%
-  ordinary text without R code
-
+label: constants
 
   |                                                                            
   |.............................................                         |  64%
-label: plot-calib-pCO2
-
-  |                                                                            
-  |.............................................                         |  65%
   ordinary text without R code
 
 
   |                                                                            
-  |..............................................                        |  65%
-label: regress-calib-pCO2
+  |.............................................                         |  65%
+label: calc-pCO2-expected
 
   |                                                                            
   |..............................................                        |  66%
@@ -2329,83 +2462,88 @@ label: regress-calib-pCO2
 
   |                                                                            
   |...............................................                       |  67%
-label: filter-for-samples
+label: plot-calib-pCO2
+
+  |                                                                            
+  |...............................................                       |  68%
+  ordinary text without R code
+
 
   |                                                                            
   |................................................                      |  68%
-  ordinary text without R code
-
+label: regress-calib-pCO2
 
   |                                                                            
-  |................................................                      |  69%
-label: apply-conc-calib
+  |.................................................                     |  69%
+  ordinary text without R code
+
 
   |                                                                            
   |.................................................                     |  70%
-  ordinary text without R code
-
+label: filter-for-samples
 
   |                                                                            
   |..................................................                    |  71%
-label: plot-calib-CaCO3
+  ordinary text without R code
+
 
   |                                                                            
   |..................................................                    |  72%
-  ordinary text without R code
-
+label: apply-conc-calib
 
   |                                                                            
   |...................................................                   |  73%
-label: calc-DIC-conc
+  ordinary text without R code
+
 
   |                                                                            
   |....................................................                  |  74%
-  ordinary text without R code
-
+label: plot-calib-CaCO3
 
   |                                                                            
   |....................................................                  |  75%
-label: amp44-DIC-sample-stnd-check
+  ordinary text without R code
+
 
   |                                                                            
   |.....................................................                 |  75%
-  ordinary text without R code
-
+label: calc-DIC-conc
 
   |                                                                            
   |.....................................................                 |  76%
-label: plot-summary-reproducibility-d13C
+  ordinary text without R code
+
 
   |                                                                            
   |......................................................                |  77%
-  ordinary text without R code
-
+label: amp44-DIC-sample-stnd-check
 
   |                                                                            
   |.......................................................               |  78%
-label: cull-bad-reproducibility-d13C
+  ordinary text without R code
+
 
   |                                                                            
   |.......................................................               |  79%
-  ordinary text without R code
-
+label: plot-summary-reproducibility-d13C
 
   |                                                                            
   |........................................................              |  80%
-label: plot-yields-d13C (with options) 
-List of 2
- $ fig.height: num 8
- $ fig.width : num 10
-
-
-  |                                                                            
-  |.........................................................             |  81%
   ordinary text without R code
 
 
   |                                                                            
+  |........................................................              |  81%
+label: cull-bad-reproducibility-d13C
+
+  |                                                                            
   |.........................................................             |  82%
-label: cull-d13C-stnds (with options) 
+  ordinary text without R code
+
+
+  |                                                                            
+  |..........................................................            |  82%
+label: plot-yields-d13C (with options) 
 List of 2
  $ fig.height: num 8
  $ fig.width : num 10
@@ -2421,30 +2559,30 @@ List of 2
 label: load-isotope-stnds
 
   |                                                                            
-  |...........................................................           |  85%
+  |............................................................          |  85%
   ordinary text without R code
 
-
-  |                                                                            
-  |............................................................          |  85%
-label: add-isotope-stnds
 
   |                                                                            
   |............................................................          |  86%
-  ordinary text without R code
-
+label: add-isotope-stnds
 
   |                                                                            
   |.............................................................         |  87%
-label: generate-calib-d13C
-
-  |                                                                            
-  |..............................................................        |  88%
   ordinary text without R code
 
 
   |                                                                            
+  |.............................................................         |  88%
+label: generate-calib-d13C
+
+  |                                                                            
   |..............................................................        |  89%
+  ordinary text without R code
+
+
+  |                                                                            
+  |...............................................................       |  89%
 label: calib-coeffs (with options) 
 List of 2
  $ fig.width : num 7
@@ -2491,12 +2629,12 @@ List of 2
 
 
   |                                                                            
-  |...................................................................   |  95%
+  |...................................................................   |  96%
   ordinary text without R code
 
 
   |                                                                            
-  |...................................................................   |  96%
+  |....................................................................  |  96%
 label: summary-d13C
 
   |                                                                            
@@ -2517,12 +2655,20 @@ label: summary-d13C-conc
   |......................................................................| 100%
 label: export
 
-output file: 180306_OM18_DIC.knit.md
+output file: 180228_OM18_DIC.knit.md
 
-/usr/local/bin/pandoc +RTS -K512m -RTS 180306_OM18_DIC.utf8.md --to html4 --from markdown+autolink_bare_uris+tex_math_single_backslash+smart --output docs/rmarkdown/180306_OM18_DIC.html --email-obfuscation none --self-contained --standalone --section-divs --table-of-contents --toc-depth 3 --variable toc_float=1 --variable toc_selectors=h1,h2,h3 --variable toc_collapsed=1 --variable toc_smooth_scroll=1 --variable toc_print=1 --template /Library/Frameworks/R.framework/Versions/3.6/Resources/library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --number-sections --css stylesheet.css --variable &#39;theme:bootstrap&#39; --include-in-header /var/folders/pw/9fk_chms0jl85nfldy5rgfyc0000gn/T//Rtmpmgqk0c/rmarkdown-str4b26718b5a9f.html --mathjax --variable &#39;mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&#39; --lua-filter /Library/Frameworks/R.framework/Versions/3.6/Resources/library/rmarkdown/rmd/lua/pagebreak.lua --lua-filter /Library/Frameworks/R.framework/Versions/3.6/Resources/library/rmarkdown/rmd/lua/latex-div.lua --variable code_folding=show --variable code_menu=1 
+/usr/local/bin/pandoc +RTS -K512m -RTS 180228_OM18_DIC.utf8.md --to html4 --from markdown+autolink_bare_uris+tex_math_single_backslash+smart --output docs/rmarkdown/180228_OM18_DIC.html --email-obfuscation none --self-contained --standalone --section-divs --table-of-contents --toc-depth 3 --variable toc_float=1 --variable toc_selectors=h1,h2,h3 --variable toc_collapsed=1 --variable toc_smooth_scroll=1 --variable toc_print=1 --template /Library/Frameworks/R.framework/Versions/3.6/Resources/library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --number-sections --css stylesheet.css --variable &#39;theme:bootstrap&#39; --include-in-header /var/folders/pw/9fk_chms0jl85nfldy5rgfyc0000gn/T//RtmpwV0l0c/rmarkdown-str9c251671ee4.html --mathjax --variable &#39;mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&#39; --lua-filter /Library/Frameworks/R.framework/Versions/3.6/Resources/library/rmarkdown/rmd/lua/pagebreak.lua --lua-filter /Library/Frameworks/R.framework/Versions/3.6/Resources/library/rmarkdown/rmd/lua/latex-div.lua --variable code_folding=show --variable code_menu=1 
 
-Output created: docs/rmarkdown/180306_OM18_DIC.html
+Output created: docs/rmarkdown/180228_OM18_DIC.html
 There were 50 or more warnings (use warnings() to see the first 50)</code></pre>
+<h1>
+180306_OM18_DIC.Rmd (NC)
+</h1>
+<pre><code>source file has not changed, docs file will not be re-generated (delete file in docs folder to force re-generation)</code></pre>
+<h1>
+190208_OM19_DIC.Rmd (NC)
+</h1>
+<pre><code>source file has not changed, docs file will not be re-generated (delete file in docs folder to force re-generation)</code></pre>
 </div>
 <div id="summary" class="section level1">
 <h1>summary</h1>
@@ -2558,23 +2704,34 @@ summary %&gt;% knitr::kable()</code></pre>
 <td align="left">RMarkdown</td>
 <td align="left">180228_OM18_DIC.Rmd</td>
 <td align="left">docs/rmarkdown/180228_OM18_DIC.Rmd</td>
-<td align="left">79578e130d8b1d1fbd2518bdf2b0ca4a</td>
+<td align="left">212876a7f53f342b58c3ee75c6e59a86</td>
 <td align="left">docs/rmarkdown/180228_OM18_DIC.html</td>
-<td align="left">2020-05-12 10:25:49 MDT</td>
+<td align="left">2020-05-18 17:08:28 MDT</td>
 <td align="left">NA</td>
-<td align="left">FALSE</td>
-<td align="left">NA</td>
+<td align="left">TRUE</td>
+<td align="left">TRUE</td>
 </tr>
 <tr class="even">
 <td align="left">RMarkdown</td>
 <td align="left">180306_OM18_DIC.Rmd</td>
 <td align="left">docs/rmarkdown/180306_OM18_DIC.Rmd</td>
-<td align="left">e78bda6b2d0c92f019bb762f109ae529</td>
+<td align="left">2787a7c75e9db83e557ec75b9ffa6da5</td>
 <td align="left">docs/rmarkdown/180306_OM18_DIC.html</td>
-<td align="left">2020-05-12 10:33:26 MDT</td>
+<td align="left">2020-05-18 16:25:37 MDT</td>
 <td align="left">NA</td>
-<td align="left">TRUE</td>
-<td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">RMarkdown</td>
+<td align="left">190208_OM19_DIC.Rmd</td>
+<td align="left">docs/rmarkdown/190208_OM19_DIC.Rmd</td>
+<td align="left">6df306329ce4868406d23b1bece781c4</td>
+<td align="left">docs/rmarkdown/190208_OM19_DIC.html</td>
+<td align="left">2020-05-18 16:25:37 MDT</td>
+<td align="left">NA</td>
+<td align="left">FALSE</td>
+<td align="left">NA</td>
 </tr>
 </tbody>
 </table>
