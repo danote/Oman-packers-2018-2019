@@ -1,0 +1,7 @@
+#SampleID	sample_ID	Description	well
+A108	A108	sample	BA1A_108_132
+A30	A30	sample	BA1A_0_30
+A41	A41	sample	BA1A_41_65
+Blank	Blank	blank	NA
+D102	D102	sample	BA1D_102_132
+D45	D45	sample	BA1D_45_75
