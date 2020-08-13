@@ -4,5 +4,7 @@ RMarkdown,180306_OM18_DIC.Rmd,docs/rmarkdown/180306_OM18_DIC.Rmd,2787a7c75e9db83
 RMarkdown,190208_OM19_DIC.Rmd,docs/rmarkdown/190208_OM19_DIC.Rmd,6df306329ce4868406d23b1bece781c4,docs/rmarkdown/190208_OM19_DIC.html,2020-05-21 11:14:19 MDT,NA
 RMarkdown,191130_OM19_CH4_dD.Rmd,docs/rmarkdown/191130_OM19_CH4_dD.Rmd,08b4c7c9bea77f3608c79550c1276054,docs/rmarkdown/191130_OM19_CH4_dD.html,2020-05-21 11:14:19 MDT,NA
 RMarkdown,191218_OM19_C1-C3-HCs_d13C.Rmd,docs/rmarkdown/191218_OM19_C1-C3-HCs_d13C.Rmd,b8fc7120b52636acd107185df40bf97e,docs/rmarkdown/191218_OM19_C1-C3-HCs_d13C.html,2020-05-21 11:14:19 MDT,NA
-RMarkdown,OM19_16S_taxa_assignment_DADA2_Silva138_Bayesian.Rmd,docs/rmarkdown/OM19_16S_taxa_assignment_DADA2_Silva138_Bayesian.Rmd,959eb5bd8673e003a6b3f585433d00d6,docs/rmarkdown/OM19_16S_taxa_assignment_DADA2_Silva138_Bayesian.html,2020-05-21 11:40:19 MDT,NA
-RMarkdown,OM19_taxa_table_analysis.Rmd,docs/rmarkdown/OM19_taxa_table_analysis.Rmd,b7398b7ac13e9519fce45c938df86b71,docs/rmarkdown/OM19_taxa_table_analysis.html,2020-05-21 11:53:17 MDT,NA
+RMarkdown,OM18_16S_taxa_assignment_DADA2_Silva138_Bayesian.Rmd,docs/rmarkdown/OM18_16S_taxa_assignment_DADA2_Silva138_Bayesian.Rmd,f05551c16f0a474f84830fccdaa11d09,docs/rmarkdown/OM18_16S_taxa_assignment_DADA2_Silva138_Bayesian.html,2020-05-26 12:45:32 MDT,NA
+RMarkdown,OM18_taxa_table_analysis.Rmd,docs/rmarkdown/OM18_taxa_table_analysis.Rmd,d8646c4698a6c88e40a0e0d14adfde0e,docs/rmarkdown/OM18_taxa_table_analysis.html,2020-05-26 17:49:55 MDT,NA
+RMarkdown,OM19_16S_taxa_assignment_DADA2_Silva138_Bayesian.Rmd,docs/rmarkdown/OM19_16S_taxa_assignment_DADA2_Silva138_Bayesian.Rmd,ea835163367ad4e175b1a3ddfe199701,docs/rmarkdown/OM19_16S_taxa_assignment_DADA2_Silva138_Bayesian.html,2020-05-26 11:29:06 MDT,NA
+RMarkdown,OM19_taxa_table_analysis.Rmd,docs/rmarkdown/OM19_taxa_table_analysis.Rmd,22be396de90f569b91c06ea0abedcb15,docs/rmarkdown/OM19_taxa_table_analysis.html,2020-05-26 11:51:25 MDT,NA

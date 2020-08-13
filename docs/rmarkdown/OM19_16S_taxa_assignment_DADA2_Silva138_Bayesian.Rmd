@@ -46,7 +46,7 @@ knitr::opts_chunk$set(
 
 Define where the fastq file are and check what the files are. These fastq files were previously demultiplexed.
 ```{r set-fastq-files-directory}
-path <- "~/Desktop/Research/Oman_fieldwork/2019 info/Dan_Nothaft_16S_Data/demux-seqs" # CHANGE ME to the directory containing the fastq files after unzipping.
+path <- "~/Desktop/Research/Oman_fieldwork/2019 info/Dan_Nothaft_16S_Data/demux-seqs/packers" # CHANGE ME to the directory containing the fastq files after unzipping.
 list.files(path)
 ```
 
@@ -311,17 +311,17 @@ for (i in 1:dim(seqtab.nochim)[2]) {
 
   # making and writing out a fasta of our final ASV seqs:
 asv_fasta <- c(rbind(asv_headers, asv_seqs))
-write(asv_fasta, file = format(Sys.Date(), "data_output/%Y%m%d_ASVs_Silva_Bayes.fa"))
+write(asv_fasta, file = format(Sys.Date(), "data_output/%Y%m%d_ASVs_Silva_OM19_Silva138_Bayes_packers.fa"))
 
   # count table:
 asv_tab <- t(seqtab.nochim)
 row.names(asv_tab) <- sub(">", "", asv_headers)
-write.table(asv_tab, file = format(Sys.Date(), "data_output/%Y%m%d_ASVs_counts_Silva_Bayes.txt"), sep="\t", quote=F)
+write.table(asv_tab, file = format(Sys.Date(), "data_output/%Y%m%d_ASVs_counts_OM19_Silva138_Bayes_packers.txt"), sep="\t", quote=F)
 
   # tax table:
 asv_tax <- taxa_Silva
 row.names(asv_tax) <- sub(">", "", asv_headers)
-write.table(asv_tax, file = format(Sys.Date(), "data_output/%Y%m%d_ASVs_taxonomy_Silva_Bayes.txt"), sep="\t", quote=F)
+write.table(asv_tax, file = format(Sys.Date(), "data_output/%Y%m%d_ASVs_taxonomy_OM19_Silva138_Bayes_packers.txt"), sep="\t", quote=F)
 ```
 
 DBN making these taxa tables in format mctoolsr will accept
@@ -351,5 +351,5 @@ head(tax_tab_for_mctoolsr_Silva) # print first few rows
 ```
 
 ```{r export-output-table}
-write.table(tax_tab_for_mctoolsr_Silva, file = format(Sys.Date(), "data_output/%Y%m%d_tax_tab_DADA2_mctoolsr_OM19_Silva138_Bayes_full.txt"), row.names = FALSE, sep="\t", quote=F) # write a .txt file of the taxa table
+write.table(tax_tab_for_mctoolsr_Silva, file = format(Sys.Date(), "data_output/%Y%m%d_tax_tab_DADA2_mctoolsr_OM19_Silva138_Bayes_packers.txt"), row.names = FALSE, sep="\t", quote=F) # write a .txt file of the taxa table
 ```

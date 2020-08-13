@@ -38,8 +38,8 @@ knitr::opts_chunk$set(
 
 ## Load in map file and otutable
 ```{r load-data}
-tax_table_fp <- 'data_output/20200521_tax_tab_DADA2_mctoolsr_OM19_Silva138_Bayes_full.txt'
-map_fp <- 'data_raw/Summary_metadata/OM19_map16S_meta.txt'
+tax_table_fp <- 'data_output/20200526_tax_tab_DADA2_mctoolsr_OM19_Silva138_Bayes_packers.txt'
+map_fp <- 'data_raw/Summary_metadata/meta_map_16S_OM19_packers.txt'
 input <- load_taxa_table(tax_table_fp, map_fp) #combine data to format for mctoolsr
 ```
 
@@ -98,7 +98,7 @@ read_tally
 ```{r filter-extraneous-reads}
 # Chloroplast not in dataset
 input_filt <- filter_taxa_from_input(input, taxa_to_remove = c("Mitochondria", "Eukaryota"))
-input_filt <- filter_taxa_from_input(input_filt, at_spec_level = 1, taxa_to_remove = "NA")
+# input_filt <- filter_taxa_from_input(input_filt, at_spec_level = 1, taxa_to_remove = "NA") # no taxa not assigned at domain level in this dataset
 ```
 
 Show read counts of filtered data
@@ -130,7 +130,7 @@ Oman_samples_sum <- summarize_taxonomy(Oman_samples, level = 7, report_higher_ta
 ```
 
 Generate heat map
-```{r heat-map, fig.height=8, fig.width=9}
+```{r heat-map-OM19-packers, fig.height=7, fig.width=8}
 Oman_samples_sum_higher_plot <- plot_ts_heatmap(Oman_samples_sum, map_Oman_samples, 0.005,  "well")
 
 Oman_samples_sum_higher_plot +
@@ -230,7 +230,7 @@ formatter100 <- function(x){
 ```
 
 ### Plot
-```{r OM19-CH4-taxa-bar, fig.width = 5, fig.height = 4, dpi=300}
+```{r CH4-taxa-bar-OM19-packers, fig.width = 5, fig.height = 4, dpi=300}
 # create plot
 OM19_CH4_taxa_bar <- gathered_w_map %>% ggplot(
   
@@ -327,7 +327,7 @@ gathered_grouped_w_map_Hydrogenophaga
 ```
 
 ### Plot
-```{r OM19-Hydrogenophaga-bar, fig.width = 3, fig.height = 4, dpi=300}
+```{r Hydrogenophaga-bar-OM19-packers, fig.width = 3, fig.height = 4, dpi=300}
 # create plot
 OM19_Hydrogenophaga_bar <- gathered_grouped_w_map_Hydrogenophaga %>% ggplot(
   
@@ -444,7 +444,7 @@ cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2",
 ```
 
 ### Plot
-```{r OM19_SCA_taxa_bar, fig.width = 5, fig.height = 4, dpi=300}
+```{r SCA_taxa_bar-OM19-packers, fig.width = 5, fig.height = 4, dpi=300}
 # create plot
 OM19_SCA_taxa_bar <- gathered_w_map_SCA %>% ggplot(
   
