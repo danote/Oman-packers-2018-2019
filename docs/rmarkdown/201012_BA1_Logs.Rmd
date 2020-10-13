@@ -1,4 +1,6 @@
 ---
+---
+---
 title: "BA1 geophysical/chemical logs"
 subtitle: "Source file: 201012_BA1_Logs.Rmd"
 author: "Daniel Nothaft"
