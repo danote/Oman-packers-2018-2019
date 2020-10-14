@@ -1,2 +1,2 @@
 type,source_file,source_copy,source_file_hash,doc_file,last_success,last_fail
-RMarkdown,201012_BA1_Logs.Rmd,docs/rmarkdown/201012_BA1_Logs.Rmd,04dbce86672961b854f7c506b4929dbd,docs/rmarkdown/201012_BA1_Logs.html,2020-10-13 15:36:29 MDT,NA
+RMarkdown,201013_packer_paper_figs.Rmd,docs/rmarkdown/201013_packer_paper_figs.Rmd,ad58dced7909ab2741b06533d5312e55,docs/rmarkdown/201013_packer_paper_figs.html,2020-10-13 21:26:57 MDT,NA

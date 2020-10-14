@@ -1,4 +1,6 @@
 ---
+---
+---
 title: "BA1 methane isotope plotting"
 subtitle: "Source file: 201013_packer_paper_figs.Rmd"
 author: "Daniel Nothaft"
@@ -320,7 +322,7 @@ Get literature data
 ```{r get-lit-C1-C2-C3-data}
 # select samples with quantifiable C2H6
 data_C1_C2_C3_lit <- data_literature %>% filter(!is.na(C2H6_conc)) %>%  select(site, sample_type, CH4_conc, C2H6_conc, C3H8_conc,
-CH4_d13C_permil_VPDB, packer_site_year_interval, author, year_published) # select relevant data for CH4, C2H6, C3H8
+CH4_d13C_permil_VPDB, packer_site_year_interval) # select relevant data for CH4, C2H6, C3H8
 
 # calculate C1/(C2+C3)
 data_C1_C2_C3_lit <- data_C1_C2_C3_lit %>% mutate(C1_over_C2_plus_C3 = CH4_conc / (C2H6_conc + if_else(!is.na(C3H8_conc), C3H8_conc, 0)))
