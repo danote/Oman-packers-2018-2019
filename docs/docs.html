@@ -1603,7 +1603,7 @@ div.tocify {
 rmd_files &lt;- tibble(
   type = &quot;RMarkdown&quot;, 
   target_folder = rmd_docs_folder,
-  source_file = c(&quot;201013_packer_paper_figs.Rmd&quot;)
+  source_file = c(&quot;201012_BA1_Logs.Rmd&quot;)
   # source_file = list.files(
   #   path = &quot;.&quot;, 
   #   pattern = sprintf(&quot;(%s)$&quot;, paste(rmd_ext, collapse = &quot;|&quot;)))
@@ -1668,14 +1668,14 @@ docs_files &lt;-
 docs_files %&gt;% select(-target_folder) %&gt;% knitr::kable()</code></pre>
 <table>
 <colgroup>
-<col width="4%" />
-<col width="14%" />
-<col width="21%" />
-<col width="16%" />
-<col width="22%" />
+<col width="5%" />
 <col width="11%" />
-<col width="4%" />
-<col width="4%" />
+<col width="19%" />
+<col width="18%" />
+<col width="20%" />
+<col width="13%" />
+<col width="5%" />
+<col width="5%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1692,11 +1692,11 @@ docs_files %&gt;% select(-target_folder) %&gt;% knitr::kable()</code></pre>
 <tbody>
 <tr class="odd">
 <td align="left">RMarkdown</td>
-<td align="left">201013_packer_paper_figs.Rmd</td>
-<td align="left">docs/rmarkdown/201013_packer_paper_figs.Rmd</td>
-<td align="left">ad58dced7909ab2741b06533d5312e55</td>
-<td align="left">docs/rmarkdown/201013_packer_paper_figs.html</td>
-<td align="left">2020-10-13 21:13:37 MDT</td>
+<td align="left">201012_BA1_Logs.Rmd</td>
+<td align="left">docs/rmarkdown/201012_BA1_Logs.Rmd</td>
+<td align="left">d95864a5c050d6b047d99713688aec25</td>
+<td align="left">docs/rmarkdown/201012_BA1_Logs.html</td>
+<td align="left">2020-10-14 13:23:43 MDT</td>
 <td align="left">NA</td>
 <td align="left">TRUE</td>
 </tr>
@@ -1787,21 +1787,21 @@ rendered_doc_files &lt;- docs_files %&gt;%
     render_file
   ))</code></pre>
 <h1>
-201013_packer_paper_figs.Rmd (OK)
+201012_BA1_Logs.Rmd (OK)
 </h1>
 <pre><code>
 
-processing file: 201013_packer_paper_figs.Rmd
+processing file: 201012_BA1_Logs.Rmd
 
   |                                                                            
   |                                                                      |   0%
   |                                                                            
-  |..                                                                    |   3%
+  |.                                                                     |   1%
    inline R code fragments
 
 
   |                                                                            
-  |....                                                                  |   6%
+  |.                                                                     |   2%
 label: setup (with options) 
 List of 2
  $ message: logi FALSE
@@ -1827,14 +1827,6 @@ The following object is masked from &#39;package:readr&#39;:
     col_factor
 
 
-********************************************************
-Note: As of version 1.0.0, cowplot does not change the
-  default ggplot2 theme anymore. To recover the previous
-  behavior, execute:
-  theme_set(theme_cowplot())
-********************************************************
-
-
 Attaching package: &#39;lemon&#39;
 
 The following object is masked from &#39;package:purrr&#39;:
@@ -1847,49 +1839,163 @@ The following objects are masked from &#39;package:ggplot2&#39;:
 
 
   |                                                                            
-  |......                                                                |   8%
+  |..                                                                    |   3%
   ordinary text without R code
 
 
   |                                                                            
-  |........                                                              |  11%
+  |...                                                                   |   4%
 label: source
 
   |                                                                            
-  |..........                                                            |  14%
+  |...                                                                   |   5%
   ordinary text without R code
 
+
+  |                                                                            
+  |....                                                                  |   6%
+label: load-data
+
+  |                                                                            
+  |.....                                                                 |   7%
+  ordinary text without R code
+
+
+  |                                                                            
+  |.....                                                                 |   8%
+label: get-relevant-log-data-BA1A-2018
+
+  |                                                                            
+  |......                                                                |   9%
+  ordinary text without R code
+
+
+  |                                                                            
+  |.......                                                               |  10%
+label: subset-and-print-log-BA1A_2018
+
+  |                                                                            
+  |.......                                                               |  11%
+  ordinary text without R code
+
+
+  |                                                                            
+  |........                                                              |  12%
+label: plot-Ag-AgCl-SHE-conversion
+
+  |                                                                            
+  |.........                                                             |  13%
+  ordinary text without R code
+
+
+  |                                                                            
+  |..........                                                            |  14%
+label: save-lm-Ag-AgCl-SHE
+
+  |                                                                            
+  |..........                                                            |  15%
+  ordinary text without R code
+
+
+  |                                                                            
+  |...........                                                           |  16%
+label: save-lm-Ag-AgCl-SHE-slope
 
   |                                                                            
   |............                                                          |  17%
-label: load-Oman-well-data
+  ordinary text without R code
+
+
+label: save-lm-Ag-AgCl-SHE-int
+
+  |                                                                            
+  |.............                                                         |  18%
+  ordinary text without R code
+
 
   |                                                                            
   |..............                                                        |  19%
+label: apply-Ag-AgCl-SHE-conversion-NSHQ14
+
+  |                                                                            
+  |..............                                                        |  20%
   ordinary text without R code
 
+
+  |                                                                            
+  |...............                                                       |  21%
+label: calc-hydrostatic-P-NSHQ14
 
   |                                                                            
   |................                                                      |  22%
-label: load-lit-data
-
-  |                                                                            
-  |..................                                                    |  25%
   ordinary text without R code
 
 
   |                                                                            
-  |...................                                                   |  28%
-label: set-plot-aesthetics
+  |................                                                      |  23%
+label: convert-hydrostatic-P-to-bar-BA1A_2018
 
   |                                                                            
-  |.....................                                                 |  31%
+  |.................                                                     |  24%
+  ordinary text without R code
+
+
+  |                                                                            
+  |..................                                                    |  25%
+label: prepare-P-plot-BA1A_2018
+
+  |                                                                            
+  |..................                                                    |  26%
+  ordinary text without R code
+
+
+  |                                                                            
+  |...................                                                   |  27%
+label: P-plot-BA1A_2018 (with options) 
+List of 2
+ $ fig.height: num 4
+ $ fig.width : num 4
+
+
+  |                                                                            
+  |....................                                                  |  28%
+  ordinary text without R code
+
+
+  |                                                                            
+  |....................                                                  |  29%
+label: calc-H2-H20-limit-BA1A_2018
+
+  |                                                                            
+  |.....................                                                 |  30%
+  ordinary text without R code
+
+
+  |                                                                            
+  |......................                                                |  31%
+label: prepare-H2-H20-limit-plot-BA1A_2018
+
+  |                                                                            
+  |......................                                                |  32%
   ordinary text without R code
 
 
   |                                                                            
   |.......................                                               |  33%
-label: get-water-isotopes
+label: H2-H20-limit-plot-BA1A_2018 (with options) 
+List of 2
+ $ fig.height: num 5
+ $ fig.width : num 4
+
+
+  |                                                                            
+  |........................                                              |  34%
+  ordinary text without R code
+
+
+  |                                                                            
+  |........................                                              |  35%
+label: get-relevant-log-data-BA1A_2017
 
   |                                                                            
   |.........................                                             |  36%
@@ -1897,21 +2003,51 @@ label: get-water-isotopes
 
 
   |                                                                            
+  |..........................                                            |  37%
+label: subset-and-print-log-BA1A_2017
+
+  |                                                                            
+  |...........................                                           |  38%
+  ordinary text without R code
+
+
+  |                                                                            
   |...........................                                           |  39%
-label: summ-water-isotopes-well-year
+label: apply-Ag-AgCl-SHE-conversion-BA1A_2017
+
+  |                                                                            
+  |............................                                          |  40%
+  ordinary text without R code
+
+
+  |                                                                            
+  |.............................                                         |  41%
+label: calc-hydrostatic-P-BA1A_2017
 
   |                                                                            
   |.............................                                         |  42%
+label: convert-hydrostatic-P-to-bar-BA1A_2017
+
+  |                                                                            
+  |..............................                                        |  43%
   ordinary text without R code
 
 
   |                                                                            
   |...............................                                       |  44%
-label: MWL-plot (with options) 
-List of 3
- $ fig.width : num 5.8
- $ fig.height: num 4.5
- $ warning   : logi FALSE
+label: prepare-P-plot-BA1A_2017
+
+  |                                                                            
+  |...............................                                       |  45%
+  ordinary text without R code
+
+
+  |                                                                            
+  |................................                                      |  46%
+label: P-plot-BA1A_2017 (with options) 
+List of 2
+ $ fig.height: num 4
+ $ fig.width : num 4
 
 
   |                                                                            
@@ -1920,22 +2056,55 @@ List of 3
 
 
   |                                                                            
-  |...................................                                   |  50%
-label: summ-CD
+  |.................................                                     |  48%
+label: calc-H2-H20-limit-BA1A_2017
 
   |                                                                            
-  |.....................................                                 |  53%
+  |..................................                                    |  49%
   ordinary text without R code
 
 
   |                                                                            
-  |.......................................                               |  56%
-label: CD-plot (with options) 
-List of 3
- $ fig.width : num 3.5
- $ fig.height: num 4
- $ warning   : logi FALSE
+  |...................................                                   |  50%
+label: prepare-H2-H20-limit-plot-BA1A_2017
 
+  ordinary text without R code
+
+
+  |                                                                            
+  |....................................                                  |  51%
+label: H2-H20-limit-plot-BA1A_2017 (with options) 
+List of 2
+ $ fig.height: num 5
+ $ fig.width : num 4
+
+
+  |                                                                            
+  |.....................................                                 |  52%
+  ordinary text without R code
+
+
+  |                                                                            
+  |.....................................                                 |  53%
+label: get-relevant-log-data-BA1D_2018
+
+  |                                                                            
+  |......................................                                |  54%
+  ordinary text without R code
+
+
+  |                                                                            
+  |.......................................                               |  55%
+label: subset-and-print-log-BA1D_2018
+
+  |                                                                            
+  |.......................................                               |  56%
+  ordinary text without R code
+
+
+  |                                                                            
+  |........................................                              |  57%
+label: apply-Ag-AgCl-SHE-conversion-BA1D_2018
 
   |                                                                            
   |.........................................                             |  58%
@@ -1943,31 +2112,83 @@ List of 3
 
 
   |                                                                            
+  |.........................................                             |  59%
+label: calc-hydrostatic-P-BA1D_2018
+
+  |                                                                            
+  |..........................................                            |  60%
+label: convert-hydrostatic-P-to-bar-BA1D_2018
+
+  |                                                                            
   |...........................................                           |  61%
-label: get-Oman-C1-C2-C3-data
+  ordinary text without R code
+
+
+  |                                                                            
+  |...........................................                           |  62%
+label: prepare-P-plot-BA1D_2018
+
+  |                                                                            
+  |............................................                          |  63%
+  ordinary text without R code
+
 
   |                                                                            
   |.............................................                         |  64%
+label: P-plot-BA1D_2018 (with options) 
+List of 2
+ $ fig.height: num 4
+ $ fig.width : num 4
+
+
+  |                                                                            
+  |..............................................                        |  65%
   ordinary text without R code
 
+
+  |                                                                            
+  |..............................................                        |  66%
+label: calc-H2-H20-limit-BA1D_2018
 
   |                                                                            
   |...............................................                       |  67%
-label: get-lit-C1-C2-C3-data
-
-  |                                                                            
-  |.................................................                     |  69%
   ordinary text without R code
 
 
   |                                                                            
-  |...................................................                   |  72%
-label: C1_C2_C3_plot (with options) 
-List of 3
- $ fig.width : num 3.4
- $ fig.height: num 4.5
- $ warning   : logi FALSE
+  |................................................                      |  68%
+label: prepare-H2-H20-limit-plot-BA1D_2018
 
+  |                                                                            
+  |................................................                      |  69%
+  ordinary text without R code
+
+
+  |                                                                            
+  |.................................................                     |  70%
+label: H2-H20-limit-plot-BA1D_2018 (with options) 
+List of 2
+ $ fig.height: num 5
+ $ fig.width : num 4
+
+
+  |                                                                            
+  |..................................................                    |  71%
+  ordinary text without R code
+
+
+  |                                                                            
+  |..................................................                    |  72%
+label: get-relevant-log-data-BA1D_2019
+
+  |                                                                            
+  |...................................................                   |  73%
+  ordinary text without R code
+
+
+  |                                                                            
+  |....................................................                  |  74%
+label: subset-and-print-log-BA1D_2019
 
   |                                                                            
   |....................................................                  |  75%
@@ -1975,35 +2196,107 @@ List of 3
 
 
   |                                                                            
+  |.....................................................                 |  76%
+label: apply-Ag-AgCl-SHE-conversion-BA1D_2019
+
+  |                                                                            
+  |......................................................                |  77%
+  ordinary text without R code
+
+
+  |                                                                            
   |......................................................                |  78%
-label: get-alkane-d13C-data
+label: calc-hydrostatic-P-BA1D_2019
+
+  |                                                                            
+  |.......................................................               |  79%
+label: convert-hydrostatic-P-to-bar-BA1D_2019
+
+  |                                                                            
+  |........................................................              |  80%
+  ordinary text without R code
+
 
   |                                                                            
   |........................................................              |  81%
+label: prepare-P-plot-BA1D_2019
+
+  |                                                                            
+  |.........................................................             |  82%
   ordinary text without R code
 
 
   |                                                                            
   |..........................................................            |  83%
-label: gather-alkane-d13C-data
+label: P-plot-BA1D_2019 (with options) 
+List of 2
+ $ fig.height: num 4
+ $ fig.width : num 4
 
-  |                                                                            
-  |............................................................          |  86%
+
   ordinary text without R code
 
 
   |                                                                            
-  |..............................................................        |  89%
-label: get-alkane-d13C-lit-data
+  |...........................................................           |  84%
+label: calc-H2-H20-limit-BA1D_2019
 
   |                                                                            
-  |................................................................      |  92%
+  |............................................................          |  85%
+  ordinary text without R code
+
+
+  |                                                                            
+  |............................................................          |  86%
+label: prepare-H2-H20-limit-plot-BA1D_2019
+
+  |                                                                            
+  |.............................................................         |  87%
+  ordinary text without R code
+
+
+  |                                                                            
+  |..............................................................        |  88%
+label: H2-H20-limit-plot-BA1D_2019 (with options) 
+List of 2
+ $ fig.height: num 5
+ $ fig.width : num 4
+
+
+  |                                                                            
+  |...............................................................       |  89%
+  ordinary text without R code
+
+
+  |                                                                            
+  |...............................................................       |  90%
+label: join-well-logs
+
+  |                                                                            
+  |................................................................      |  91%
+  ordinary text without R code
+
+
+  |                                                                            
+  |.................................................................     |  92%
+label: pivot-longer-BA1
+
+  |                                                                            
+  |.................................................................     |  93%
   ordinary text without R code
 
 
   |                                                                            
   |..................................................................    |  94%
-label: gather-alkane-d13C-data-lit
+label: BA1-get-geochem
+
+  |                                                                            
+  |...................................................................   |  95%
+label: BA1-pivot-longer
+
+  |                                                                            
+  |...................................................................   |  96%
+label: BA1-add-sampling-method
 
   |                                                                            
   |....................................................................  |  97%
@@ -2011,20 +2304,29 @@ label: gather-alkane-d13C-data-lit
 
 
   |                                                                            
+  |..................................................................... |  98%
+label: prepare-BA1-plot-labels
+
+  |                                                                            
+  |..................................................................... |  99%
+  ordinary text without R code
+
+
+  |                                                                            
   |......................................................................| 100%
-label: alkanes-d13C-oman-wells-and-lit-plot (with options) 
-List of 3
- $ fig.height: num 3
- $ fig.width : num 3.42
- $ warning   : logi FALSE
+label: BA1_profiles_plot (with options) 
+List of 2
+ $ fig.width : num 7
+ $ fig.height: num 5
 
 
-output file: 201013_packer_paper_figs.knit.md
+output file: 201012_BA1_Logs.knit.md
 
-/usr/local/bin/pandoc +RTS -K512m -RTS 201013_packer_paper_figs.utf8.md --to html4 --from markdown+autolink_bare_uris+tex_math_single_backslash --output docs/rmarkdown/201013_packer_paper_figs.html --email-obfuscation none --self-contained --standalone --section-divs --table-of-contents --toc-depth 3 --variable toc_float=1 --variable toc_selectors=h1,h2,h3 --variable toc_collapsed=1 --variable toc_smooth_scroll=1 --variable toc_print=1 --template /Library/Frameworks/R.framework/Versions/4.0/Resources/library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --number-sections --css stylesheet.css --variable &#39;theme:bootstrap&#39; --include-in-header /var/folders/pw/9fk_chms0jl85nfldy5rgfyc0000gn/T//RtmphNjfLX/rmarkdown-str1007ee7d492.html --mathjax --variable &#39;mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&#39; --lua-filter /Library/Frameworks/R.framework/Versions/4.0/Resources/library/rmarkdown/rmd/lua/pagebreak.lua --lua-filter /Library/Frameworks/R.framework/Versions/4.0/Resources/library/rmarkdown/rmd/lua/latex-div.lua --variable code_folding=show --variable code_menu=1 
+/usr/local/bin/pandoc +RTS -K512m -RTS 201012_BA1_Logs.utf8.md --to html4 --from markdown+autolink_bare_uris+tex_math_single_backslash --output docs/rmarkdown/201012_BA1_Logs.html --email-obfuscation none --self-contained --standalone --section-divs --table-of-contents --toc-depth 3 --variable toc_float=1 --variable toc_selectors=h1,h2,h3 --variable toc_collapsed=1 --variable toc_smooth_scroll=1 --variable toc_print=1 --template /Library/Frameworks/R.framework/Versions/4.0/Resources/library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --number-sections --css stylesheet.css --variable &#39;theme:bootstrap&#39; --include-in-header /var/folders/pw/9fk_chms0jl85nfldy5rgfyc0000gn/T//RtmpqxcJMh/rmarkdown-str8f225f998b82.html --mathjax --variable &#39;mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&#39; --lua-filter /Library/Frameworks/R.framework/Versions/4.0/Resources/library/rmarkdown/rmd/lua/pagebreak.lua --lua-filter /Library/Frameworks/R.framework/Versions/4.0/Resources/library/rmarkdown/rmd/lua/latex-div.lua --variable code_folding=show --variable code_menu=1 
 
-Output created: docs/rmarkdown/201013_packer_paper_figs.html
-There were 50 or more warnings (use warnings() to see the first 50)</code></pre>
+Output created: docs/rmarkdown/201012_BA1_Logs.html
+Warning message:
+replacing previous import &#39;vctrs::data_frame&#39; by &#39;tibble::data_frame&#39; when loading &#39;dplyr&#39; </code></pre>
 </div>
 <div id="summary" class="section level1">
 <h1>summary</h1>
@@ -2043,15 +2345,15 @@ write_csv(select(summary, -generate, -success), path = hash_file)
 summary %&gt;% knitr::kable()</code></pre>
 <table>
 <colgroup>
+<col width="5%" />
+<col width="10%" />
+<col width="18%" />
+<col width="17%" />
+<col width="19%" />
+<col width="12%" />
+<col width="5%" />
 <col width="4%" />
-<col width="13%" />
-<col width="20%" />
-<col width="15%" />
-<col width="21%" />
-<col width="11%" />
 <col width="4%" />
-<col width="4%" />
-<col width="3%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -2069,11 +2371,11 @@ summary %&gt;% knitr::kable()</code></pre>
 <tbody>
 <tr class="odd">
 <td align="left">RMarkdown</td>
-<td align="left">201013_packer_paper_figs.Rmd</td>
-<td align="left">docs/rmarkdown/201013_packer_paper_figs.Rmd</td>
-<td align="left">ad58dced7909ab2741b06533d5312e55</td>
-<td align="left">docs/rmarkdown/201013_packer_paper_figs.html</td>
-<td align="left">2020-10-13 21:26:57 MDT</td>
+<td align="left">201012_BA1_Logs.Rmd</td>
+<td align="left">docs/rmarkdown/201012_BA1_Logs.Rmd</td>
+<td align="left">d95864a5c050d6b047d99713688aec25</td>
+<td align="left">docs/rmarkdown/201012_BA1_Logs.html</td>
+<td align="left">2020-10-14 13:25:43 MDT</td>
 <td align="left">NA</td>
 <td align="left">TRUE</td>
 <td align="left">TRUE</td>
