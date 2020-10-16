@@ -1,2 +1,2 @@
 type,source_file,source_copy,source_file_hash,doc_file,last_success,last_fail
-RMarkdown,201012_BA1_Logs.Rmd,docs/rmarkdown/201012_BA1_Logs.Rmd,d95864a5c050d6b047d99713688aec25,docs/rmarkdown/201012_BA1_Logs.html,2020-10-14 13:25:43 MDT,NA
+RMarkdown,BA1_16S_processing.Rmd,docs/rmarkdown/BA1_16S_processing.Rmd,6ad37ebd5389df07ef3cc92d4cf49a37,docs/rmarkdown/BA1_16S_processing.html,2020-10-15 15:45:37 MDT,NA

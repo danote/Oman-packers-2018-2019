@@ -1,0 +1,505 @@
+---
+---
+---
+title: "BA1 16S rRNA gene amplicon sequencing data processing"
+output:
+  html_document:
+    css: stylesheet.css
+    fig_caption: yes
+    number_sections: no
+    toc: yes
+    toc_float: true
+    toc_depth: 3
+    code_folding: show
+    df_print: paged
+subtitle: "Source file: BA1_16S_processing.Rmd"
+author: "Daniel Nothaft"
+editor_options:
+  chunk_output_type: inline
+date: "`r Sys.Date()`"
+---
+
+# Setup
+
+Set knitting options
+```{r knitting-options}
+# global knitting options for automatic saving of all plots as .png and .pdf. Also sets cache directory.
+knitr::opts_chunk$set(
+  dev = c("png", "pdf"), fig.keep = "all",
+  dev.args = list(pdf = list(encoding = "WinAnsi", useDingbats = FALSE)),
+  fig.path = file.path("fig_output/", paste0(gsub("\\.[Rr]md", "/", knitr::current_input()))),
+  cache.path = file.path("cache/", paste0(gsub("\\.[Rr]md", "/", knitr::current_input())))
+)
+```
+
+```{r setup}
+library(tidyverse)
+library(rlang)
+library(glue)
+library(latex2exp)
+library(scales)
+```
+
+```{r source}
+# source all relevant scripting files
+source(file.path("scripts", "ampliverse_05.R"))
+source(file.path("scripts", "plotting_functions.R"))
+```
+
+# Load data
+Load DADA2 output data
+```{r load-dada2-output}
+# taxa and sequence tables obtained from https://github.com/danote/Samail_16S_compilation
+seqtab_OM17 <- read_rds("data_raw/16S_sequencing_data/seqtab_nochim_OM17_processed_20200929_3.rds")
+taxtab_OM17 <- read_rds("data_raw/16S_sequencing_data/taxa_OM17_processed_20200929_2.rds")
+
+seqtab_OM18 <- read_rds("data_raw/16S_sequencing_data/seqtab_nochim_OM18_processed_20200929.rds")
+taxtab_OM18 <- read_rds("data_raw/16S_sequencing_data/taxa_OM18_processed_20200929.rds")
+
+seqtab_OM19 <- read_rds("data_raw/16S_sequencing_data/seqtab_nochim_OM19_processed_20200803.rds")
+taxtab_OM19 <- read_rds("data_raw/16S_sequencing_data/taxa_OM19_processed_20200803.rds")
+```
+
+Load metadata
+```{r load-metadata, warning = FALSE}
+meta_map_OM17 <- read_delim("data_raw/16S_sequencing_data/map_for_compilation_OM17.txt", delim = "\t",
+                            col_types = cols(
+  sample_id = col_character(),
+  barcode_sequence = col_character(),
+  forward_linker_primer_sequence = col_character(),
+  reverse_primer_sequence = col_character(),
+  sample_type = col_character(),
+  nucleic_acid_type = col_character(),
+  sampling_site = col_character(),
+  year_sampled = col_double(),
+  month_sampled = col_double(),
+  day_sampled = col_double(),
+  depth_fluid_intake_mbct = col_double(),
+  notes = col_character(),
+  sampling_method = col_character(),
+  upper_packer_inflated = col_logical(),
+  upper_packer_depth_mbct = col_double(),
+  lower_packer_inflated = col_logical(),
+  lower_packer_depth_mbct = col_double(),
+  well_depth_mbgl = col_double(),
+  casing_extent_mbct = col_double(),
+  casing_height_magl = col_double(),
+  screened_interval_mbct = col_character(),
+  depth_to_water_mbct = col_double()
+)
+                            ) %>%
+  # select columns 1 through 22 because read_delim is generating some extra dummy columns (X23, X24, etc.)
+  # (there are only 22 actual data columns in the spreadsheet)
+  select(1:22)
+
+meta_map_OM18 <- read_delim("data_raw/16S_sequencing_data/map_for_compilation_OM18.txt", delim = "\t",
+                            col_types = cols(
+  sample_id = col_character(),
+  barcode_sequence = col_character(),
+  forward_linker_primer_sequence = col_character(),
+  reverse_primer_sequence = col_character(),
+  sample_type = col_character(),
+  nucleic_acid_type = col_character(),
+  sampling_site = col_character(),
+  year_sampled = col_double(),
+  month_sampled = col_double(),
+  day_sampled = col_double(),
+  depth_fluid_intake_mbct = col_double(),
+  notes = col_character(),
+  sampling_method = col_character(),
+  upper_packer_inflated = col_logical(),
+  upper_packer_depth_mbct = col_double(),
+  lower_packer_inflated = col_logical(),
+  lower_packer_depth_mbct = col_double(),
+  well_depth_mbgl = col_double(),
+  casing_extent_mbct = col_double(),
+  casing_height_magl = col_double(),
+  screened_interval_mbct = col_character(),
+  depth_to_water_mbct = col_double()
+)
+                            ) %>% select(1:22)
+
+meta_map_OM19 <- read_delim("data_raw/16S_sequencing_data/map_for_compilation_OM19.txt", delim = "\t",
+                            col_types = cols(
+  sample_id = col_character(),
+  barcode_sequence = col_character(),
+  forward_linker_primer_sequence = col_character(),
+  reverse_primer_sequence = col_character(),
+  sample_type = col_character(),
+  nucleic_acid_type = col_character(),
+  sampling_site = col_character(),
+  year_sampled = col_double(),
+  month_sampled = col_double(),
+  day_sampled = col_double(),
+  depth_fluid_intake_mbct = col_double(),
+  notes = col_character(),
+  sampling_method = col_character(),
+  upper_packer_inflated = col_logical(),
+  upper_packer_depth_mbct = col_double(),
+  lower_packer_inflated = col_logical(),
+  lower_packer_depth_mbct = col_double(),
+  well_depth_mbgl = col_double(),
+  casing_extent_mbct = col_double(),
+  casing_height_magl = col_double(),
+  screened_interval_mbct = col_character(),
+  depth_to_water_mbct = col_double()
+)
+                            ) %>% select(1:22)
+```
+
+# Tidy up the data, concatenate taxa levels, and add metadata
+
+```{r tidy-data}
+ampli_data_OM17 <- ampli_tidy_dada2(seqtab_OM17, taxtab_OM17) %>% ampli_concat_tax() %>% ampli_join_metadata_map(meta_map_OM17)
+
+ampli_OM17_thru_19 <- ampli_tidy_dada2(seqtab_OM18, taxtab_OM18) %>% ampli_concat_tax() %>% ampli_join_metadata_map(meta_map_OM18)
+
+ampli_data_OM19 <- ampli_tidy_dada2(seqtab_OM19, taxtab_OM19) %>% ampli_concat_tax() %>% ampli_join_metadata_map(meta_map_OM19)
+```
+
+# Combine datasets.
+```{r combine-datasets}
+ampli_OM17_thru_19 <- ampli_join_ampli_tibbles(lst(ampli_data_OM17, ampli_OM17_thru_19, ampli_data_OM19))
+```
+
+# Initial data examination
+
+## Read counts, full dataset
+
+```{r initial-data-exam}
+ampli_OM17_thru_19_sum <- ampli_OM17_thru_19 %>% ampli_tally_reads(c("year_sampled","sample_type"))
+
+# sort by read counts
+ampli_OM17_thru_19_sum %>% arrange(desc(reads_sum))
+
+# generate summary stats of read counts
+summary(ampli_OM17_thru_19_sum %>% select(reads_sum))
+```
+
+Plot read counts
+
+Oman groundwater samples have significantly higher read counts than extraction or PCR controls, which is good.
+```{r plot-read-counts, fig.width=14, fig.height=4}
+plot_reads_sums_1 <- ampli_OM17_thru_19_sum %>% ggplot(aes(
+  x = fct_reorder(sample_id, desc(reads_sum)),
+  y = reads_sum,
+  fill = sample_type
+)) +
+  geom_bar(stat = "identity") +
+  scale_y_continuous(name = "Reads") +
+  scale_x_discrete(name = "Sample ID") +
+  scale_fill_discrete(name = "Sample type") +
+  theme_bw(base_size = 7)+
+  facet_grid(cols = vars(year_sampled), scales = "free", space = "free") +
+  theme(
+    panel.grid = element_blank(),
+    axis.text.x = element_text(angle = 90, vjust = .5, hjust = 1),
+    legend.position = "bottom"
+  )
+
+plot_reads_sums_1
+```
+
+# Focus on data of interest
+## Filter for only desired samples
+
+```{r filter-for-interesting-data, warning = FALSE}
+# keep just those samples
+ampli_OM17_thru_19_focus_samples <- ampli_OM17_thru_19 %>% ampli_filter_strings(col_to_filter = sampling_site, strings_to_filter = c("BA1A", "BA1D"), detection_method = "complete", action = "keep")  %>% 
+  # remove taxa with zero reads (messes up plotting later if kept)
+  ampli_rm_0_read_taxa()
+```
+
+
+## Filter out unwanted taxa
+Filter out mitochondria, chloroplasts, eukaryotes, and sequences not assigned taxonomy at the the domain level
+
+```{r rm-unwanted-taxa-OM17-18-19}
+ampli_OM17_thru_19_focus_samples_taxa_filtered <- ampli_OM17_thru_19_focus_samples %>% ampli_filter_strings(col_to_filter = taxonomy, strings_to_filter =   c("Chloroplast", "Mitochondria", "Eukaryota", "k__NA"), detection_method = "substring", action = "remove")
+```
+
+## Read counts, filtered dataset
+
+Tally reads per sample
+
+```{r tally-reads-OM17-18-19}
+ampli_OM17_thru_19_focus_samples_taxa_filtered_sum <- ampli_OM17_thru_19_focus_samples_taxa_filtered %>% ampli_tally_reads(c("year_sampled","sample_type"))
+
+# sort by read counts
+ampli_OM17_thru_19_focus_samples_taxa_filtered_sum %>% arrange(desc(reads_sum))
+
+# generate summary stats of read counts
+summary(ampli_OM17_thru_19_focus_samples_taxa_filtered_sum %>% select(reads_sum))
+```
+
+Plot read counts
+```{r plot-read-counts-filt, fig.height=4, fig.width=7}
+plot_reads_sums_2 <- ampli_OM17_thru_19_focus_samples_taxa_filtered_sum %>% ggplot(aes(
+  x = fct_reorder(sample_id, desc(reads_sum)),
+  y = reads_sum,
+  label = reads_sum
+)) +
+  geom_bar(stat = "identity") +
+  geom_text(nudge_y = 2500, size = 2.5) +
+  scale_y_continuous(name = "Reads") +
+  scale_x_discrete(name = "Sample ID") +
+  scale_fill_discrete(name = "Sample type") +
+  theme_bw(base_size = 11)+
+  facet_grid(cols = vars(year_sampled), scales = "free", space = "free") +
+  theme(
+    panel.grid = element_blank(),
+    axis.text.x = element_text(angle = 90, vjust = .5, hjust = 1),
+    legend.position = "bottom"
+  )
+
+plot_reads_sums_2
+```
+
+# Calculate relative abundances
+```{r cal-rel-abund-OM17-18-19}
+ampli_OM17_thru_19_focus_samples_taxa_filtered <- ampli_OM17_thru_19_focus_samples_taxa_filtered %>% ampli_calc_rel_abund()
+
+ampli_OM17_thru_19_focus_samples_taxa_filtered %>% head()
+```
+
+Check that relative abundances add up to 1, as expected
+```{r check-rel-abund}
+ampli_OM17_thru_19_focus_samples_taxa_filtered %>% group_by(sample_id) %>% summarise(rel_abund_sum = sum(rel_abund), .groups = "drop") %>%  summary()
+```
+# Heat map, full dataset
+
+```{r OM17-thru-OM19-top20-heat-round, fig.width=13, fig.height=5}
+OM17_thru_19_heat <- ampli_OM17_thru_19_focus_samples_taxa_filtered %>%
+  ampli_heat_map(x_sample_group_col = sample_id, text_label_scalar = 100, text_label_decimal_places = 0, text_label_threshold = 0.01, text_label_zero = "n.r.", text_label_threshold_round_priority = "round", top_n = 20, y_taxa_arrangement = "abund", facet_grid_sample_group_col = year_sampled)
+
+OM17_thru_19_heat +
+  # plot geometry
+  geom_text(parse = FALSE, size = 2.25) +
+  
+  # plot styling
+  scale_fill_gradient(name = "Read relative\nabundance / [%]", low = "white", high = "red", labels = label_percent(accuracy = 1, suffix = "")) +
+  scale_x_discrete(name = NULL, expand = c(0,0)) +
+  scale_y_discrete(name = NULL, expand = c(0,0)) +
+
+  theme_bw(base_size = 8) +
+
+  theme(
+    legend.position = "bottom",
+    panel.grid = element_blank(),
+    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1),
+    plot.margin =  margin(1,1,1,1)
+        )
+```
+
+# BA1 pumped samples with 0.2 µm filter pore diameter
+
+## Filter for only desired samples
+
+```{r filter-for-main-text-data, warning = FALSE}
+# keep just those samples
+ampli_packer_main_text_taxa_filtered <- ampli_OM17_thru_19_focus_samples_taxa_filtered %>% ampli_filter_strings(col_to_filter = sample_id, strings_to_filter = c("BA1A100_22_2D", "BA1A5566_22_1C", "A108", "A30", "A41", "D102", "D45"), detection_method = "complete", action = "keep")  %>% 
+  # remove taxa with zero reads (messes up plotting later if kept)
+  ampli_rm_0_read_taxa()
+```
+
+```{r add-interval-names}
+# if packers were used, generate names for packed intervals
+# in this code, the packer sample sites have their intervals separated by a new line character. This is for plotting clarity.
+ampli_packer_main_text_taxa_filtered <- ampli_packer_main_text_taxa_filtered %>% mutate(site_packer_interval = if_else(str_detect(sampling_method, "packer") == FALSE, sampling_site, paste0(sampling_site, "\n", if_else(upper_packer_inflated == FALSE, 0, upper_packer_depth_mbct), "-", if_else(lower_packer_inflated == FALSE, well_depth_mbgl, lower_packer_depth_mbct))))
+
+ampli_packer_main_text_taxa_filtered <- ampli_packer_main_text_taxa_filtered %>% mutate(year_sampling_site = paste(year_sampled, sampling_site))
+
+ampli_packer_main_text_taxa_filtered <- ampli_packer_main_text_taxa_filtered %>% mutate(packer_interval = if_else(str_detect(sampling_method, "packer") == FALSE, NA_character_, paste0(if_else(upper_packer_inflated == FALSE, 0, upper_packer_depth_mbct), "-", if_else(lower_packer_inflated == FALSE, well_depth_mbgl, lower_packer_depth_mbct))))
+```
+
+add factor levels for plot organization
+```{r add-factor-levels}
+ampli_packer_main_text_taxa_filtered$packer_interval <- factor(ampli_packer_main_text_taxa_filtered$packer_interval, levels = c(
+  "0-30",
+  "41-65",
+  "45-75",
+  "55-66",
+  "100-400",
+  "102-132",
+  "108-132"
+))
+```
+
+## Overall taxonomy
+```{r packer_main_text-top20-heat-round, fig.width=9, fig.height=4}
+packer_main_text_heat <- ampli_packer_main_text_taxa_filtered %>%
+  ampli_heat_map(x_sample_group_col = packer_interval, text_label_scalar = 100, text_label_decimal_places = 0, text_label_threshold = 0.01, text_label_zero = "n.r.", text_label_threshold_round_priority = "round", top_n = 20, y_taxa_arrangement = "abund", facet_grid_sample_group_col = year_sampling_site)
+
+packer_main_text_heat +
+  # plot geometry
+  geom_text(parse = FALSE, size = 2.5) +
+  
+  # plot styling
+  scale_fill_gradient(name = "Read relative\nabundance / [%]", low = "white", high = "red", labels = label_percent(accuracy = 1, suffix = "")) +
+  scale_x_discrete(name = "Depth of sampling interval / [m] grouped by\nyear of sampling and well name", expand = c(0,0)) +
+  scale_y_discrete(name = "Deepest taxonomic assignment", expand = c(0,0)) +
+
+  theme_bw(base_size = 8.5) +
+
+  theme(
+    panel.grid = element_blank(),
+    legend.position = "bottom",
+    plot.margin =  margin(1,1,1,1)
+        )
+```
+
+# 2018 BA1A filter size fractions
+```{r BA1A-2018-size-frac, fig.height = 4.5, fig.width=9}
+ampli_OM17_thru_19_focus_samples_taxa_filtered %>%
+  # remove samples taken prior to 2018
+  filter(year_sampled == 2018) %>% 
+  
+  # add column for packer interval
+mutate(packer_interval = if_else(str_detect(sampling_method, "packer") == FALSE, NA_character_, paste0(if_else(upper_packer_inflated == FALSE, 0, upper_packer_depth_mbct), "-", if_else(lower_packer_inflated == FALSE, well_depth_mbgl, lower_packer_depth_mbct)))) %>% 
+         # add column for filter pore diamter
+mutate(filter_diam = 
+       case_when(
+  str_detect(sample_id, "_10_") == TRUE ~ "0.10",
+  str_detect(sample_id, "_45_")  == TRUE ~ "0.45",
+  TRUE ~ "0.22"
+)) %>% 
+  
+  ampli_heat_map(x_sample_group_col = filter_diam, plot_other_taxa_bin = TRUE, top_n = 20,  y_taxa_arrangement = "abund", text_label_scalar = 100, text_label_decimal_places = 0, text_label_threshold = 0.01, text_label_zero = "n.r.", text_label_threshold_round_priority = "round", facet_grid_sample_group_col = packer_interval) +
+
+  # plot geometry
+  geom_text(parse = FALSE, size = 2.5) +
+
+  # plot styling
+  scale_fill_gradient(name = "Read relative\nabundance / [%]", low = "white", high = "red", labels = label_percent(accuracy = 1, suffix = "")) +
+  scale_x_discrete(name = "Filter pore diameter / [µm] grouped by\ndepth of sampling interval / [m] ", expand = c(0,0)) +
+  scale_y_discrete(name = "Deepest taxonomic assignment", expand = c(0,0)) +
+
+  theme_bw(base_size = 9) +
+
+  theme(
+    legend.position = "bottom",
+    panel.grid = element_blank(),
+    plot.margin =  margin(1,1,1,1)
+        )
+```
+
+# CH$_4$ taxa
+```{r CH4-taxa-tbl, fig.width=9, fig.height=1.7}
+CH4_taxa <- c("Methanobacteria", "Methanomicrobia", "Methanopyrales", "Methanocellales", "Methanoplasmatales", "Methanosarcinales", "Methanomassiliicocc", "Methylococc", "Methylocystis", "Methylosinus", "Methylocella", "Methylocapsa", "Methylacidiphil", "Methylomirabilis", "ANME")
+
+CH4_plotted_taxa_names_tbl <- ampli_OM17_thru_19_focus_samples_taxa_filtered %>%
+  # remove samples taken prior to 2018
+  filter(year_sampled > 2017) %>% 
+# add column combining year and well
+mutate(year_sampling_site = paste(year_sampled, sampling_site)) %>% 
+# add column combining site, packer_interval, and filter pore diamter
+mutate(packer_interval_filter_diam = paste(if_else(str_detect(sampling_method, "packer") == FALSE, NA_character_, paste0(if_else(upper_packer_inflated == FALSE, 0, upper_packer_depth_mbct), "-", if_else(lower_packer_inflated == FALSE, well_depth_mbgl, lower_packer_depth_mbct))),# "\n0.22 µm")
+                                          
+       case_when(
+  str_detect(sample_id, "_10_") == TRUE ~ "\n0.10",
+  str_detect(sample_id, "_45_")  == TRUE ~ "\n0.45",
+  TRUE ~ "\n0.22"
+))
+) %>% 
+  ampli_heat_map(x_sample_group_col = packer_interval_filter_diam, taxa_selection_method = "custom_taxa_char_vector", custom_taxa_char_vector = CH4_taxa, plot_other_taxa_bin = FALSE, y_taxa_arrangement = "alpha", text_label_scalar = 100, text_label_decimal_places = 0, text_label_threshold = 0.01, text_label_zero = "n.r.", text_label_threshold_round_priority = "round", top_n = 20, facet_grid_sample_group_col = year_sampling_site, return_plot_data_tbl = TRUE)
+
+CH4_plotted_taxa_names_tbl
+```
+```{r CH4-heat-tbl-add-tax-short}
+CH4_plotted_taxa_names_tbl_edit <- CH4_plotted_taxa_names_tbl  %>% mutate(tax_short = case_when(
+  taxonomy == "k__Archaea; p__Euryarchaeota; c__Methanobacteria; o__Methanobacteriales; f__Methanobacteriaceae; g__Methanobacterium; s__NA" ~ "g. $\\textit{Methanobacterium}$",
+  taxonomy == "k__Bacteria; p__Verrucomicrobiota; c__Verrucomicrobiae; o__Methylacidiphilales; f__Methylacidiphilaceae; g__NA; s__NA" ~ "f. Methylacidiphilaceae",
+  taxonomy == "k__Bacteria; p__Proteobacteria; c__Gammaproteobacteria; o__Methylococcales; f__Methylococcaceae; g__Methylocaldum; s__NA" ~ "g. \\textit{Methylocaldum}"
+))
+
+CH4_plotted_taxa_names_tbl_edit
+```
+
+```{r CH4-heat-structured-pretty, fig.width=7, fig.height = 2.5}
+ampli_OM17_thru_19_focus_samples_taxa_filtered %>%
+  # remove samples taken prior to 2018
+  filter(year_sampled > 2017) %>% 
+# add column combining year and well
+mutate(year_sampling_site = paste(year_sampled, sampling_site)) %>% 
+# add column combining site, packer_interval, and filter pore diamter
+mutate(packer_interval_filter_diam = paste(if_else(str_detect(sampling_method, "packer") == FALSE, NA_character_, paste0(if_else(upper_packer_inflated == FALSE, 0, upper_packer_depth_mbct), "-", if_else(lower_packer_inflated == FALSE, well_depth_mbgl, lower_packer_depth_mbct))),# "\n0.22 µm")
+                                          
+       case_when(
+  str_detect(sample_id, "_10_") == TRUE ~ "\n0.10",
+  str_detect(sample_id, "_45_")  == TRUE ~ "\n0.45",
+  TRUE ~ "\n0.22"
+))
+) %>% 
+  ampli_heat_map(x_sample_group_col = packer_interval_filter_diam, taxa_selection_method = "custom_taxa_char_vector", custom_taxa_char_vector = CH4_taxa, plot_other_taxa_bin = FALSE, y_taxa_arrangement = "alpha", text_label_scalar = 100, text_label_decimal_places = 0, text_label_threshold = 0.01, text_label_zero = "n.r.", text_label_threshold_round_priority = "round", top_n = 20, facet_grid_sample_group_col = year_sampling_site, custom_taxa_names_tbl = CH4_plotted_taxa_names_tbl_edit, custom_taxa_names_col = tax_short) +
+
+  # plot geometry
+  geom_text(parse = FALSE) +
+
+  # plot styling
+  scale_fill_gradient(name = "Read relative\nabundance / [%]", low = "white", high = "white", labels = label_percent(accuracy = 1, suffix = "")) +
+  scale_x_discrete(name = "Depth of sampling interval / [m] and filter pore diameter / [µm]\ngrouped by year of sampling and well name", expand = c(0,0)) +
+  scale_y_discrete(name = "Deepest\ntaxonomic assignment", expand = c(0,0), labels = TeX) +
+
+  theme_bw(base_size = 10.5) +
+
+  theme(
+    legend.position = "none",
+    panel.grid = element_blank(),
+    plot.margin =  margin(1,1,1,1)
+        )
+```
+
+# $\text{C}_{2}$-$\text{C}_{6}$ Short-Chain Alkane (SCA)-consuming taxa
+
+```{r list-SCA-taxa}
+# input SCA-consuming taxa from Singh et al. (2017), Laso-Pérez et al. (2019), and Shennan et al. (2006)
+
+all_SCA_taxa_oman <- c("BuS5", "Syntrophoarchaeum", "HotSeep-1", "Argoarchaeum", "ethanivorans", "Methanoliparia", "GoM", "Actinomyces", "Arthrobacter", "Brevibacterium", "Corynebacterium", "Gordonia", "Mycobacterium", "Nocardia", "Nocardiodes", "Rhodococcus", "Acinetobacter", "cepacia", "Pseudomonas", "Ralstonia")
+```
+
+```{r SCA-heat-sci, fig.width=8, fig.height=2}
+ampli_OM17_thru_19_focus_samples_taxa_filtered %>%
+  ampli_heat_map(x_sample_group_col = sampling_site, taxa_selection_method = "custom_taxa_char_vector", custom_taxa_char_vector = all_SCA_taxa_oman, plot_other_taxa_bin = FALSE, y_taxa_arrangement = "alpha", text_label_scalar = 100, text_label_decimal_places = 1, text_label_format = "scientific") +
+  # plot geometry
+  geom_text(parse = TRUE, size = 2.1) +
+  
+  # plot styling
+  scale_fill_gradient(name = "Read relative\nabundance / [%]", low = "white", high = "red", labels = label_percent(accuracy = 1, suffix = "")) +
+  scale_x_discrete(name = NULL, expand = c(0,0)) +
+  scale_y_discrete(name = NULL, expand = c(0,0)) +
+
+  theme_bw(base_size = 6.5) +
+
+  theme(
+    legend.position = "bottom",
+    panel.grid = element_blank()
+        )
+```
+
+There were no species-level assignments to known short-chain alkane oxidizing taxa. The genera shown above contain organisms capable of many metabolic processes unrelated to short-chain alkane oxidation, so their presence is not strong evidence for microbial short-chain alkane oxidation.
+
+# 2017 drill foam samples
+```{r drill-foam-taxa-heat-BA1A, fig.height = 4.5, fig.width=9}
+ampli_OM17_thru_19_focus_samples_taxa_filtered %>%
+  # filter for drill foam samples
+  filter(sample_type == "drill foam emerged from well") %>% 
+  ampli_heat_map(x_sample_group_col = sample_id, plot_other_taxa_bin = TRUE, top_n = 20,  y_taxa_arrangement = "abund", text_label_scalar = 100, text_label_decimal_places = 0, text_label_threshold = 0.01, text_label_zero = "n.r.", text_label_threshold_round_priority = "round", facet_grid_sample_group_col = nucleic_acid_type) +
+
+  # plot geometry
+  geom_text(parse = FALSE, size = 2.5) +
+
+  # plot styling
+  scale_fill_gradient(name = "Read relative\nabundance / [%]", low = "white", high = "red", labels = label_percent(accuracy = 1, suffix = "")) +
+  scale_x_discrete(name = "Replicate grouped by nucleic acid", expand = c(0,0)) +
+  scale_y_discrete(name = "Deepest taxonomic assignment", expand = c(0,0)) +
+
+  theme_bw(base_size = 8) +
+
+  theme(
+    legend.position = "bottom",
+    panel.grid = element_blank(),
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank(),
+    plot.margin =  margin(1,1,1,1)
+        )
+```
