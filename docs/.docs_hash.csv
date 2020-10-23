@@ -1,2 +1,2 @@
 type,source_file,source_copy,source_file_hash,doc_file,last_success,last_fail
-RMarkdown,BA1_16S_processing.Rmd,docs/rmarkdown/BA1_16S_processing.Rmd,6ad37ebd5389df07ef3cc92d4cf49a37,docs/rmarkdown/BA1_16S_processing.html,2020-10-15 15:45:37 MDT,NA
+RMarkdown,201013_packer_paper_figs.Rmd,docs/rmarkdown/201013_packer_paper_figs.Rmd,7b2044086f092151f36cc6e6d467e34c,docs/rmarkdown/201013_packer_paper_figs.html,2020-10-22 20:46:59 MDT,NA

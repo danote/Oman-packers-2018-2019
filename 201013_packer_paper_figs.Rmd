@@ -133,7 +133,7 @@ data_water_isotopes_summ_well_year
 ```
 
 ## Plot water stable isotope data
-```{r MWL-plot, fig.width=5.8, fig.height=4.5, warning=FALSE}
+```{r MWL-plot, fig.width=6.5, fig.height=5.25, warning=FALSE}
 # create plot
 MWL_plot <- data_water_isotopes %>% ggplot(aes(
   x = H2O_d18O_permil_VSMOW,

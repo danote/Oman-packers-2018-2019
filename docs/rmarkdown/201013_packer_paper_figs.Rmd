@@ -135,7 +135,7 @@ data_water_isotopes_summ_well_year
 ```
 
 ## Plot water stable isotope data
-```{r MWL-plot, fig.width=5.8, fig.height=4.5, warning=FALSE}
+```{r MWL-plot, fig.width=6.5, fig.height=5.25, warning=FALSE}
 # create plot
 MWL_plot <- data_water_isotopes %>% ggplot(aes(
   x = H2O_d18O_permil_VSMOW,
@@ -298,6 +298,11 @@ CD_plot <-
 # print
 CD_plot
 ```
+Show what literature data were used in this plot.
+```{r check-lit-data-source}
+data_literature %>% filter(!is.na(CH4_dD_permil_VSMOW)) %>% select(author, year_published, title_of_publication)
+```
+
 
 # C$_1$ / (C$_2$ + C$_3$) vs. $\delta^{13}\text{C}_{\text{CH}_4}$ ("Bernard") Plot
 ## Prepare data
@@ -322,7 +327,7 @@ Get literature data
 ```{r get-lit-C1-C2-C3-data}
 # select samples with quantifiable C2H6
 data_C1_C2_C3_lit <- data_literature %>% filter(!is.na(C2H6_conc)) %>%  select(site, sample_type, CH4_conc, C2H6_conc, C3H8_conc,
-CH4_d13C_permil_VPDB, packer_site_year_interval) # select relevant data for CH4, C2H6, C3H8
+CH4_d13C_permil_VPDB, packer_site_year_interval, author, year_published) # select relevant data for CH4, C2H6, C3H8
 
 # calculate C1/(C2+C3)
 data_C1_C2_C3_lit <- data_C1_C2_C3_lit %>% mutate(C1_over_C2_plus_C3 = CH4_conc / (C2H6_conc + if_else(!is.na(C3H8_conc), C3H8_conc, 0)))
