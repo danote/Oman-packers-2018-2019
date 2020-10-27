@@ -76,7 +76,6 @@ data_literature <-  data_literature %>% filter(site == "Oman/UAE") %>%
 # print
 data_literature
 ```
-
 ## Set plotting aesthetics
 
 ```{r set-plot-aesthetics}
@@ -100,8 +99,8 @@ names(cbPalette_water_types) <- c("gabbro", "Mg_HCO3", "Ca_OH")
 color_rock_crush_named <- c("rock crushing" = "#D55E00", "vent/well fluid" = "black")
 color_rock_crush_named_new_line <- c("rock\ncrushing" = "#D55E00", "vent/well\nfluid" = "black")
 
-fill_4_wells_named <- c("WAB71" = "#999999", "NSHQ14" = "#000000", "NSHQ04" = "#56B4E9", "CM2A" = "#0072B2")
-fill_5_wells_named <- c("WAB71" = "#999999", "NSHQ14" = "#000000", "NSHQ04" = "#56B4E9", "CM2A" = "#0072B2", "WAB56" = NA)
+# fill_4_wells_named <- c("WAB71" = "#999999", "NSHQ14" = "#000000", "NSHQ04" = "#56B4E9", "CM2A" = "#0072B2")
+# fill_5_wells_named <- c("WAB71" = "#999999", "NSHQ14" = "#000000", "NSHQ04" = "#56B4E9", "CM2A" = "#0072B2", "WAB56" = NA)
 
 # levels (for order of appearance in legend)
 
@@ -109,8 +108,23 @@ data_literature$site <- factor(data_literature$site, levels = c("Oman/UAE", "Phi
 
 # shapes
 
-shapes_all_sites_named <- c("Other Samail Ophiolite" = 20, "BA1A_2019_108-132" = 15, "BA1D_2019_45-75" = 17,  "BA1D_2019_102-132" = 19)
+shapes_all_CH4_iso_sites_named <- c("Other Samail Ophiolite" = 20, "BA1A_2019_108-132" = 15, "BA1D_2019_45-75" = 17,  "BA1D_2019_102-132" = 19)
+colors_all_CH4_iso_sites_named <- c("Other Samail Ophiolite" = "#000000", "BA1A_2019_108-132" = "#E69F00", "BA1D_2019_45-75" = "#56B4E9",  "BA1D_2019_102-132" = "#CC79A7")
+
+
 colors_all_sites_named <- c("Other Samail Ophiolite" = "#000000", "BA1A_2019_108-132" = "#E69F00", "BA1D_2019_45-75" = "#56B4E9",  "BA1D_2019_102-132" = "#CC79A7")
+
+colors_all_packer_site_year_interval_named <- c(
+  "Other Samail Ophiolite" = "white", "BA1A_2019_108-132" = "#E69F00", "BA1D_2019_45-75" = "#56B4E9",  "BA1D_2019_102-132" = "#CC79A7", "BA1A_2019_0-30" = "#009E73", "BA1A_2019_41-65" = "#F0E442", "BA1A_2018_55-66" = "#0072B2", "BA1A_2018_100-400" = "#D55E00")
+
+# alpha_all_packer_site_year_interval_named <- c(
+#   "Other Samail Ophiolite" = 0.2, "BA1A_2019_108-132" = 1, "BA1D_2019_45-75" = 1,  "BA1D_2019_102-132" = 1, "BA1A_2019_0-30" = 1, "BA1A_2019_41-65" = 1, "BA1A_2018_55-66" = 1, "BA1A_2018_100-400" = 1)
+
+# # The palette with grey:
+# cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+# 
+# # The palette with black:
+# cbbPalette <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 
 # shapes_fills <- c(22, 23, 24, 21)
 ```
@@ -278,8 +292,8 @@ CD_plot <-
   scale_x_continuous(name = latex2exp::TeX("$\\delta ^{13}C_{CH_4}\\,/\\,\\[\U2030  \\, VPDB \\]$"), limits = c(-90, 30), expand = c(0,0)) +
   
   # symbol styling
-  scale_color_manual(name = "Sample ID", values = colors_all_sites_named, guide = guide_legend(title.position = "left")) +
-  scale_shape_manual(name = "Sample ID", values = shapes_all_sites_named, guide = guide_legend(title.position = "left")) +
+  scale_color_manual(name = "Sample ID", values = colors_all_CH4_iso_sites_named, guide = guide_legend(title.position = "left")) +
+  scale_shape_manual(name = "Sample ID", values = shapes_all_CH4_iso_sites_named, guide = guide_legend(title.position = "left")) +
 
   # annotations
   annotate("text", y = -200, x= -80, size = 2.8, label = "PM", color = microbial_color) +
@@ -402,8 +416,8 @@ C1_C2_C3_plot <-
     scale_x_continuous(name = latex2exp::TeX("$\\delta ^{13}C_{CH_4}$$\\,$/$\\,$$\\lbrack$‰ VPDB$\\rbrack$"), limits = c(-90, 30), expand = c(0,0)) +
 
   # symbol styling
-  scale_color_manual(name = "Sample ID", values = colors_all_sites_named, guide = guide_legend(title.position = "left")) +
-  scale_shape_manual(name = "Sample ID", values = shapes_all_sites_named, guide = guide_legend(title.position = "left")) +
+  scale_color_manual(name = "Sample ID", values = colors_all_CH4_iso_sites_named, guide = guide_legend(title.position = "left")) +
+  scale_shape_manual(name = "Sample ID", values = shapes_all_CH4_iso_sites_named, guide = guide_legend(title.position = "left")) +
   
   # design
   theme_classic(base_size = 11)+
@@ -542,8 +556,8 @@ alkanes_d13C_oman_wells_and_lit_plot <- ggplot() +
     color = packer_site_year_interval)) +
   
   # symbol styling
-  scale_color_manual(name = NULL, values = colors_all_sites_named, guide = guide_legend(ncol = 2)) +
-  scale_shape_manual(name = NULL, values = shapes_all_sites_named, guide = guide_legend(ncol = 2)) +
+  scale_color_manual(name = NULL, values = colors_all_CH4_iso_sites_named, guide = guide_legend(ncol = 2)) +
+  scale_shape_manual(name = NULL, values = shapes_all_CH4_iso_sites_named, guide = guide_legend(ncol = 2)) +
 
   # axis styling
   scale_x_continuous(name = "C atoms in alkane", breaks = c(1,2,3), expand = expand_scale(add = c(0.04)))+
@@ -565,3 +579,39 @@ alkanes_d13C_oman_wells_and_lit_plot <- ggplot() +
 # print plot
 alkanes_d13C_oman_wells_and_lit_plot
 ```
+
+# Sulfate
+```{r factor-levels-water-type}
+data$water_type <- factor(data$water_type, levels = c("alluvium", "gabbro", "Mg_HCO3", "Ca_OH"))
+```
+
+```{r sulfate-plot-BA1, fig.width=7, fig.height=4, warning=FALSE}
+# create plot
+sulfate_plot <- ggplot() +
+  
+    # points
+    geom_jitter(data = data %>% filter(water_type == "Ca_OH" | water_type == "gabbro" | water_type == "Mg_HCO3") %>% filter(packer_site_year_interval == "Other Samail Ophiolite"),
+    mapping =  aes(
+    x = water_type,
+    y = Sulfate_uM/1000,
+    # shape = packer_site_year_interval,
+    fill = packer_site_year_interval),
+    width = 0.2, shape = 21, alpha = 0.4) +
+  
+  # points
+  geom_jitter(data = data %>% filter(water_type == "Ca_OH" | water_type == "gabbro" | water_type == "Mg_HCO3") %>% filter(packer_site_year_interval != "Other Samail Ophiolite"),
+    mapping =  aes(
+    x = water_type ,
+    y = Sulfate_uM/1000,
+    # shape = packer_site_year_interval,
+    fill = packer_site_year_interval),
+    width = 0.25, shape = 21) +
+  scale_fill_manual(name = "Sample ID", values = colors_all_packer_site_year_interval_named) +
+  scale_y_continuous(name = latex2exp::TeX("SO_{4}^{2-} / $\\lbrack$mmol $\\cdot$ L$^{-1}$$\\rbrack$")) +
+  scale_x_discrete(name = "Water type", labels = unname(latex2exp::TeX(c("gabbro", "Mg$^{2+}$ - HCO$_{3}^{-}$", "Ca$^{2+}$ - OH$^{-}$"))))+
+  theme_classic()
+
+# print plot
+sulfate_plot
+```
+
