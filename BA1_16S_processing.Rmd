@@ -460,7 +460,7 @@ ampli_OM17_thru_19_focus_samples_taxa_filtered %>%
   ampli_heat_map(x_sample_group_col = sampling_site, taxa_selection_method = "custom_taxa_char_vector", custom_taxa_char_vector = all_SCA_taxa_oman, plot_other_taxa_bin = FALSE, y_taxa_arrangement = "alpha", text_label_scalar = 100, text_label_decimal_places = 1, text_label_format = "scientific") +
   # plot geometry
   geom_text(parse = TRUE, size = 2.1) +
-  
+
   # plot styling
   scale_fill_gradient(name = "Read relative\nabundance / [%]", low = "white", high = "red", labels = label_percent(accuracy = 1, suffix = "")) +
   scale_x_discrete(name = NULL, expand = c(0,0)) +
@@ -476,7 +476,90 @@ ampli_OM17_thru_19_focus_samples_taxa_filtered %>%
 
 There were no species-level assignments to known short-chain alkane oxidizing taxa. The genera shown above contain organisms capable of many metabolic processes unrelated to short-chain alkane oxidation, so their presence is not strong evidence for microbial short-chain alkane oxidation.
 
+# S-oxidizing taxa from Rempfert et al., 2017
+
+```{r list-S-ox-taxa}
+# input S-oxidizing taxa found in Rempfert et al., 2017
+
+S_ox_taxa_oman <- c("Sulfuritalea", "Rhodocyclaceae", "Cupriavidus")
+```
+
+```{r S-ox-heat, fig.width=8, fig.height=2}
+ampli_OM17_thru_19_focus_samples_taxa_filtered %>%
+  # remove samples taken prior to 2018
+  filter(year_sampled > 2017) %>% 
+# add column combining year and well
+mutate(year_sampling_site = paste(year_sampled, sampling_site)) %>% 
+# add column combining site, packer_interval, and filter pore diameter
+mutate(packer_interval_filter_diam = paste(if_else(str_detect(sampling_method, "packer") == FALSE, NA_character_, paste0(if_else(upper_packer_inflated == FALSE, 0, upper_packer_depth_mbct), "-", if_else(lower_packer_inflated == FALSE, well_depth_mbgl, lower_packer_depth_mbct))),# "\n0.22 µm")
+                                          
+       case_when(
+  str_detect(sample_id, "_10_") == TRUE ~ "\n0.10",
+  str_detect(sample_id, "_45_")  == TRUE ~ "\n0.45",
+  TRUE ~ "\n0.22"
+))
+) %>% 
+  ampli_heat_map(x_sample_group_col = packer_interval_filter_diam, taxa_selection_method = "custom_taxa_char_vector", custom_taxa_char_vector = S_ox_taxa_oman, plot_other_taxa_bin = FALSE, text_label_scalar = 100, text_label_decimal_places = 0, text_label_threshold = 0.01, text_label_zero = "n.r.", text_label_threshold_round_priority = "round", top_n = 20, facet_grid_sample_group_col = year_sampling_site) +
+
+  # plot geometry
+  geom_text(parse = FALSE) +
+
+  # plot styling
+  scale_fill_gradient(name = "Read relative\nabundance / [%]", low = "white", high = "white", labels = label_percent(accuracy = 1, suffix = "")) +
+  scale_x_discrete(name = "Depth of sampling interval / [m] and filter pore diameter / [µm]\ngrouped by year of sampling and well name", expand = c(0,0)) +
+  scale_y_discrete(name = "Deepest\ntaxonomic assignment", expand = c(0,0)) +
+
+  theme_bw(base_size = 7) +
+
+  theme(
+    legend.position = "none",
+    panel.grid = element_blank(),
+    plot.margin =  margin(1,1,1,1)
+        )
+```
+
+```{r}
+ampli_OM17_thru_19_focus_samples_taxa_filtered %>% head()
+```
+
+
+```{r S-ox-heat-fam-deeper, fig.width=7, fig.height=2}
+ampli_OM17_thru_19_focus_samples_taxa_filtered %>%
+  # remove samples taken prior to 2018
+  filter(year_sampled > 2017) %>% 
+# add column combining year and well
+mutate(year_sampling_site = paste(year_sampled, sampling_site)) %>% 
+# add column combining site, packer_interval, and filter pore diameter
+mutate(packer_interval_filter_diam = paste(if_else(str_detect(sampling_method, "packer") == FALSE, NA_character_, paste0(if_else(upper_packer_inflated == FALSE, 0, upper_packer_depth_mbct), "-", if_else(lower_packer_inflated == FALSE, well_depth_mbgl, lower_packer_depth_mbct))),# "\n0.22 µm")
+                                          
+       case_when(
+  str_detect(sample_id, "_10_") == TRUE ~ "\n0.10",
+  str_detect(sample_id, "_45_")  == TRUE ~ "\n0.45",
+  TRUE ~ "\n0.22"
+))) %>%
+  # concatenate taxa at family level and deeper
+  mutate(tax_family_further = paste0("f__", Family, "; g__", Genus, "; s__", Species)) %>% 
+  ampli_heat_map(x_sample_group_col = packer_interval_filter_diam, taxa_selection_method = "custom_taxa_char_vector", custom_taxa_char_vector = S_ox_taxa_oman, plot_other_taxa_bin = FALSE, text_label_scalar = 100, text_label_decimal_places = 0, text_label_threshold = 0.01, text_label_zero = "n.r.", text_label_threshold_round_priority = "round", top_n = 20, facet_grid_sample_group_col = year_sampling_site, y_taxa_col = tax_family_further) +
+
+  # plot geometry
+  geom_text(parse = FALSE, size = 3) +
+
+  # plot styling
+  scale_fill_gradient(name = "Read relative\nabundance / [%]", low = "white", high = "white", labels = label_percent(accuracy = 1, suffix = "")) +
+  scale_x_discrete(name = "Depth of sampling interval / [m] and filter pore diameter / [µm]\ngrouped by year of sampling and well name", expand = c(0,0)) +
+  scale_y_discrete(name = "Taxonomic assignment,\nfamily and deeper", expand = c(0,0)) +
+
+  theme_bw(base_size = 9) +
+
+  theme(
+    legend.position = "none",
+    panel.grid = element_blank(),
+    plot.margin =  margin(1,1,1,1)
+        )
+```
+
 # 2017 drill foam samples
+## All taxa
 ```{r drill-foam-taxa-heat-BA1A, fig.height = 4.5, fig.width=9}
 ampli_OM17_thru_19_focus_samples_taxa_filtered %>%
   # filter for drill foam samples
@@ -499,5 +582,28 @@ ampli_OM17_thru_19_focus_samples_taxa_filtered %>%
     axis.text.x = element_blank(),
     axis.ticks.x = element_blank(),
     plot.margin =  margin(1,1,1,1)
+        )
+```
+
+## Brachymonas and Parvibaculum
+Brachymonas and Parvibaculum were not detected. I also included Pseudomonas in the search here just so that the plot would still have an output.
+```{r drill-foam-taxa-heat-BA1A-brach-parvi}
+ampli_OM17_thru_19_focus_samples_taxa_filtered %>%
+  # filter for drill foam samples
+  filter(sample_type == "drill foam emerged from well") %>%
+  ampli_heat_map(x_sample_group_col = sampling_site, taxa_selection_method = "custom_taxa_char_vector", custom_taxa_char_vector = c("Brachymonas", "Parvibaculum", "Pseudomonas"), plot_other_taxa_bin = FALSE, y_taxa_arrangement = "alpha", text_label_scalar = 100, text_label_decimal_places = 1, text_label_format = "scientific") +
+  # plot geometry
+  geom_text(parse = TRUE, size = 2.1) +
+
+  # plot styling
+  scale_fill_gradient(name = "Read relative\nabundance / [%]", low = "white", high = "red", labels = label_percent(accuracy = 1, suffix = "")) +
+  scale_x_discrete(name = NULL, expand = c(0,0)) +
+  scale_y_discrete(name = NULL, expand = c(0,0)) +
+
+  theme_bw(base_size = 8) +
+
+  theme(
+    legend.position = "bottom",
+    panel.grid = element_blank()
         )
 ```
