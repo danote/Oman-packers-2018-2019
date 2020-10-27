@@ -605,7 +605,7 @@ sulfate_plot <- ggplot() +
     fill = packer_site_year_interval),
     width = 0.25, shape = 21) +
   scale_fill_manual(name = "Sample ID", values = colors_all_packer_site_year_interval_named) +
-  scale_y_continuous(name = latex2exp::TeX("$\\textit{c}_{SO_{4}^{2-}}$ / $\\lbrack$µmol $\\cdot$ L$^{-1}$$\\rbrack$")) +
+  scale_y_continuous(name = latex2exp::TeX("$\\textit{c}_{SO_{4}^{2-}}$ / $\\lbrack$mmol $\\cdot$ L$^{-1}$$\\rbrack$")) +
   scale_x_discrete(name = "Water type", labels = unname(latex2exp::TeX(c("gabbro", "Mg$^{2+}$ - HCO$_{3}^{-}$", "Ca$^{2+}$ - OH$^{-}$"))))+
   theme_classic()
 

@@ -1603,8 +1603,8 @@ div.tocify {
 rmd_files &lt;- tibble(
   type = &quot;RMarkdown&quot;, 
   target_folder = rmd_docs_folder,
-  # source_file = c(&quot;201013_packer_paper_figs.Rmd&quot;)
-  source_file = c(&quot;BA1_16S_processing.Rmd&quot;)
+  source_file = c(&quot;201013_packer_paper_figs.Rmd&quot;)
+  # source_file = c(&quot;BA1_16S_processing.Rmd&quot;)
   # source_file = list.files(
   #   path = &quot;.&quot;, 
   #   pattern = sprintf(&quot;(%s)$&quot;, paste(rmd_ext, collapse = &quot;|&quot;)))
@@ -1667,15 +1667,15 @@ docs_files &lt;-
 
 # file info
 docs_files %&gt;% select(-target_folder) %&gt;% knitr::kable()</code></pre>
-<table>
+<table style="width:100%;">
 <colgroup>
 <col width="5%" />
-<col width="12%" />
-<col width="20%" />
+<col width="15%" />
+<col width="22%" />
 <col width="17%" />
-<col width="20%" />
+<col width="23%" />
 <col width="6%" />
-<col width="12%" />
+<col width="5%" />
 <col width="4%" />
 </colgroup>
 <thead>
@@ -1693,12 +1693,12 @@ docs_files %&gt;% select(-target_folder) %&gt;% knitr::kable()</code></pre>
 <tbody>
 <tr class="odd">
 <td align="left">RMarkdown</td>
-<td align="left">BA1_16S_processing.Rmd</td>
-<td align="left">docs/rmarkdown/BA1_16S_processing.Rmd</td>
-<td align="left">0faf618275ce90fe09426eab58b0179b</td>
-<td align="left">docs/rmarkdown/BA1_16S_processing.html</td>
+<td align="left">201013_packer_paper_figs.Rmd</td>
+<td align="left">docs/rmarkdown/201013_packer_paper_figs.Rmd</td>
+<td align="left">eee8a3e3efdc5b5fd9e4e67f4307d73c</td>
+<td align="left">docs/rmarkdown/201013_packer_paper_figs.html</td>
 <td align="left">NA</td>
-<td align="left">2020-10-27 13:05:00 MDT</td>
+<td align="left">NA</td>
 <td align="left">TRUE</td>
 </tr>
 </tbody>
@@ -1788,101 +1788,109 @@ rendered_doc_files &lt;- docs_files %&gt;%
     render_file
   ))</code></pre>
 <h1>
-BA1_16S_processing.Rmd (OK)
+201013_packer_paper_figs.Rmd (OK)
 </h1>
 <pre><code>
 
-processing file: BA1_16S_processing.Rmd
+processing file: 201013_packer_paper_figs.Rmd
 
   |                                                                            
   |                                                                      |   0%
   |                                                                            
-  |.                                                                     |   2%
+  |..                                                                    |   2%
    inline R code fragments
 
 
   |                                                                            
-  |..                                                                    |   3%
-label: knitting-options
-
-  |                                                                            
   |...                                                                   |   5%
+label: setup (with options) 
+List of 2
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──
+✓ ggplot2 3.3.2     ✓ purrr   0.3.4
+✓ tibble  3.0.4     ✓ dplyr   1.0.2
+✓ tidyr   1.1.2     ✓ stringr 1.4.0
+✓ readr   1.3.1     ✓ forcats 0.5.0
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()
+
+Attaching package: &#39;scales&#39;
+
+The following object is masked from &#39;package:purrr&#39;:
+
+    discard
+
+The following object is masked from &#39;package:readr&#39;:
+
+    col_factor
+
+
+********************************************************
+Note: As of version 1.0.0, cowplot does not change the
+  default ggplot2 theme anymore. To recover the previous
+  behavior, execute:
+  theme_set(theme_cowplot())
+********************************************************
+
+
+Attaching package: &#39;lemon&#39;
+
+The following object is masked from &#39;package:purrr&#39;:
+
+    %||%
+
+The following objects are masked from &#39;package:ggplot2&#39;:
+
+    CoordCartesian, element_render
+
+
+  |                                                                            
+  |.....                                                                 |   7%
   ordinary text without R code
 
 
   |                                                                            
-  |....                                                                  |   6%
-label: setup
-
-  |                                                                            
-  |......                                                                |   8%
-  ordinary text without R code
-
-
-  |                                                                            
-  |.......                                                               |  10%
+  |.......                                                               |   9%
 label: source
 
   |                                                                            
-  |........                                                              |  11%
+  |........                                                              |  12%
   ordinary text without R code
 
-
-  |                                                                            
-  |.........                                                             |  13%
-label: load-dada2-output
 
   |                                                                            
   |..........                                                            |  14%
-  ordinary text without R code
-
+label: load-Oman-well-data
 
   |                                                                            
   |...........                                                           |  16%
-label: load-metadata (with options) 
-List of 1
- $ warning: logi FALSE
-
-
-  |                                                                            
-  |............                                                          |  17%
   ordinary text without R code
 
 
   |                                                                            
   |.............                                                         |  19%
-label: tidy-data
+label: load-lit-data
 
   |                                                                            
-  |..............                                                        |  21%
+  |...............                                                       |  21%
   ordinary text without R code
 
 
   |                                                                            
-  |................                                                      |  22%
-label: combine-datasets
+  |................                                                      |  23%
+label: set-plot-aesthetics
 
   |                                                                            
-  |.................                                                     |  24%
+  |..................                                                    |  26%
   ordinary text without R code
 
 
   |                                                                            
-  |..................                                                    |  25%
-label: initial-data-exam
-
-  |                                                                            
-  |...................                                                   |  27%
-  ordinary text without R code
-
-
-  |                                                                            
-  |....................                                                  |  29%
-label: plot-read-counts (with options) 
-List of 2
- $ fig.width : num 14
- $ fig.height: num 4
-
+  |....................                                                  |  28%
+label: get-water-isotopes
 
   |                                                                            
   |.....................                                                 |  30%
@@ -1890,29 +1898,22 @@ List of 2
 
 
   |                                                                            
-  |......................                                                |  32%
-label: filter-for-interesting-data (with options) 
-List of 1
- $ warning: logi FALSE
-
-
-  |                                                                            
   |.......................                                               |  33%
-  ordinary text without R code
-
+label: summ-water-isotopes-well-year
 
   |                                                                            
   |........................                                              |  35%
-label: rm-unwanted-taxa-OM17-18-19
-
-  |                                                                            
-  |..........................                                            |  37%
   ordinary text without R code
 
 
   |                                                                            
-  |...........................                                           |  38%
-label: tally-reads-OM17-18-19
+  |..........................                                            |  37%
+label: MWL-plot (with options) 
+List of 3
+ $ fig.width : num 6.5
+ $ fig.height: num 5.25
+ $ warning   : logi FALSE
+
 
   |                                                                            
   |............................                                          |  40%
@@ -1920,30 +1921,22 @@ label: tally-reads-OM17-18-19
 
 
   |                                                                            
-  |.............................                                         |  41%
-label: plot-read-counts-filt (with options) 
-List of 2
- $ fig.height: num 4
- $ fig.width : num 7
-
-
-  |                                                                            
-  |..............................                                        |  43%
-  ordinary text without R code
-
+  |.............................                                         |  42%
+label: summ-CD
 
   |                                                                            
   |...............................                                       |  44%
-label: cal-rel-abund-OM17-18-19
-
-  |                                                                            
-  |................................                                      |  46%
   ordinary text without R code
 
 
   |                                                                            
-  |.................................                                     |  48%
-label: check-rel-abund
+  |.................................                                     |  47%
+label: CD-plot (with options) 
+List of 3
+ $ fig.width : num 3.5
+ $ fig.height: num 4
+ $ warning   : logi FALSE
+
 
   |                                                                            
   |..................................                                    |  49%
@@ -1952,128 +1945,75 @@ label: check-rel-abund
 
   |                                                                            
   |....................................                                  |  51%
-label: OM17-thru-OM19-top20-heat-round (with options) 
-List of 2
- $ fig.width : num 13
- $ fig.height: num 5
-
+label: check-lit-data-source
 
   |                                                                            
-  |.....................................                                 |  52%
+  |.....................................                                 |  53%
   ordinary text without R code
-
-
-  |                                                                            
-  |......................................                                |  54%
-label: filter-for-main-text-data (with options) 
-List of 1
- $ warning: logi FALSE
 
 
   |                                                                            
   |.......................................                               |  56%
-  ordinary text without R code
-
-
-  |                                                                            
-  |........................................                              |  57%
-label: add-interval-names
+label: get-Oman-C1-C2-C3-data
 
   |                                                                            
-  |.........................................                             |  59%
+  |.........................................                             |  58%
   ordinary text without R code
 
 
   |                                                                            
   |..........................................                            |  60%
-label: add-factor-levels
-
-  |                                                                            
-  |...........................................                           |  62%
-  ordinary text without R code
-
+label: get-lit-C1-C2-C3-data
 
   |                                                                            
   |............................................                          |  63%
-label: packer_main_text-top20-heat-round (with options) 
-List of 2
- $ fig.width : num 9
- $ fig.height: num 4
+  ordinary text without R code
 
 
   |                                                                            
   |..............................................                        |  65%
-  ordinary text without R code
+label: C1_C2_C3_plot (with options) 
+List of 3
+ $ fig.width : num 3.4
+ $ fig.height: num 4.5
+ $ warning   : logi FALSE
 
 
   |                                                                            
   |...............................................                       |  67%
-label: BA1A-2018-size-frac (with options) 
-List of 2
- $ fig.height: num 4.5
- $ fig.width : num 9
-
-
-  |                                                                            
-  |................................................                      |  68%
   ordinary text without R code
 
 
   |                                                                            
   |.................................................                     |  70%
-label: CH4-taxa-tbl (with options) 
-List of 2
- $ fig.width : num 9
- $ fig.height: num 1.7
-
+label: get-alkane-d13C-data
 
   |                                                                            
-  |..................................................                    |  71%
-label: CH4-heat-tbl-add-tax-short
-
-  |                                                                            
-  |...................................................                   |  73%
+  |..................................................                    |  72%
   ordinary text without R code
 
 
   |                                                                            
-  |....................................................                  |  75%
-label: CH4-heat-structured-pretty (with options) 
-List of 2
- $ fig.width : num 7
- $ fig.height: num 2.5
-
+  |....................................................                  |  74%
+label: gather-alkane-d13C-data
 
   |                                                                            
-  |.....................................................                 |  76%
+  |......................................................                |  77%
   ordinary text without R code
 
 
   |                                                                            
-  |......................................................                |  78%
-label: list-SCA-taxa
-
-  |                                                                            
-  |........................................................              |  79%
-  ordinary text without R code
-
+  |.......................................................               |  79%
+label: get-alkane-d13C-lit-data
 
   |                                                                            
   |.........................................................             |  81%
-label: SCA-heat-sci (with options) 
-List of 2
- $ fig.width : num 8
- $ fig.height: num 2
-
-
-  |                                                                            
-  |..........................................................            |  83%
   ordinary text without R code
 
 
   |                                                                            
   |...........................................................           |  84%
-label: list-S-ox-taxa
+label: gather-alkane-d13C-data-lit
 
   |                                                                            
   |............................................................          |  86%
@@ -2081,34 +2021,22 @@ label: list-S-ox-taxa
 
 
   |                                                                            
-  |.............................................................         |  87%
-label: S-ox-heat (with options) 
-List of 2
- $ fig.width : num 8
- $ fig.height: num 2
+  |..............................................................        |  88%
+label: alkanes-d13C-oman-wells-and-lit-plot (with options) 
+List of 3
+ $ fig.height: num 3
+ $ fig.width : num 3.42
+ $ warning   : logi FALSE
 
 
   |                                                                            
-  |..............................................................        |  89%
+  |...............................................................       |  91%
   ordinary text without R code
 
 
   |                                                                            
-  |...............................................................       |  90%
-label: unnamed-chunk-1
-
-  |                                                                            
-  |................................................................      |  92%
-  ordinary text without R code
-
-
-  |                                                                            
-  |..................................................................    |  94%
-label: S-ox-heat-fam-deeper (with options) 
-List of 2
- $ fig.width : num 7
- $ fig.height: num 2
-
+  |.................................................................     |  93%
+label: factor-levels-water-type
 
   |                                                                            
   |...................................................................   |  95%
@@ -2116,29 +2044,25 @@ List of 2
 
 
   |                                                                            
-  |....................................................................  |  97%
-label: drill-foam-taxa-heat-BA1A (with options) 
-List of 2
- $ fig.height: num 4.5
- $ fig.width : num 9
-
-
-  |                                                                            
-  |..................................................................... |  98%
-  ordinary text without R code
+  |....................................................................  |  98%
+label: sulfate-plot-BA1 (with options) 
+List of 3
+ $ fig.width : num 7
+ $ fig.height: num 4
+ $ warning   : logi FALSE
 
 
   |                                                                            
   |......................................................................| 100%
-label: drill-foam-taxa-heat-BA1A-brach-parvi
+  ordinary text without R code
 
-output file: BA1_16S_processing.knit.md
 
-/usr/local/bin/pandoc +RTS -K512m -RTS BA1_16S_processing.utf8.md --to html4 --from markdown+autolink_bare_uris+tex_math_single_backslash --output docs/rmarkdown/BA1_16S_processing.html --email-obfuscation none --self-contained --standalone --section-divs --table-of-contents --toc-depth 3 --variable toc_float=1 --variable toc_selectors=h1,h2,h3 --variable toc_collapsed=1 --variable toc_smooth_scroll=1 --variable toc_print=1 --template /Library/Frameworks/R.framework/Versions/4.0/Resources/library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --css stylesheet.css --variable &#39;theme:bootstrap&#39; --include-in-header /var/folders/pw/9fk_chms0jl85nfldy5rgfyc0000gn/T//RtmpwbtUa0/rmarkdown-stre6237b098241.html --mathjax --variable &#39;mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&#39; --lua-filter /Library/Frameworks/R.framework/Versions/4.0/Resources/library/rmarkdown/rmd/lua/pagebreak.lua --lua-filter /Library/Frameworks/R.framework/Versions/4.0/Resources/library/rmarkdown/rmd/lua/latex-div.lua --variable code_folding=show --variable code_menu=1 
+output file: 201013_packer_paper_figs.knit.md
 
-Output created: docs/rmarkdown/BA1_16S_processing.html
-Warning message:
-Missing column names filled in: &#39;X23&#39; [23], &#39;X24&#39; [24], &#39;X25&#39; [25], &#39;X26&#39; [26], &#39;X27&#39; [27], &#39;X28&#39; [28], &#39;X29&#39; [29], &#39;X30&#39; [30], &#39;X31&#39; [31], &#39;X32&#39; [32], &#39;X33&#39; [33] </code></pre>
+/usr/local/bin/pandoc +RTS -K512m -RTS 201013_packer_paper_figs.utf8.md --to html4 --from markdown+autolink_bare_uris+tex_math_single_backslash --output docs/rmarkdown/201013_packer_paper_figs.html --email-obfuscation none --self-contained --standalone --section-divs --table-of-contents --toc-depth 3 --variable toc_float=1 --variable toc_selectors=h1,h2,h3 --variable toc_collapsed=1 --variable toc_smooth_scroll=1 --variable toc_print=1 --template /Library/Frameworks/R.framework/Versions/4.0/Resources/library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --number-sections --css stylesheet.css --variable &#39;theme:bootstrap&#39; --include-in-header /var/folders/pw/9fk_chms0jl85nfldy5rgfyc0000gn/T//RtmpwOHGcq/rmarkdown-stre884523d1e8a.html --mathjax --variable &#39;mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&#39; --lua-filter /Library/Frameworks/R.framework/Versions/4.0/Resources/library/rmarkdown/rmd/lua/pagebreak.lua --lua-filter /Library/Frameworks/R.framework/Versions/4.0/Resources/library/rmarkdown/rmd/lua/latex-div.lua --variable code_folding=show --variable code_menu=1 
+
+Output created: docs/rmarkdown/201013_packer_paper_figs.html
+There were 50 or more warnings (use warnings() to see the first 50)</code></pre>
 </div>
 <div id="summary" class="section level1">
 <h1>summary</h1>
@@ -2155,17 +2079,17 @@ Missing column names filled in: &#39;X23&#39; [23], &#39;X24&#39; [24], &#39;X25
   select(-target_folder)
 write_csv(select(summary, -generate, -success), path = hash_file)
 summary %&gt;% knitr::kable()</code></pre>
-<table style="width:100%;">
+<table>
 <colgroup>
-<col width="5%" />
-<col width="11%" />
-<col width="19%" />
-<col width="17%" />
+<col width="4%" />
+<col width="13%" />
 <col width="20%" />
-<col width="12%" />
-<col width="5%" />
+<col width="15%" />
+<col width="21%" />
+<col width="11%" />
 <col width="4%" />
 <col width="4%" />
+<col width="3%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -2183,11 +2107,11 @@ summary %&gt;% knitr::kable()</code></pre>
 <tbody>
 <tr class="odd">
 <td align="left">RMarkdown</td>
-<td align="left">BA1_16S_processing.Rmd</td>
-<td align="left">docs/rmarkdown/BA1_16S_processing.Rmd</td>
-<td align="left">0faf618275ce90fe09426eab58b0179b</td>
-<td align="left">docs/rmarkdown/BA1_16S_processing.html</td>
-<td align="left">2020-10-27 13:16:57 MDT</td>
+<td align="left">201013_packer_paper_figs.Rmd</td>
+<td align="left">docs/rmarkdown/201013_packer_paper_figs.Rmd</td>
+<td align="left">eee8a3e3efdc5b5fd9e4e67f4307d73c</td>
+<td align="left">docs/rmarkdown/201013_packer_paper_figs.html</td>
+<td align="left">2020-10-27 13:53:21 MDT</td>
 <td align="left">NA</td>
 <td align="left">TRUE</td>
 <td align="left">TRUE</td>
