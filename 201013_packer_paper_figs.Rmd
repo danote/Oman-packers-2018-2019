@@ -21,6 +21,7 @@ editor_options:
 # load libraries
 library(tidyverse) # dplyr, tidyr, ggplot
 library(readxl) # reading excel files
+library(modelr) # adding model predictions to data frames
 library(knitr) # generating reports
 library(scales) # making log scales with exponents
 library(ggrepel) # algorithm to avoid overlapping labels
@@ -125,6 +126,15 @@ colors_all_packer_site_year_interval_named <- c(
 # cbbPalette <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 
 # shapes_fills <- c(22, 23, 24, 21)
+```
+
+```{r load-Leong-mix-data}
+# read mixing data from Leong et al., 2020
+data_Leong_mix_8umolal_DIC <-  read_excel("data_raw/Summary_metadata/mixing_leong_et_al_JGRmanuscript.xlsx", sheet = "ctl_brc_di_cal_8umolalDIC") %>% rename(g_surface_fluid_added_to_kg_high_pH = `g destroyed`,  mixing_extent = `Mixing Extent`, Ca_molal = Ca, Cl_molal = Cl, C_molal = C, Mg_molal = Mg, Na_molal = Na, Si_molal = Si)
+
+data_Leong_mix_10umolal_DIC <-  read_excel("data_raw/Summary_metadata/mixing_leong_et_al_JGRmanuscript.xlsx", sheet = "ctl_brc_cal_10umolalDIC") %>% rename(g_surface_fluid_added_to_kg_high_pH = `surface fluid added (g) to 1 kg of high pH`,  mixing_extent = `Mixing Extent`, Ca_molal = `Ca (molal)`, Cl_molal = `Cl (molal)`, C_molal = `C (molal)`, Mg_molal = `Mg (molal)`, Na_molal = `Na (molal)`, Si_molal = `Si (molal)`)
+
+data_Leong_mix_20umolal_DIC <-  read_excel("data_raw/Summary_metadata/mixing_leong_et_al_JGRmanuscript.xlsx", sheet = "ctl_brc_cal_20umolalDIC") %>% rename(g_surface_fluid_added_to_kg_high_pH = `surface fluid added (g) to 1 kg of high pH`,  mixing_extent = `Mixing Extent`, Ca_molal = `Ca (molal)`, Cl_molal = `Cl (molal)`, C_molal = `C (molal)`, Mg_molal = `Mg (molal)`, Na_molal = `Na (molal)`, Si_molal = `Si (molal)`)
 ```
 
 # Water stable isotopes plot
@@ -611,5 +621,210 @@ sulfate_plot <- ggplot() +
 
 # print plot
 sulfate_plot
+```
+
+# Si
+
+## Prepare data for plotting
+
+```{r join-leong-endmembers}
+# Join data frames for all endmembers of Leong et al. 2020
+data_Leong_mix_all_endmembers <- (data_Leong_mix_8umolal_DIC %>% mutate(DIC_endmember_conc_umolal = 8)) %>%
+  bind_rows((data_Leong_mix_10umolal_DIC %>% mutate(DIC_endmember_conc_umolal = 10))) %>%
+  bind_rows((data_Leong_mix_20umolal_DIC %>% mutate(DIC_endmember_conc_umolal = 20)))
+```
+
+```{r get-mix-extents-Leong}
+# Get mixing extents of at various percents for each endmember case
+data_Leong_mix_all_endmembers_01_percent_mix <- data_Leong_mix_all_endmembers %>% group_by(DIC_endmember_conc_umolal) %>% filter(abs(mixing_extent - 0.01) == min(abs(mixing_extent - 0.01))) %>% ungroup()
+
+data_Leong_mix_all_endmembers_05_percent_mix <- data_Leong_mix_all_endmembers %>% group_by(DIC_endmember_conc_umolal) %>% filter(abs(mixing_extent - 0.05) == min(abs(mixing_extent - 0.05))) %>% ungroup()
+
+data_Leong_mix_all_endmembers_10_percent_mix <- data_Leong_mix_all_endmembers %>% group_by(DIC_endmember_conc_umolal) %>% filter(abs(mixing_extent - 0.1) == min(abs(mixing_extent - 0.1))) %>% ungroup()
+
+data_Leong_mix_all_endmembers_50_percent_mix <- data_Leong_mix_all_endmembers %>% group_by(DIC_endmember_conc_umolal) %>% filter(abs(mixing_extent - 0.5) == min(abs(mixing_extent - 0.5))) %>% ungroup()
+
+data_Leong_mix_all_endmembers_90_percent_mix <- data_Leong_mix_all_endmembers %>% group_by(DIC_endmember_conc_umolal) %>% filter(abs(mixing_extent - 0.9) == min(abs(mixing_extent - 0.9))) %>% ungroup()
+```
+
+Set reaction path adapted from Leong et al. 2020
+```{r}
+Leong_rxn_path <- tribble(
+  ~pH, ~Si_total_umolal,
+  5.5,   1,
+  7.9,   303,
+  10.1,  0.003,
+  12.3,   1.3
+)
+```
+
+
+## Plot
+```{r Si-pH-plot-BA1, fig.width=3.5, fig.height=4, warning=FALSE}
+# create plot
+Si_pH_plot <- ggplot() +
+  
+    # reaction path from Leong et al.
+    geom_line(data = Leong_rxn_path,
+    mapping =  aes(
+    x = pH,
+    y = Si_total_umolal),
+    size = 2.5,
+    color = "light blue",
+    lineend = "round") +
+  
+    # mixing path from Leong et al., 8 umolal DIC
+    geom_line(data = data_Leong_mix_8umolal_DIC,
+    mapping =  aes(
+    x = pH,
+    y = Si_molal * 1e6),
+    linetype = "dotted",
+    size = 0.3,
+    color = "light blue") +
+  
+      # mixing path from Leong et al., 10 umolal DIC
+    geom_line(data = data_Leong_mix_10umolal_DIC,
+    mapping =  aes(
+    x = pH,
+    y = Si_molal * 1e6),
+    linetype = "dotted",
+    size = 0.3,
+    color = "light blue") +
+  
+      # mixing path from Leong et al., 20 umolal DIC
+    geom_line(data = data_Leong_mix_20umolal_DIC,
+    mapping =  aes(
+    x = pH,
+    y = Si_molal * 1e6),
+    linetype = "dotted",
+    size = 0.3,
+    color = "light blue") +
+  
+    # 1% mixing from Leong et al.
+    geom_line(data = data_Leong_mix_all_endmembers_01_percent_mix,
+    mapping =  aes(
+    x = pH,
+    y = Si_molal * 1e6),
+    linetype = "dashed",
+    size = 0.3,
+    color = "light blue") +
+  
+      # 1% mixing from Leong et al.
+    geom_line(data = data_Leong_mix_all_endmembers_01_percent_mix,
+    mapping =  aes(
+    x = pH,
+    y = Si_molal * 1e6),
+    linetype = "dashed",
+    size = 0.3,
+    color = "light blue") +
+  
+      # 5% mixing from Leong et al.
+    geom_line(data = data_Leong_mix_all_endmembers_05_percent_mix,
+    mapping =  aes(
+    x = pH,
+    y = Si_molal * 1e6),
+    linetype = "dashed",
+    size = 0.3,
+    color = "light blue") +
+  
+      # 10% mixing from Leong et al.
+    geom_line(data = data_Leong_mix_all_endmembers_10_percent_mix,
+    mapping =  aes(
+    x = pH,
+    y = Si_molal * 1e6),
+    linetype = "dashed",
+    size = 0.3,
+    color = "light blue") +
+  
+      # 50% mixing from Leong et al.
+    geom_line(data = data_Leong_mix_all_endmembers_50_percent_mix,
+    mapping =  aes(
+    x = pH,
+    y = Si_molal * 1e6),
+    linetype = "dashed",
+    size = 0.3,
+    color = "light blue") +
+  
+      # 90% mixing from Leong et al.
+    geom_line(data = data_Leong_mix_all_endmembers_90_percent_mix,
+    mapping =  aes(
+    x = pH,
+    y = Si_molal * 1e6),
+    linetype = "dashed",
+    size = 0.3,
+    color = "light blue") +
+  
+  ##### Field data
+  
+    # points
+    geom_point(data = data %>% filter(water_type == "Ca_OH" | water_type == "Mg_HCO3") %>% filter(packer_site_year_interval == "Other Samail Ophiolite"),
+    mapping =  aes(
+    x = pH,
+    y = Si_total_uM,
+    # shape = packer_site_year_interval,
+    fill = packer_site_year_interval),
+    width = 0.2, shape = 21, alpha = 0.4) +
+  
+  # points
+  geom_point(data = data %>% filter(water_type == "Ca_OH" | water_type == "Mg_HCO3") %>% filter(packer_site_year_interval != "Other Samail Ophiolite"),
+    mapping =  aes(
+    x = pH,
+    y = Si_total_uM,
+    # shape = packer_site_year_interval,
+    fill = packer_site_year_interval),
+    width = 0.25, shape = 21) +
+  scale_fill_manual(name = "Sample ID", values = colors_all_packer_site_year_interval_named,guide = guide_legend(ncol = 2)) +
+  
+  # annotations
+    annotate("text", label = "Rain", x = 5.8,  y = 0.4, angle = 0, color = "black", size = 3.2) +
+    annotate("text", label = TeX("Mg$^{2+}$ - HCO$_{3}^{-}$"), x = 7.6,  y = 700, angle = 0, color = "black", parse = TRUE, size = 3.2) +
+    annotate("text", label = "Intermediate", x = 8.9,  y = 0.3, angle = -63, color = "black", size = 3.2) +
+    annotate("text", label = TeX("Ca$^{2+}$ - OH$^{-}$"), x = 11.8,  y = 0.09, angle = 50, color = "black", parse = TRUE, size = 3.2) +
+    annotate("text", label = "Mix", x = 11,  y = 400, angle = 0, color = "black", size = 3.2) +
+  
+    annotate("text", label = "1%", x = 12.7,  y = data_Leong_mix_all_endmembers_01_percent_mix %>% summarise(Si_umolal = max(Si_molal) * 1e6) %>% as.numeric(), angle = 0, color = "light blue", size = 3.2) +
+    annotate("text", label = "5%", x = 12.7,  y = data_Leong_mix_all_endmembers_05_percent_mix %>% summarise(Si_umolal = max(Si_molal) * 1e6) %>% as.numeric(), angle = 0, color = "light blue", size = 3.2) +
+    annotate("text", label = "10%", x = 12.7,  y = data_Leong_mix_all_endmembers_10_percent_mix %>% summarise(Si_umolal = max(Si_molal) * 1e6) %>% as.numeric(), angle = 0, color = "light blue", size = 3.2) +
+    annotate("text", label = "50%", x = 12.45,  y = 170, angle = 0, color = "light blue", size = 3.2) +
+    annotate("text", label = "90%", x = 10,  y = 450, angle = 0, color = "light blue", size = 3.2) +
+  
+    # axis styling
+  scale_y_continuous(trans = 'log10',
+    breaks = trans_breaks('log10', function(x) 10 ^ x, n=5),
+    labels = trans_format('log10', math_format(10^.x)),
+    limits = c(1e-3, 2e3), expand = c(0,0),
+    name = latex2exp::TeX("$\\textit{c}_{\\sum Si$ / $\\lbrack$µmol $\\cdot$ L$^{-1}$$\\rbrack$"))+
+  scale_x_continuous(breaks = c(6,8,10,12))+
+  
+  # design
+  theme_classic(base_size = 11)+
+  theme(
+    plot.margin = margin(1, 1, 0, 1, "pt"),
+    legend.position = "bottom",
+    legend.direction = "vertical",
+    legend.text = element_text(size=8)
+    )
+
+# print plot
+Si_pH_plot
+```
+
+## Calculate mixing
+Using 20 umolal DIC end member and create linear model of Si vs. mix extent
+```{r mix-lm}
+# change from molal to µmolar, and change to name fitting with the Oman field data
+data_Leong_mix_20umolal_DIC <- data_Leong_mix_20umolal_DIC %>% mutate(Si_total_uM = Si_molal * 1e6)
+
+# create linear model of mixing extent vs Si conc. in umolal
+Leong_mix_lm <- lm(mixing_extent ~ Si_total_uM, data = data_Leong_mix_20umolal_DIC)
+```
+
+Predict mixing from BA1 data
+```{r predict-mixing}
+# Get relevant BA1 data
+data_BA1_Si <- data %>% filter(str_detect(packer_site_year_interval, "BA1") == TRUE) %>% select(packer_site_year_interval, Si_total_uM)
+
+# predict mixing extent from Si using linear model
+add_predictions(data_BA1_Si, Leong_mix_lm, var = "mix_extent_frac_Mg_HCO3") %>% mutate(mix_extent_percent_Mg_HCO3 = mix_extent_frac_Mg_HCO3 * 100) %>% select(-mix_extent_frac_Mg_HCO3)
 ```
 
