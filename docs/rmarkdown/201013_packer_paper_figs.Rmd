@@ -61,6 +61,9 @@ data <-  data %>% mutate(packer_site_interval = if_else(sampling_method == "pack
 # create a column to identify packer samples by site, year, and interval
 data <-  data %>% mutate(packer_site_year_interval = if_else(sampling_method == "packer - Solexperts", paste0(sampling_site, "_", year_sampled, "_", if_else(is.na(upper_packer_depth_mbct), 0, upper_packer_depth_mbct), "-", if_else(is.na(lower_packer_depth_mbct), well_depth_mbgl, lower_packer_depth_mbct)), "Other Samail Ophiolite"))
 
+# create levels (for plotting)
+data$packer_site_year_interval <- factor(data$packer_site_year_interval, levels = c("BA1A_2018_55-66", "BA1A_2018_100-400", "BA1A_2019_0-30", "BA1A_2019_41-65", "BA1A_2019_108-132", "BA1D_2019_45-75", "BA1D_2019_102-132", "Other Samail Ophiolite"))
+  
 # print data
 data
 ```
@@ -100,23 +103,15 @@ names(cbPalette_water_types) <- c("gabbro", "Mg_HCO3", "Ca_OH")
 color_rock_crush_named <- c("rock crushing" = "#D55E00", "vent/well fluid" = "black")
 color_rock_crush_named_new_line <- c("rock\ncrushing" = "#D55E00", "vent/well\nfluid" = "black")
 
-# fill_4_wells_named <- c("WAB71" = "#999999", "NSHQ14" = "#000000", "NSHQ04" = "#56B4E9", "CM2A" = "#0072B2")
-# fill_5_wells_named <- c("WAB71" = "#999999", "NSHQ14" = "#000000", "NSHQ04" = "#56B4E9", "CM2A" = "#0072B2", "WAB56" = NA)
-
-# levels (for order of appearance in legend)
-
-data_literature$site <- factor(data_literature$site, levels = c("Oman/UAE", "Philippines", "Mid-Cayman Rise", "Ashadze II","Greece", "Kidd Creek"))
-
 # shapes
 
-shapes_all_CH4_iso_sites_named <- c("Other Samail Ophiolite" = 20, "BA1A_2019_108-132" = 15, "BA1D_2019_45-75" = 17,  "BA1D_2019_102-132" = 19)
-colors_all_CH4_iso_sites_named <- c("Other Samail Ophiolite" = "#000000", "BA1A_2019_108-132" = "#E69F00", "BA1D_2019_45-75" = "#56B4E9",  "BA1D_2019_102-132" = "#CC79A7")
+shapes_all_CH4_iso_sites_named <- c("Other Samail Ophiolite" = 5, "BA1A_2019_108-132" = 15, "BA1D_2019_45-75" = 17,  "BA1D_2019_102-132" = 19)
+colors_all_CH4_iso_sites_named <- c("Other Samail Ophiolite" = "#999999", "BA1A_2019_108-132" = "#E69F00", "BA1D_2019_45-75" = "#56B4E9",  "BA1D_2019_102-132" = "#CC79A7")
 
-
-colors_all_sites_named <- c("Other Samail Ophiolite" = "#000000", "BA1A_2019_108-132" = "#E69F00", "BA1D_2019_45-75" = "#56B4E9",  "BA1D_2019_102-132" = "#CC79A7")
-
+shapes_all_packer_site_year_interval_named <- c("Other Samail Ophiolite" = 5, "BA1A_2019_108-132" = 15, "BA1D_2019_45-75" = 17,  "BA1D_2019_102-132" = 19, "BA1A_2019_0-30" = 18, "BA1A_2019_41-65" = 3, "BA1A_2018_55-66" = 4, "BA1A_2018_100-400" = 6)
 colors_all_packer_site_year_interval_named <- c(
-  "Other Samail Ophiolite" = "white", "BA1A_2019_108-132" = "#E69F00", "BA1D_2019_45-75" = "#56B4E9",  "BA1D_2019_102-132" = "#CC79A7", "BA1A_2019_0-30" = "#009E73", "BA1A_2019_41-65" = "#F0E442", "BA1A_2018_55-66" = "#0072B2", "BA1A_2018_100-400" = "#D55E00")
+  "Other Samail Ophiolite" = "#999999", "BA1A_2019_108-132" = "#E69F00", "BA1D_2019_45-75" = "#56B4E9",  "BA1D_2019_102-132" = "#CC79A7", "BA1A_2019_0-30" = "#009E73", "BA1A_2019_41-65" = "#F0E442", "BA1A_2018_55-66" = "#0072B2", "BA1A_2018_100-400" = "#D55E00")
+
 
 # alpha_all_packer_site_year_interval_named <- c(
 #   "Other Samail Ophiolite" = 0.2, "BA1A_2019_108-132" = 1, "BA1D_2019_45-75" = 1,  "BA1D_2019_102-132" = 1, "BA1A_2019_0-30" = 1, "BA1A_2019_41-65" = 1, "BA1A_2018_55-66" = 1, "BA1A_2018_100-400" = 1)
@@ -143,7 +138,7 @@ data_Leong_mix_20umolal_DIC <-  read_excel("data_raw/Summary_metadata/mixing_leo
 ## Get and summarize water stable isotope data
 ```{r get-water-isotopes}
 # select water isotope data from full dataset
-data_water_isotopes <- data %>% filter(!is.na(H2O_dD_permil_VSMOW)) %>% select(sampling_site, year_sampled, H2O_dD_permil_VSMOW, H2O_d18O_permil_VSMOW, packer_site_interval)
+data_water_isotopes <- data %>% filter(!is.na(H2O_dD_permil_VSMOW)) %>% select(sampling_site, year_sampled, H2O_dD_permil_VSMOW, H2O_d18O_permil_VSMOW, packer_site_year_interval)
 
 # print
 data_water_isotopes
@@ -152,22 +147,24 @@ data_water_isotopes
 Summarize water stable isotope data by well and year
 ```{r summ-water-isotopes-well-year}
 # group water isotope data by well and sample year and compute summary data
-data_water_isotopes_summ_well_year <- data_water_isotopes %>% group_by(sampling_site, year_sampled) %>% summarize(n = n(), H2O_dD_permil_VSMOW_mean_well_year = mean(H2O_dD_permil_VSMOW), H2O_dD_permil_VSMOW_sd = sd(H2O_dD_permil_VSMOW), H2O_d18O_permil_VSMOW_mean_well_year = mean(H2O_d18O_permil_VSMOW), H2O_d18O_permil_VSMOW_sd = sd(H2O_d18O_permil_VSMOW), first(packer_site_interval))
+data_water_isotopes_summ_well_year <- data_water_isotopes %>% group_by(sampling_site, year_sampled) %>% summarize(n = n(), H2O_dD_permil_VSMOW_mean_well_year = mean(H2O_dD_permil_VSMOW), H2O_dD_permil_VSMOW_sd = sd(H2O_dD_permil_VSMOW), H2O_d18O_permil_VSMOW_mean_well_year = mean(H2O_d18O_permil_VSMOW), H2O_d18O_permil_VSMOW_sd = sd(H2O_d18O_permil_VSMOW), first(packer_site_year_interval))
 
 # print
 data_water_isotopes_summ_well_year
 ```
 
 ## Plot water stable isotope data
-```{r MWL-plot, fig.width=6.5, fig.height=5.25, warning=FALSE}
+```{r MWL-plot, fig.width=6.5, fig.height=4.8, warning=FALSE}
 # create plot
 MWL_plot <- data_water_isotopes %>% ggplot(aes(
   x = H2O_d18O_permil_VSMOW,
   y = H2O_dD_permil_VSMOW,
-  color = as.character(year_sampled),
-  label = packer_site_interval,
-  shape = sampling_site)) +
-  
+  color = packer_site_year_interval,
+  shape = packer_site_year_interval)) +
+
+  scale_color_manual(name = "Sample ID", values = colors_all_packer_site_year_interval_named) +
+  scale_shape_manual(name = "Sample ID", values = shapes_all_packer_site_year_interval_named) +
+    
   # add meteoric water lines
   geom_abline(slope = 7.91, intercept = 8.72, color = "grey80", linetype = "dashed") + # GMWL, Terzer et al. 2013
   annotate("text", label = "GMWL", x = -4.3, y = -23, angle = 52, color = "grey60") +
@@ -179,15 +176,15 @@ MWL_plot <- data_water_isotopes %>% ggplot(aes(
   # plot Oman well data
   geom_point(size = 2.5, alpha = 1) +
 
-  # symbol styling
-  scale_shape_manual(values=c(1, 4, 0, 6, 5, 17, 3, 18, 16, 12, 18), name = "well", guide = guide_legend(order = 1))+
-  scale_color_manual(name = "Year Sampled", values = c("2012" = "black", "2014" = "grey", "2018" = "#E69F00", "2019" = "#0072B2"), guide = guide_legend(order = 2)) +
+  # # symbol styling
+  # scale_shape_manual(values=c(1, 4, 0, 6, 5, 17, 3, 18, 16, 12, 18), name = "well", guide = guide_legend(order = 1))+
+  # scale_color_manual(name = "Year Sampled", values = c("2012" = "black", "2014" = "grey", "2018" = "#E69F00", "2019" = "#0072B2"), guide = guide_legend(order = 2)) +
   
   # axis styling
   scale_x_continuous(limits = c(-5, 1), name = latex2exp::TeX("$\\delta^{18}O\\, /\\, \\[\U2030  \\, VSMOW \\]$")) +
   scale_y_continuous(limits = c(-25, 10), name = latex2exp::TeX("$\\delta D\\, /\\, \\[\U2030  \\, VSMOW \\]$")) +
   
-  geom_text_repel(force = 30, size = 4, show.legend = FALSE) +
+  # geom_text_repel(force = 30, size = 4, show.legend = FALSE) +
   
   # design
   theme_classic(base_size = 11)
@@ -247,6 +244,11 @@ data_CD_longer
 ```
 
 ## Plot
+set factor levels for plotting
+```{r CD-factor-levels}
+data_CD_longer$packer_site_year_interval <- factor(data_CD_longer$packer_site_year_interval, levels = c("BA1A_2019_108-132", "BA1D_2019_45-75", "BA1D_2019_102-132", "Other Samail Ophiolite"))
+```
+
 ### Plot data
 ```{r CD-plot, fig.width=3.5, fig.height=4, warning=FALSE}
 # Set coordinates of fields of origins (Milkov and Etiope 2018)
@@ -281,13 +283,13 @@ CD_plot <-
   geom_polygon(data = thermogenic, aes(x=x, y=y), alpha = thermo_opacity, fill = thermogenic_color, color = thermogenic_color, size = .2) +
   geom_polygon(data = abiotic, aes(x=x, y=y), alpha = abiotic_opacity, fill = abiotic_color, color = abiotic_color, size = .2) +
 
-  # plot literature data
-  geom_point(data = data_literature %>% filter(sample_type != "laboratory synthesis" ),  aes(
-    x = CH4_d13C_permil_VPDB,
-    y = CH4_dD_permil_VSMOW,
-    shape = packer_site_year_interval,
-    color = packer_site_year_interval
-    ), alpha = 1) +
+  # # plot literature data
+  # geom_point(data = data_literature %>% filter(sample_type != "laboratory synthesis" ),  aes(
+  #   x = CH4_d13C_permil_VPDB,
+  #   y = CH4_dD_permil_VSMOW,
+  #   shape = packer_site_year_interval,
+  #   color = packer_site_year_interval
+  #   ), alpha = 1) +
 
   # plot Oman well data
   geom_point(data = data_CD_longer,  aes(
@@ -327,7 +329,6 @@ Show what literature data were used in this plot.
 data_literature %>% filter(!is.na(CH4_dD_permil_VSMOW)) %>% select(author, year_published, title_of_publication)
 ```
 
-
 # C$_1$ / (C$_2$ + C$_3$) vs. $\delta^{13}\text{C}_{\text{CH}_4}$ ("Bernard") Plot
 ## Prepare data
 Prepare Oman well data
@@ -361,6 +362,11 @@ data_C1_C2_C3_lit
 ```
 
 ## Plot
+set factor levels for plotting
+```{r C1_C2_C3-factor-levels}
+data_C1_C2_C3$packer_site_year_interval <- factor(data_C1_C2_C3$packer_site_year_interval, levels = c("BA1A_2019_108-132", "BA1D_2019_45-75", "BA1D_2019_102-132", "Other Samail Ophiolite"))
+```
+
 ```{r C1_C2_C3_plot, fig.width=3.4, fig.height=4.5, warning=FALSE}
 # Set coordinates of fields of origins (Milkov and Etiope 2018)
 primary_microbial_bernard <- data.frame(
@@ -399,14 +405,14 @@ C1_C2_C3_plot <-
   annotate("text", y = 1e0, x = -56, size = 3, label = "T", color = "grey20") +
   annotate("text", y = 3e0, x = -15, size = 3, label = "A", color = "grey20") +
 
-  # plot literature data
-  geom_point(data = data_C1_C2_C3_lit,
-    aes(
-    x = CH4_d13C_permil_VPDB,
-    y = C1_over_C2_plus_C3,
-    shape = packer_site_year_interval,
-    color = packer_site_year_interval,
-    ), alpha = 1) +
+  # # plot literature data
+  # geom_point(data = data_C1_C2_C3_lit,
+  #   aes(
+  #   x = CH4_d13C_permil_VPDB,
+  #   y = C1_over_C2_plus_C3,
+  #   shape = packer_site_year_interval,
+  #   color = packer_site_year_interval,
+  #   ), alpha = 1) +
 
   # plot Oman well data
   geom_point(data = data_C1_C2_C3,
@@ -519,9 +525,9 @@ data_alkanes_d13C_longer_lit
 alkanes_d13C_oman_wells_and_lit_plot <- ggplot() +
   
   # Add NSHQ14 label
-  annotate("text", label = "NSHQ14", x = 2.75, y = -2, label.size = 0.22) +
+  annotate("text", label = "NSHQ14", x = 2.75, y = -2, label.size = 0.22, color = "#999999") +
   annotate("text", label = "BA1D_2019_102-132", x = 1.7, y = 3.5, label.size = 0.22, color = "#CC79A7") +
-    annotate("text", label = "Nizwa", x = 1.3, y = -11, label.size = 0.22) +
+    annotate("text", label = "Nizwa", x = 1.3, y = -11, label.size = 0.22, color = "#999999") +
   
   # Plot literature data
   # lines
@@ -599,24 +605,35 @@ data$water_type <- factor(data$water_type, levels = c("alluvium", "gabbro", "Mg_
 # create plot
 sulfate_plot <- ggplot() +
   
-    # points
-    geom_jitter(data = data %>% filter(water_type == "Ca_OH" | water_type == "gabbro" | water_type == "Mg_HCO3") %>% filter(packer_site_year_interval == "Other Samail Ophiolite"),
-    mapping =  aes(
-    x = water_type,
-    y = Sulfate_uM/1000,
-    # shape = packer_site_year_interval,
-    fill = packer_site_year_interval),
-    width = 0.2, shape = 21, alpha = 0.4) +
+  #   # points
+  #   geom_jitter(data = data %>% filter(water_type == "Ca_OH" | water_type == "gabbro" | water_type == "Mg_HCO3") %>% filter(packer_site_year_interval == "Other Samail Ophiolite"),
+  #   mapping =  aes(
+  #   x = water_type,
+  #   y = Sulfate_uM/1000,
+  #   # shape = packer_site_year_interval,
+  #   fill = packer_site_year_interval),
+  #   width = 0.2, shape = 21, alpha = 0.4) +
+  # 
+  # # points
+  # geom_jitter(data = data %>% filter(water_type == "Ca_OH" | water_type == "gabbro" | water_type == "Mg_HCO3") %>% filter(packer_site_year_interval != "Other Samail Ophiolite"),
+  #   mapping =  aes(
+  #   x = water_type ,
+  #   y = Sulfate_uM/1000,
+  #   # shape = packer_site_year_interval,
+  #   fill = packer_site_year_interval),
+  #   width = 0.25, shape = 21) +
   
-  # points
-  geom_jitter(data = data %>% filter(water_type == "Ca_OH" | water_type == "gabbro" | water_type == "Mg_HCO3") %>% filter(packer_site_year_interval != "Other Samail Ophiolite"),
+  
+  geom_jitter(data = data %>% filter(water_type != "alluvium"),
     mapping =  aes(
     x = water_type ,
     y = Sulfate_uM/1000,
-    # shape = packer_site_year_interval,
-    fill = packer_site_year_interval),
-    width = 0.25, shape = 21) +
-  scale_fill_manual(name = "Sample ID", values = colors_all_packer_site_year_interval_named) +
+    shape = packer_site_year_interval,
+    color = packer_site_year_interval),
+    width = 0.27) +
+  
+  scale_color_manual(name = "Sample ID", values = colors_all_packer_site_year_interval_named) +
+  scale_shape_manual(name = "Sample ID", values = shapes_all_packer_site_year_interval_named) +
   scale_y_continuous(name = latex2exp::TeX("$\\textit{c}_{SO_{4}^{2-}}$ / $\\lbrack$mmol $\\cdot$ L$^{-1}$$\\rbrack$")) +
   scale_x_discrete(name = "Water type", labels = unname(latex2exp::TeX(c("gabbro", "Mg$^{2+}$ - HCO$_{3}^{-}$", "Ca$^{2+}$ - OH$^{-}$"))))+
   theme_classic()
@@ -758,24 +775,35 @@ Si_pH_plot <- ggplot() +
   
   ##### Field data
   
-    # points
-    geom_point(data = data %>% filter(water_type == "Ca_OH" | water_type == "Mg_HCO3") %>% filter(packer_site_year_interval == "Other Samail Ophiolite"),
-    mapping =  aes(
-    x = pH,
-    y = Si_total_uM,
-    # shape = packer_site_year_interval,
-    fill = packer_site_year_interval),
-    width = 0.2, shape = 21, alpha = 0.4) +
+  #   # points
+  #   geom_point(data = data %>% filter(water_type == "Ca_OH" | water_type == "Mg_HCO3") %>% filter(packer_site_year_interval == "Other Samail Ophiolite"),
+  #   mapping =  aes(
+  #   x = pH,
+  #   y = Si_total_uM,
+  #   # shape = packer_site_year_interval,
+  #   fill = packer_site_year_interval),
+  #   width = 0.2, shape = 21, alpha = 0.4) +
+  # 
+  # # points
+  # geom_point(data = data %>% filter(water_type == "Ca_OH" | water_type == "Mg_HCO3") %>% filter(packer_site_year_interval != "Other Samail Ophiolite"),
+  #   mapping =  aes(
+  #   x = pH,
+  #   y = Si_total_uM,
+  #   # shape = packer_site_year_interval,
+  #   fill = packer_site_year_interval),
+  #   width = 0.25, shape = 21) +
   
   # points
-  geom_point(data = data %>% filter(water_type == "Ca_OH" | water_type == "Mg_HCO3") %>% filter(packer_site_year_interval != "Other Samail Ophiolite"),
+  geom_point(data = data %>% filter(water_type == "Ca_OH" | water_type == "Mg_HCO3"),
     mapping =  aes(
     x = pH,
     y = Si_total_uM,
-    # shape = packer_site_year_interval,
-    fill = packer_site_year_interval),
-    width = 0.25, shape = 21) +
-  scale_fill_manual(name = "Sample ID", values = colors_all_packer_site_year_interval_named,guide = guide_legend(ncol = 2)) +
+    shape = packer_site_year_interval,
+    color = packer_site_year_interval)) +
+  
+  
+  scale_color_manual(name = "Sample ID", values = colors_all_packer_site_year_interval_named, guide = guide_legend(ncol = 2)) +
+  scale_shape_manual(name = "Sample ID", values = shapes_all_packer_site_year_interval_named, guide = guide_legend(ncol = 2)) +
   
   # annotations
     annotate("text", label = "Rain", x = 5.8,  y = 0.4, angle = 0, color = "black", size = 3.2) +
@@ -785,7 +813,7 @@ Si_pH_plot <- ggplot() +
     annotate("text", label = "Mix", x = 11,  y = 400, angle = 0, color = "black", size = 3.2) +
   
     annotate("text", label = "1%", x = 12.7,  y = data_Leong_mix_all_endmembers_01_percent_mix %>% summarise(Si_umolal = max(Si_molal) * 1e6) %>% as.numeric(), angle = 0, color = "light blue", size = 3.2) +
-    annotate("text", label = "5%", x = 12.7,  y = data_Leong_mix_all_endmembers_05_percent_mix %>% summarise(Si_umolal = max(Si_molal) * 1e6) %>% as.numeric(), angle = 0, color = "light blue", size = 3.2) +
+    annotate("text", label = "5%", x = 12.7,  y = data_Leong_mix_all_endmembers_05_percent_mix %>% summarise(Si_umolal = min(Si_molal) * 1e6) %>% as.numeric(), angle = 0, color = "light blue", size = 3.2) +
     annotate("text", label = "10%", x = 12.7,  y = data_Leong_mix_all_endmembers_10_percent_mix %>% summarise(Si_umolal = max(Si_molal) * 1e6) %>% as.numeric(), angle = 0, color = "light blue", size = 3.2) +
     annotate("text", label = "50%", x = 12.45,  y = 170, angle = 0, color = "light blue", size = 3.2) +
     annotate("text", label = "90%", x = 10,  y = 450, angle = 0, color = "light blue", size = 3.2) +
@@ -795,7 +823,7 @@ Si_pH_plot <- ggplot() +
     breaks = trans_breaks('log10', function(x) 10 ^ x, n=5),
     labels = trans_format('log10', math_format(10^.x)),
     limits = c(1e-3, 2e3), expand = c(0,0),
-    name = latex2exp::TeX("$\\textit{c}_{\\sum Si$ / $\\lbrack$µmol $\\cdot$ L$^{-1}$$\\rbrack$"))+
+    name = latex2exp::TeX("$\\textit{c}_{\\sum Si$} / $\\lbrack$µmol $\\cdot$ L$^{-1}$$\\rbrack$"))+
   scale_x_continuous(breaks = c(6,8,10,12))+
   
   # design
