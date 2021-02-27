@@ -1,0 +1,761 @@
+---
+---
+---
+title: "BA1 geophysical/chemical logs"
+subtitle: "Source file: 201012_BA1_Logs.Rmd"
+author: "Daniel Nothaft"
+date: "`r format(Sys.Date(), '%d %b %Y')`"
+output:
+  html_document: 
+    df_print: paged # omit to disable paged data table output
+    css: stylesheet.css # omit if no need for custom stylesheet
+    number_sections: yes # change to no for unnumbered sections
+    toc: yes # change to no to disable table of contents
+    toc_float: true # change to false to keep toc at the top
+    toc_depth: 3 # change to specify which headings to include in toc
+    code_folding: show # change to hide to hide code by default
+editor_options:
+  chunk_output_type: inline
+---
+# Setup
+## Load code libraries
+```{r setup, message=FALSE, warning=FALSE}
+# load libraries
+library(tidyverse) # dplyr, tidyr, ggplot
+library(readxl) # reading excel files
+library(knitr) # generating reports
+library(ggpmisc) # add equations of best fit to ggplot
+library(scales) # making log scales with exponents
+library(lemon) # repeat axis lines for paneled figures in ggplot
+
+# global knitting options for automatic saving of all plots as .png and .pdf
+knitr::opts_chunk$set(
+  dev = c("png", "pdf"), fig.keep = "all",
+  dev.args = list(pdf = list(encoding = "WinAnsi", useDingbats = FALSE)),
+  fig.path = file.path("fig_output/", paste0(gsub("\\.[Rr]md", "/", knitr::current_input()))),
+  cache.path = file.path("cache/", paste0(gsub("\\.[Rr]md", "/", knitr::current_input())))
+)
+```
+
+```{r source}
+# source all relevant scripting files
+source(file.path("scripts", "plotting_functions.R"))
+```
+
+## Load data
+
+```{r load-data}
+# read BA1A borehole log from March 16th, 2018
+BA1A_2018_profile_raw <- read_xlsx("data_raw/Summary_metadata/BA1A_QL40IDRO_20180316_DOWN_5cm.xlsx", na = c("-99999.00", "-99999"))
+
+# read BA1A borehole log from April 22nd, 2017
+BA1A_2017_profile_raw <- read_xlsx("data_raw/Summary_metadata/BA1A_Muset_22APRIL2017_run2_pass1_dw_5cm.xlsx", na = c("-99999.00", "-99999"))
+
+# read BA1A borehole log from March 19th, 2018
+BA1D_2018_profile_raw <- read_xlsx("data_raw/Summary_metadata/BA1D_QL40IDRO_20180319_down_5cm.xlsx", na = c("-99999.00", "-99999"))
+
+# read BA1A borehole log from March 19th, 2018
+BA1D_2019_profile_raw <- read_xlsx("data_raw/Summary_metadata/BA1D_2019_chemical_log.xlsx", na = c("-99999.00", "-99999"))
+
+# For context, well BA1A was drilled in 2017, from February 20 to March 2, and BA1D was drilled in 2018, from February 24 to March 15.
+
+# read Oman Geochem data, including data from packer sampling
+Oman_Geochem <- read_xlsx("data_raw/Summary_metadata/Oman_Geochem_2012-2019_packers.xlsx", na = c("NA"))
+
+# Read in conversion from Ag/AgCl electrode to SHE as function of T
+Ag_AgCl_E_T <- read_xlsx("data_raw/Summary_metadata/Ag_AgCl_E_T.xlsx", na = "NA")
+```
+
+# BA1A 2018 well log
+
+## clean up data
+```{r get-relevant-log-data-BA1A-2018}
+# select relevant columns and rename them
+BA1A_2018_profile <- BA1A_2018_profile_raw %>% select(depth_sampled_mbgl = depth_m, P_dbar = pressure, T_C = Temp_C, pH, ORP_mV_Ag_AgCl = ORP, cond_uS_per_cm = Cond_FW)
+
+# Filter out nonsense values (i.e. when probe is above water table)
+BA1A_2018_profile <- BA1A_2018_profile %>% filter_all(all_vars(!is.na(.)))
+
+# convert conductivity to mS/cm
+BA1A_2018_profile <- BA1A_2018_profile %>% mutate(cond_mS_per_cm = cond_uS_per_cm * 1e-3) %>% select(-cond_uS_per_cm)
+
+# print some summary statistics
+BA1A_2018_profile %>% summary()
+
+BA1A_2018_profile %>% head()
+```
+
+```{r subset-and-print-log-BA1A_2018}
+# subset the data for readability and print
+BA1A_2018_profile %>% slice(seq(from = 1, to = 10000, by = 200)) %>% kable(digits=1)
+```
+
+## Convert to ORP to SHE
+
+Plot conversion between Ag/AgCl electrode and SHE as function of temperature
+```{r plot-Ag-AgCl-SHE-conversion}
+formula <- Ag_AgCl_E_T$E_Ag_AgCl_KCl_sat_mV ~ Ag_AgCl_E_T$T_C
+
+plot_redox_offset_T <- Ag_AgCl_E_T %>% ggplot(aes(x = T_C, y = E_Ag_AgCl_KCl_sat_mV))+
+  geom_point()+
+  geom_smooth(method="lm")+
+  stat_poly_eq(aes(label =  paste(stat(eq.label), stat(rr.label), sep = "~~~~")),
+               formula = formula, parse = TRUE, rr.digits = 2, label.x = .2, label.y = .9)+
+  theme_bw(base_size = 12)+
+  theme(
+    panel.grid = element_blank())
+
+plot_redox_offset_T
+```
+Save a linear model of the relationship between Ag/AgCl electrode and SHE as function of temperature
+```{r save-lm-Ag-AgCl-SHE}
+Ag_AgCl_E_T_lm <- lm(formula)
+
+Ag_AgCl_E_T_lm_summ <- Ag_AgCl_E_T_lm %>% summary()
+
+Ag_AgCl_E_T_lm_summ
+```
+Save slope
+```{r save-lm-Ag-AgCl-SHE-slope}
+Ag_AgCl_E_T_lm_slope <- coef(Ag_AgCl_E_T_lm_summ)["Ag_AgCl_E_T$T_C",  "Estimate"]
+
+Ag_AgCl_E_T_lm_slope
+```
+Save intercept
+```{r save-lm-Ag-AgCl-SHE-int}
+Ag_AgCl_E_T_lm_int <- coef(Ag_AgCl_E_T_lm_summ)["(Intercept)",  "Estimate"]
+
+Ag_AgCl_E_T_lm_int
+```
+
+Apply conversion
+```{r apply-Ag-AgCl-SHE-conversion-NSHQ14}
+BA1A_2018_profile <- BA1A_2018_profile %>% mutate(Eh_mV = ORP_mV_Ag_AgCl + Ag_AgCl_E_T_lm_int + Ag_AgCl_E_T_lm_slope * T_C) # convert probe ORP_mV_Ag_AgCl reading from Ag/AgCl to SHE
+
+# print some summary statistics
+BA1A_2018_profile %>% select(Eh_mV) %>% summary()
+```
+
+## Hydrostatic pressure
+Pressure will be used to assess calculated stability limit of water with respect to molecular hydrogen.
+
+Calculate from theory
+```{r calc-hydrostatic-P-NSHQ14}
+P_BA1A_2018_atmospheric_Pa <- 95490 # measured ambient pressure with Garmin GPSMAP 64S by DBN in 2019
+P_BA1A_2018_atmospheric_bar <-  P_BA1A_2018_atmospheric_Pa * 1e-5
+
+water_level_BA1A_2018_m <- as.numeric(BA1A_2018_profile %>% select(depth_sampled_mbgl) %>% min())
+
+BA1A_2018_profile <- BA1A_2018_profile %>% mutate(water_column_above_m = depth_sampled_mbgl - water_level_BA1A_2018_m)
+
+
+# Hydrostatic pressure in a liquid can be calculated as
+# 
+# p = ρ g h                         (1)
+# 
+# where
+# 
+# p = pressure in liquid (N/m2, Pa, lbf/ft2, psf)
+# 
+# ρ = density of liquid (kg/m3, slugs/ft3)
+# 
+# g = acceleration of gravity (9.81 m/s2, 32.17405 ft/s2)
+# 
+# h = height of fluid column - or depth in the fluid where pressure is measured (m, ft)
+
+# https://www.engineeringtoolbox.com/hydrostatic-pressure-water-d_1632.html
+
+density_water <- 1000 # kg/m3
+g = 9.81 # acceleration of gravity, m/s2
+
+
+BA1A_2018_profile <- BA1A_2018_profile %>% mutate(P_hydrostatic_calc_Pa = P_BA1A_2018_atmospheric_Pa + density_water * g * water_column_above_m)
+
+BA1A_2018_profile <- BA1A_2018_profile %>% mutate(P_hydrostatic_calc_bar = P_hydrostatic_calc_Pa * 1e-5)
+
+# print some summary statistics
+BA1A_2018_profile %>% select(P_hydrostatic_calc_bar) %>% summary()
+```
+
+```{r convert-hydrostatic-P-to-bar-BA1A_2018}
+# convert measured pressure to bar
+BA1A_2018_profile <- BA1A_2018_profile %>% mutate(P_bar = P_dbar / 10)
+```
+
+```{r prepare-P-plot-BA1A_2018}
+# prepare for plotting
+BA1A_2018_profile_longer_P <- BA1A_2018_profile %>% select(depth_sampled_mbgl, P_hydrostatic_calc_bar, P_bar) %>% gather(-depth_sampled_mbgl, key = parameter, value = P_bar) %>% mutate(type = if_else(parameter == "P_hydrostatic_calc_bar", "calculated", "measured"))
+```
+
+Compare theoretical hydrostatic pressure versus measured pressure
+```{r P-plot-BA1A_2018, fig.height=4, fig.width=4}
+plot_BA1A_2018_P <- BA1A_2018_profile_longer_P %>% ggplot(aes(x = depth_sampled_mbgl))+
+  geom_line(aes(y = P_bar, color = type))+
+  scale_x_reverse(name = "Depth / [mbgl]", expand = c(0.03,0.02), breaks = c(0, 50, 100, 150, 200, 250, 300))+
+    scale_y_continuous(name = latex2exp::TeX("$\\textit{P}_{hydrostatic}\\,/\\,\\lbrack bar \\rbrack$"))+
+  coord_flip()+
+  theme_bw(base_size = 12)+
+  theme(
+    panel.grid = element_blank())
+
+plot_BA1A_2018_P
+```
+They are similar.
+
+## Stability limits of water
+
+Eh, f(T,P)
+```{r calc-H2-H20-limit-BA1A_2018}
+Faraday <- 96485.33212331 # C/mol
+R <- 8.31446261815324 # J/(mol⋅K) gas constant
+
+BA1A_2018_profile <- BA1A_2018_profile %>% mutate(T_K= T_C + 273.15) # convert T to Kelvins
+
+# calculate H20-H2 stability limit
+BA1A_2018_profile <- BA1A_2018_profile %>% mutate(H2O_H2_limit_Eh_f_T_P_mV = (-R*T_K/2/Faraday * log(((10^-pH)^-2)*P_bar))*1000)
+
+BA1A_2018_profile %>% select(H2O_H2_limit_Eh_f_T_P_mV) %>% summary()
+```
+
+```{r prepare-H2-H20-limit-plot-BA1A_2018}
+# prepare for plotting
+BA1A_2018_profile_longer_Eh_T_P <- BA1A_2018_profile %>% select(depth_sampled_mbgl, Eh_mV, H2O_H2_limit_Eh_f_T_P_mV) %>% gather(-depth_sampled_mbgl, key = parameter, value = Eh_mV)
+```
+
+```{r H2-H20-limit-plot-BA1A_2018, fig.height=5, fig.width=4}
+plot_BA1A_2018_Eh <- BA1A_2018_profile_longer_Eh_T_P %>% ggplot(aes(x = depth_sampled_mbgl))+
+  geom_line(aes(y = Eh_mV, color = parameter))+
+  scale_x_reverse(name = "Depth / [mbgl]", expand = c(0.03,0.02))+
+  scale_y_continuous(name = "Eh / [mV]")+
+  coord_flip()+
+  theme_bw(base_size = 12)+
+  theme(
+    panel.grid = element_blank(),
+    legend.position = "bottom",
+    legend.direction = "vertical")
+
+plot_BA1A_2018_Eh
+```
+
+# BA1A 2017 well log
+
+## clean up data
+```{r get-relevant-log-data-BA1A_2017}
+# select relevant columns and rename them
+BA1A_2017_profile <- BA1A_2017_profile_raw %>% select(depth_sampled_mbgl = `DEPT[M]`, P_dbar = PRESSURE, T_C = TEMP, pH = PH, ORP_mV_Ag_AgCl = EH, cond_mS_per_cm = COND)
+
+# Filter out nonsense values (i.e. when probe is above water table)
+BA1A_2017_profile <- BA1A_2017_profile %>% filter_all(all_vars(!is.na(.)))
+
+# print some summary statistics
+BA1A_2017_profile %>% summary()
+```
+
+```{r subset-and-print-log-BA1A_2017}
+# subset the data for readability and print
+BA1A_2017_profile %>% slice(seq(from = 1, to = 40000, by = 1000)) %>% kable(digits=1)
+```
+
+## Convert to ORP to SHE
+
+Apply conversion
+```{r apply-Ag-AgCl-SHE-conversion-BA1A_2017}
+BA1A_2017_profile <- BA1A_2017_profile %>% mutate(Eh_mV = ORP_mV_Ag_AgCl + Ag_AgCl_E_T_lm_int + Ag_AgCl_E_T_lm_slope * T_C) # convert probe ORP_mV_Ag_AgCl reading from Ag/AgCl to SHE
+
+# print some summary statistics
+BA1A_2017_profile %>% select(Eh_mV) %>% summary()
+```
+
+## Hydrostatic pressure
+Pressure will be used to assess calculated stability limit of water with respect to molecular hydrogen.
+
+Calculate from theory
+```{r calc-hydrostatic-P-BA1A_2017}
+P_BA1A_2017_atmospheric_Pa <- 95490 # measured ambient pressure with Garmin GPSMAP 64S by DBN in 2019
+P_BA1A_2017_atmospheric_bar <-  P_BA1A_2017_atmospheric_Pa * 1e-5
+
+water_level_BA1A_2017_m <- as.numeric(BA1A_2017_profile %>% select(depth_sampled_mbgl) %>% min())
+
+BA1A_2017_profile <- BA1A_2017_profile %>% mutate(water_column_above_m = depth_sampled_mbgl - water_level_BA1A_2017_m)
+
+
+# Hydrostatic pressure in a liquid can be calculated as
+# 
+# p = ρ g h                         (1)
+# 
+# where
+# 
+# p = pressure in liquid (N/m2, Pa, lbf/ft2, psf)
+# 
+# ρ = density of liquid (kg/m3, slugs/ft3)
+# 
+# g = acceleration of gravity (9.81 m/s2, 32.17405 ft/s2)
+# 
+# h = height of fluid column - or depth in the fluid where pressure is measured (m, ft)
+
+# https://www.engineeringtoolbox.com/hydrostatic-pressure-water-d_1632.html
+
+density_water <- 1000 # kg/m3
+g = 9.81 # acceleration of gravity, m/s2
+
+
+BA1A_2017_profile <- BA1A_2017_profile %>% mutate(P_hydrostatic_calc_Pa = P_BA1A_2017_atmospheric_Pa + density_water * g * water_column_above_m)
+
+BA1A_2017_profile <- BA1A_2017_profile %>% mutate(P_hydrostatic_calc_bar = P_hydrostatic_calc_Pa * 1e-5)
+
+# print some summary statistics
+BA1A_2017_profile %>% select(P_hydrostatic_calc_bar) %>% summary()
+```
+```{r convert-hydrostatic-P-to-bar-BA1A_2017}
+# convert measured pressure to bar
+BA1A_2017_profile <- BA1A_2017_profile %>% mutate(P_bar = P_dbar / 10)
+```
+
+```{r prepare-P-plot-BA1A_2017}
+# prepare for plotting
+BA1A_2017_profile_longer_P <- BA1A_2017_profile %>% select(depth_sampled_mbgl, P_hydrostatic_calc_bar, P_bar) %>% gather(-depth_sampled_mbgl, key = parameter, value = P_bar) %>% mutate(type = if_else(parameter == "P_hydrostatic_calc_bar", "calculated", "measured"))
+```
+
+Compare theoretical hydrostatic pressure versus measured pressure
+```{r P-plot-BA1A_2017, fig.height=4, fig.width=4}
+plot_BA1A_2017_P <- BA1A_2017_profile_longer_P %>% ggplot(aes(x = depth_sampled_mbgl))+
+  geom_line(aes(y = P_bar, color = type))+
+  scale_x_reverse(name = "Depth / [mbgl]", expand = c(0.03,0.02), breaks = c(0, 50, 100, 150, 200, 250, 300))+
+    scale_y_continuous(name = latex2exp::TeX("$\\textit{P}_{hydrostatic}\\,/\\,\\lbrack bar \\rbrack$"))+
+  coord_flip()+
+  theme_bw(base_size = 12)+
+  theme(
+    panel.grid = element_blank())
+
+plot_BA1A_2017_P
+```
+They are similar.
+
+## Stability limits of water
+
+Eh, f(T,P)
+```{r calc-H2-H20-limit-BA1A_2017}
+Faraday <- 96485.33212331 # C/mol
+R <- 8.31446261815324 # J/(mol⋅K) gas constant
+
+BA1A_2017_profile <- BA1A_2017_profile %>% mutate(T_K= T_C + 273.15) # convert T to Kelvins
+
+# calculate H20-H2 stability limit
+BA1A_2017_profile <- BA1A_2017_profile %>% mutate(H2O_H2_limit_Eh_f_T_P_mV = (-R*T_K/2/Faraday * log(((10^-pH)^-2)*P_bar))*1000)
+
+BA1A_2017_profile %>% select(H2O_H2_limit_Eh_f_T_P_mV) %>% summary()
+```
+
+```{r prepare-H2-H20-limit-plot-BA1A_2017}
+# prepare for plotting
+BA1A_2017_profile_longer_Eh_T_P <- BA1A_2017_profile %>% select(depth_sampled_mbgl, Eh_mV, H2O_H2_limit_Eh_f_T_P_mV) %>% gather(-depth_sampled_mbgl, key = parameter, value = Eh_mV)
+```
+
+```{r H2-H20-limit-plot-BA1A_2017, fig.height=5, fig.width=4}
+plot_BA1A_2017_Eh <- BA1A_2017_profile_longer_Eh_T_P %>% ggplot(aes(x = depth_sampled_mbgl))+
+  geom_line(aes(y = Eh_mV, color = parameter))+
+  scale_x_reverse(name = "Depth / [mbgl]", expand = c(0.03,0.02))+
+  scale_y_continuous(name = "Eh / [mV]")+
+  coord_flip()+
+  theme_bw(base_size = 12)+
+  theme(
+    panel.grid = element_blank(),
+    legend.position = "bottom",
+    legend.direction = "vertical")
+
+plot_BA1A_2017_Eh
+```
+
+# BA1D 2018 well log
+
+## clean up data
+```{r get-relevant-log-data-BA1D_2018}
+# select relevant columns and rename them
+BA1D_2018_profile <- BA1D_2018_profile_raw %>% select(depth_sampled_mbgl = `DEPT[M]`, P_dbar = PRESSURE, T_C = TEMPERATURE, pH = PH, ORP_mV_Ag_AgCl = REDOX, cond_uS_per_cm = `COND(FW)`)
+
+
+# Filter out nonsense values (i.e. when probe is above water table)
+BA1D_2018_profile <- BA1D_2018_profile %>% filter_all(all_vars(!is.na(.)))
+
+# convert conductivity to mS/cm
+BA1D_2018_profile <- BA1D_2018_profile %>% mutate(cond_mS_per_cm = cond_uS_per_cm * 1e-3) %>% select(-cond_uS_per_cm)
+# 
+# # print some summary statistics
+BA1D_2018_profile %>% summary()
+```
+
+```{r subset-and-print-log-BA1D_2018}
+# subset the data for readability and print
+BA1D_2018_profile %>% slice(seq(from = 1, to = 40000, by = 1000)) %>% kable(digits=1)
+```
+
+## Convert to ORP to SHE
+
+Apply conversion
+```{r apply-Ag-AgCl-SHE-conversion-BA1D_2018}
+BA1D_2018_profile <- BA1D_2018_profile %>% mutate(Eh_mV = ORP_mV_Ag_AgCl + Ag_AgCl_E_T_lm_int + Ag_AgCl_E_T_lm_slope * T_C) # convert probe ORP_mV_Ag_AgCl reading from Ag/AgCl to SHE
+
+# print some summary statistics
+BA1D_2018_profile %>% select(Eh_mV) %>% summary()
+```
+
+## Hydrostatic pressure
+Pressure will be used to assess calculated stability limit of water with respect to molecular hydrogen.
+
+Calculate from theory
+```{r calc-hydrostatic-P-BA1D_2018}
+P_BA1D_2018_atmospheric_Pa <- 95490 # measured ambient pressure with Garmin GPSMAP 64S by DBN in 2019
+P_BA1D_2018_atmospheric_bar <-  P_BA1D_2018_atmospheric_Pa * 1e-5
+
+water_level_BA1D_2018_m <- as.numeric(BA1D_2018_profile %>% select(depth_sampled_mbgl) %>% min())
+
+BA1D_2018_profile <- BA1D_2018_profile %>% mutate(water_column_above_m = depth_sampled_mbgl - water_level_BA1D_2018_m)
+
+
+# Hydrostatic pressure in a liquid can be calculated as
+# 
+# p = ρ g h                         (1)
+# 
+# where
+# 
+# p = pressure in liquid (N/m2, Pa, lbf/ft2, psf)
+# 
+# ρ = density of liquid (kg/m3, slugs/ft3)
+# 
+# g = acceleration of gravity (9.81 m/s2, 32.17405 ft/s2)
+# 
+# h = height of fluid column - or depth in the fluid where pressure is measured (m, ft)
+
+# https://www.engineeringtoolbox.com/hydrostatic-pressure-water-d_1632.html
+
+density_water <- 1000 # kg/m3
+g = 9.81 # acceleration of gravity, m/s2
+
+
+BA1D_2018_profile <- BA1D_2018_profile %>% mutate(P_hydrostatic_calc_Pa = P_BA1D_2018_atmospheric_Pa + density_water * g * water_column_above_m)
+
+BA1D_2018_profile <- BA1D_2018_profile %>% mutate(P_hydrostatic_calc_bar = P_hydrostatic_calc_Pa * 1e-5)
+
+# print some summary statistics
+BA1D_2018_profile %>% select(P_hydrostatic_calc_bar) %>% summary()
+```
+```{r convert-hydrostatic-P-to-bar-BA1D_2018}
+# convert measured pressure to bar
+BA1D_2018_profile <- BA1D_2018_profile %>% mutate(P_bar = P_dbar / 10)
+```
+
+```{r prepare-P-plot-BA1D_2018}
+# prepare for plotting
+BA1D_2018_profile_longer_P <- BA1D_2018_profile %>% select(depth_sampled_mbgl, P_hydrostatic_calc_bar, P_bar) %>% gather(-depth_sampled_mbgl, key = parameter, value = P_bar) %>% mutate(type = if_else(parameter == "P_hydrostatic_calc_bar", "calculated", "measured"))
+```
+
+Compare theoretical hydrostatic pressure versus measured pressure
+```{r P-plot-BA1D_2018, fig.height=4, fig.width=4}
+plot_BA1D_2018_P <- BA1D_2018_profile_longer_P %>% ggplot(aes(x = depth_sampled_mbgl))+
+  geom_line(aes(y = P_bar, color = type))+
+  scale_x_reverse(name = "Depth / [mbgl]", expand = c(0.03,0.02), breaks = c(0, 50, 100, 150, 200, 250, 300))+
+    scale_y_continuous(name = latex2exp::TeX("$\\textit{P}_{hydrostatic}\\,/\\,\\lbrack bar \\rbrack$"))+
+  coord_flip()+
+  theme_bw(base_size = 12)+
+  theme(
+    panel.grid = element_blank())
+
+plot_BA1D_2018_P
+```
+They are similar.
+
+## Stability limits of water
+
+Eh, f(T,P)
+```{r calc-H2-H20-limit-BA1D_2018}
+Faraday <- 96485.33212331 # C/mol
+R <- 8.31446261815324 # J/(mol⋅K) gas constant
+
+BA1D_2018_profile <- BA1D_2018_profile %>% mutate(T_K= T_C + 273.15) # convert T to Kelvins
+
+# calculate H20-H2 stability limit
+BA1D_2018_profile <- BA1D_2018_profile %>% mutate(H2O_H2_limit_Eh_f_T_P_mV = (-R*T_K/2/Faraday * log(((10^-pH)^-2)*P_bar))*1000)
+
+BA1D_2018_profile %>% select(H2O_H2_limit_Eh_f_T_P_mV) %>% summary()
+```
+
+```{r prepare-H2-H20-limit-plot-BA1D_2018}
+# prepare for plotting
+BA1D_2018_profile_longer_Eh_T_P <- BA1D_2018_profile %>% select(depth_sampled_mbgl, Eh_mV, H2O_H2_limit_Eh_f_T_P_mV) %>% gather(-depth_sampled_mbgl, key = parameter, value = Eh_mV)
+```
+
+```{r H2-H20-limit-plot-BA1D_2018, fig.height=5, fig.width=4}
+plot_BA1D_2018_Eh <- BA1D_2018_profile_longer_Eh_T_P %>% ggplot(aes(x = depth_sampled_mbgl))+
+  geom_line(aes(y = Eh_mV, color = parameter))+
+  scale_x_reverse(name = "Depth / [mbgl]", expand = c(0.03,0.02))+
+  scale_y_continuous(name = "Eh / [mV]")+
+  coord_flip()+
+  theme_bw(base_size = 12)+
+  theme(
+    panel.grid = element_blank(),
+    legend.position = "bottom",
+    legend.direction = "vertical")
+
+plot_BA1D_2018_Eh
+```
+
+# BA1D 2019 well log
+
+## clean up data
+```{r get-relevant-log-data-BA1D_2019}
+# select relevant columns and rename them
+BA1D_2019_profile <- BA1D_2019_profile_raw %>% select(depth_sampled_mbgl = `Depth [m]`, P_dbar = `Pressure [dbar]`, T_C = `Temperature [degC]`, pH = pH, ORP_mV_Ag_AgCl = `Redox Potential [mV]`, cond_uS_per_cm = `Conductivity [uS/cm]`)
+
+# Filter out nonsense values (i.e. when probe is above water table)
+BA1D_2019_profile <- BA1D_2019_profile %>% filter_all(all_vars(!is.na(.)))
+
+# convert conductivity to mS/cm
+BA1D_2019_profile <- BA1D_2019_profile %>% mutate(cond_mS_per_cm = cond_uS_per_cm * 1e-3) %>% select(-cond_uS_per_cm)
+# 
+# # print some summary statistics
+BA1D_2019_profile %>% summary()
+```
+
+```{r subset-and-print-log-BA1D_2019}
+# subset the data for readability and print
+BA1D_2019_profile %>% slice(seq(from = 1, to = 40000, by = 1000)) %>% kable(digits=1)
+```
+
+## Convert to ORP to SHE
+
+Apply conversion
+```{r apply-Ag-AgCl-SHE-conversion-BA1D_2019}
+BA1D_2019_profile <- BA1D_2019_profile %>% mutate(Eh_mV = ORP_mV_Ag_AgCl + Ag_AgCl_E_T_lm_int + Ag_AgCl_E_T_lm_slope * T_C) # convert probe ORP_mV_Ag_AgCl reading from Ag/AgCl to SHE
+
+# print some summary statistics
+BA1D_2019_profile %>% select(Eh_mV) %>% summary()
+```
+
+## Hydrostatic pressure
+Pressure will be used to assess calculated stability limit of water with respect to molecular hydrogen.
+
+Calculate from theory
+```{r calc-hydrostatic-P-BA1D_2019}
+P_BA1D_2019_atmospheric_Pa <- 95490 # measured ambient pressure with Garmin GPSMAP 64S by DBN in 2019
+P_BA1D_2019_atmospheric_bar <-  P_BA1D_2019_atmospheric_Pa * 1e-5
+
+water_level_BA1D_2019_m <- as.numeric(BA1D_2019_profile %>% select(depth_sampled_mbgl) %>% min())
+
+BA1D_2019_profile <- BA1D_2019_profile %>% mutate(water_column_above_m = depth_sampled_mbgl - water_level_BA1D_2019_m)
+
+
+# Hydrostatic pressure in a liquid can be calculated as
+# 
+# p = ρ g h                         (1)
+# 
+# where
+# 
+# p = pressure in liquid (N/m2, Pa, lbf/ft2, psf)
+# 
+# ρ = density of liquid (kg/m3, slugs/ft3)
+# 
+# g = acceleration of gravity (9.81 m/s2, 32.17405 ft/s2)
+# 
+# h = height of fluid column - or depth in the fluid where pressure is measured (m, ft)
+
+# https://www.engineeringtoolbox.com/hydrostatic-pressure-water-d_1632.html
+
+density_water <- 1000 # kg/m3
+g = 9.81 # acceleration of gravity, m/s2
+
+
+BA1D_2019_profile <- BA1D_2019_profile %>% mutate(P_hydrostatic_calc_Pa = P_BA1D_2019_atmospheric_Pa + density_water * g * water_column_above_m)
+
+BA1D_2019_profile <- BA1D_2019_profile %>% mutate(P_hydrostatic_calc_bar = P_hydrostatic_calc_Pa * 1e-5)
+
+# print some summary statistics
+BA1D_2019_profile %>% select(P_hydrostatic_calc_bar) %>% summary()
+```
+```{r convert-hydrostatic-P-to-bar-BA1D_2019}
+# convert measured pressure to bar
+BA1D_2019_profile <- BA1D_2019_profile %>% mutate(P_bar = P_dbar / 10)
+```
+
+```{r prepare-P-plot-BA1D_2019}
+# prepare for plotting
+BA1D_2019_profile_longer_P <- BA1D_2019_profile %>% select(depth_sampled_mbgl, P_hydrostatic_calc_bar, P_bar) %>% gather(-depth_sampled_mbgl, key = parameter, value = P_bar) %>% mutate(type = if_else(parameter == "P_hydrostatic_calc_bar", "calculated", "measured"))
+```
+
+Compare theoretical hydrostatic pressure versus measured pressure
+```{r P-plot-BA1D_2019, fig.height=4, fig.width=4}
+plot_BA1D_2019_P <- BA1D_2019_profile_longer_P %>% ggplot(aes(x = depth_sampled_mbgl))+
+  geom_line(aes(y = P_bar, color = type))+
+  scale_x_reverse(name = "Depth / [mbgl]", expand = c(0.03,0.02))+
+    scale_y_continuous(name = latex2exp::TeX("$\\textit{P}_{hydrostatic}\\,/\\,\\lbrack bar \\rbrack$"))+
+  coord_flip()+
+  theme_bw(base_size = 12)+
+  theme(
+    panel.grid = element_blank())
+
+plot_BA1D_2019_P
+```
+They are similar.
+
+## Stability limits of water
+
+Eh, f(T,P)
+```{r calc-H2-H20-limit-BA1D_2019}
+Faraday <- 96485.33212331 # C/mol
+R <- 8.31446261815324 # J/(mol⋅K) gas constant
+
+BA1D_2019_profile <- BA1D_2019_profile %>% mutate(T_K= T_C + 273.15) # convert T to Kelvins
+
+# calculate H20-H2 stability limit
+BA1D_2019_profile <- BA1D_2019_profile %>% mutate(H2O_H2_limit_Eh_f_T_P_mV = (-R*T_K/2/Faraday * log(((10^-pH)^-2)*P_bar))*1000)
+
+BA1D_2019_profile %>% select(H2O_H2_limit_Eh_f_T_P_mV) %>% summary()
+```
+
+```{r prepare-H2-H20-limit-plot-BA1D_2019}
+# prepare for plotting
+BA1D_2019_profile_longer_Eh_T_P <- BA1D_2019_profile %>% select(depth_sampled_mbgl, Eh_mV, H2O_H2_limit_Eh_f_T_P_mV) %>% gather(-depth_sampled_mbgl, key = parameter, value = Eh_mV)
+```
+
+```{r H2-H20-limit-plot-BA1D_2019, fig.height=5, fig.width=4}
+plot_BA1D_2019_Eh <- BA1D_2019_profile_longer_Eh_T_P %>% ggplot(aes(x = depth_sampled_mbgl))+
+  geom_line(aes(y = Eh_mV, color = parameter))+
+  scale_x_reverse(name = "Depth / [mbgl]", expand = c(0.03,0.02))+
+  scale_y_continuous(name = "Eh / [mV]")+
+  coord_flip()+
+  theme_bw(base_size = 12)+
+  theme(
+    panel.grid = element_blank(),
+    legend.position = "bottom",
+    legend.direction = "vertical")
+
+plot_BA1D_2019_Eh
+```
+
+# Prepare data for facet plot
+
+Join well logs
+
+```{r join-well-logs}
+# join by type column
+# also taking this opportunity to add some metadata for plotting, and also remove data above the casing depths, which may be spurious and obscure true trends in the boreholes
+BA1_profiles <- full_join((BA1A_2018_profile %>% mutate(sampling_site = "BA1A", year_sampled = 2018, group_id = "BA1A_2018_log") %>% filter(depth_sampled_mbgl > 22)), (BA1A_2017_profile %>% mutate(sampling_site = "BA1A", year_sampled = 2017, group_id = "BA1A_2017_log") %>% filter(depth_sampled_mbgl > 22))) %>% full_join((BA1D_2018_profile  %>% mutate(sampling_site = "BA1D", year_sampled = 2018, group_id = "BA1D_2018_log") %>% filter(depth_sampled_mbgl > 26))) %>% full_join((BA1D_2019_profile  %>% mutate(sampling_site = "BA1D", year_sampled = 2019, group_id = "BA1D_2019_log") %>% filter(depth_sampled_mbgl > 26))) %>% arrange(depth_sampled_mbgl)
+
+# print first few lines
+head(BA1_profiles)
+```
+
+## Pivot longer for plotting on same scale
+
+```{r pivot-longer-BA1}
+BA1_profiles_longer <- BA1_profiles %>%
+  select(sampling_site, year_sampled, depth_sampled_mbgl, pH, Eh_mV, cond_mS_per_cm, group_id) %>%
+  pivot_longer(cols = c(-sampling_site, -year_sampled, -depth_sampled_mbgl, -group_id), names_to = "parameter", values_to = "value", values_drop_na = TRUE)
+
+BA1_profiles_longer %>% head()
+```
+
+## Add packer sampling data
+```{r BA1-get-geochem}
+# filter for data from only wells BA1A or BA1D
+Oman_Geochem_BA1 <- Oman_Geochem %>% 
+ filter(sampling_site == "BA1A" | sampling_site == "BA1D")
+
+# print
+Oman_Geochem_BA1
+```
+```{r BA1-pivot-longer}
+# Get the relevant data and pivot it longer
+Oman_Geochem_BA1_select <- Oman_Geochem_BA1 %>%
+  # convert conductivity to units of mS/cm
+  mutate(cond_mS_per_cm = conductivity_uS_cm * 1e-3) %>% 
+  # get only relevant data
+  select(sampling_site, year_sampled, upper_packer_depth_mbct, lower_packer_depth_mbct, well_depth_mbgl, casing_height_magl, pH, Eh_mV, cond_mS_per_cm)
+
+# add a group ID for plotting purposes
+Oman_Geochem_BA1_select <- Oman_Geochem_BA1_select %>% mutate(group_id = paste0(sampling_site, "_", year_sampled, "_", if_else(is.na(upper_packer_depth_mbct), 0, upper_packer_depth_mbct), "-", if_else(is.na(lower_packer_depth_mbct), well_depth_mbgl, lower_packer_depth_mbct)))
+
+  # pivot it longer
+Oman_Geochem_BA1_longer  <-  Oman_Geochem_BA1_select %>%
+  pivot_longer(cols = c(-sampling_site, -year_sampled, -upper_packer_depth_mbct, -lower_packer_depth_mbct, -well_depth_mbgl, -casing_height_magl, -group_id), names_to = "parameter", values_to = "value", values_drop_na = TRUE)
+
+# convert/calculate sample depths
+Oman_Geochem_BA1_longer <- Oman_Geochem_BA1_longer %>% mutate(upper_packer_depth_mbgl = if_else(!is.na(upper_packer_depth_mbct), upper_packer_depth_mbct + casing_height_magl, 0), lower_packer_depth_mbgl = if_else(!is.na(lower_packer_depth_mbct), lower_packer_depth_mbct + casing_height_magl, well_depth_mbgl))
+
+# pivot longer depths for plotting as lines graphs
+Oman_Geochem_BA1_longer_depth <- Oman_Geochem_BA1_longer %>%
+  select(-upper_packer_depth_mbct, -lower_packer_depth_mbct, -well_depth_mbgl, -casing_height_magl) %>%
+  pivot_longer(cols = c(-sampling_site, -year_sampled, -parameter, -value, -group_id), names_to = "depth_type", values_to = "depth_sampled_mbgl", values_drop_na = TRUE) %>%
+  select(sampling_site, year_sampled, group_id, depth_sampled_mbgl, parameter, value)
+
+Oman_Geochem_BA1_longer_depth
+```
+```{r BA1-add-sampling-method}
+BA1_profiles_and_packer_geochem <- full_join((BA1_profiles_longer %>% mutate(sample_method = "Wireline logging")), (Oman_Geochem_BA1_longer_depth %>% mutate(sample_method = "Pumping with packer(s)")))
+```
+
+
+Prepping data to plot and label correctly
+```{r prepare-BA1-plot-labels}
+# set factors to set order of parameters on plot
+BA1_profiles_and_packer_geochem$parameter <- factor(BA1_profiles_and_packer_geochem$parameter, levels = c("pH", "Eh_mV", "cond_mS_per_cm"))
+
+# rename how parameters should be displayed on plot using LaTeX
+BA1_profiles_and_packer_geochem <- BA1_profiles_and_packer_geochem %>%
+  mutate(
+    tex_params = as_factor(parameter) %>%
+      fct_recode(
+        # "T / $\\lbrack$$\\degree$C$\\rbrack$" = "T_C",
+        "pH" = "pH",
+        "$\\textit{Eh}$ / $\\lbrack$mV$\\rbrack$" = "Eh_mV",
+        "Electrical conductivity$\\,$/$\\,$$\\lbrack$mS$\\cdot$cm$^{-1}$$\\rbrack$" = "cond_mS_per_cm"
+  )
+  )
+```
+
+## Plot
+```{r BA1_profiles_plot, fig.width=7, fig.height=5}
+BA1_profiles_plot <- BA1_profiles_and_packer_geochem %>% ggplot(aes(
+  x = depth_sampled_mbgl,
+  # linetype = as.character(year_sampled),
+  # color = sampling_site
+  color = as.character(year_sampled),
+  # linetype = sample_method,
+  size = sample_method,
+  group = group_id
+  )) +
+  
+  # add line graph for applicable parameters
+  geom_line(data = (BA1_profiles_and_packer_geochem %>% filter(parameter == "pH" | parameter == "Eh_mV" | parameter == "cond_mS_per_cm")), aes(y = value)) +
+
+  # flip coordinates (this makes it possible to do vertical line graph)
+    coord_flip() +
+  
+  # plot styling
+  scale_color_manual(name = "Year", values = c("2019" = "#E69F00", "2018" = "black", "2017" = "#0072B2"))+
+  scale_size_manual(name = "Method", values = c("Wireline logging" = 0.2, "Pumping with packer(s)" = 2.5)) +
+  scale_x_reverse(name = "Depth / [m]", limits = c(410, -2), expand = c(0, 0)) + 
+  scale_y_continuous(name = NULL, sec.axis = dup_axis()) +
+  
+  # generate plot facets
+  facet_rep_grid(cols = vars(tex_params),  rows = vars(sampling_site), scales = "free", labeller = latex_labeller)+
+  
+    # plot design
+  theme_classic(base_size = 10.5) +
+  theme(
+    legend.position = "bottom",
+    legend.direction = "horizontal",
+    panel.grid = element_blank(),
+    plot.margin = margin(1,1,1,1),
+    strip.placement = "outside",
+    axis.text.x.bottom = element_blank(),
+    axis.ticks.x.bottom = element_blank(),
+    axis.line.x.bottom = element_blank(),
+    axis.line.y.left = element_line(),
+    strip.background.x = element_blank(),
+    strip.background.y = element_rect(color = "black", fill = "grey80"),
+    strip.switch.pad.grid	= unit(0, "cm")
+  )
+
+
+BA1_profiles_plot
+```

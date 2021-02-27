@@ -1,6 +1,2 @@
 type,source_file,source_copy,source_file_hash,doc_file,last_success,last_fail
-RMarkdown,180228_OM18_DIC.Rmd,docs/rmarkdown/180228_OM18_DIC.Rmd,d6417a376802984b0f2939990a2b9f4e,docs/rmarkdown/180228_OM18_DIC.html,2020-08-12 18:07:48 MDT,NA
-RMarkdown,180306_OM18_DIC.Rmd,docs/rmarkdown/180306_OM18_DIC.Rmd,2787a7c75e9db83e557ec75b9ffa6da5,docs/rmarkdown/180306_OM18_DIC.html,2020-08-12 18:07:48 MDT,NA
-RMarkdown,190208_OM19_DIC.Rmd,docs/rmarkdown/190208_OM19_DIC.Rmd,6df306329ce4868406d23b1bece781c4,docs/rmarkdown/190208_OM19_DIC.html,2020-08-12 18:07:48 MDT,NA
-RMarkdown,191130_OM19_CH4_dD.Rmd,docs/rmarkdown/191130_OM19_CH4_dD.Rmd,08b4c7c9bea77f3608c79550c1276054,docs/rmarkdown/191130_OM19_CH4_dD.html,2020-08-12 18:07:48 MDT,NA
-RMarkdown,191218_OM19_C1-C3-HCs_d13C.Rmd,docs/rmarkdown/191218_OM19_C1-C3-HCs_d13C.Rmd,b8fc7120b52636acd107185df40bf97e,docs/rmarkdown/191218_OM19_C1-C3-HCs_d13C.html,2020-08-12 18:07:48 MDT,NA
+RMarkdown,201013_packer_paper_figs.Rmd,docs/rmarkdown/201013_packer_paper_figs.Rmd,9a1c230e3be2d8eb0f5317a01ae2c8b4,docs/rmarkdown/201013_packer_paper_figs.html,2020-10-29 04:21:53 MDT,NA
