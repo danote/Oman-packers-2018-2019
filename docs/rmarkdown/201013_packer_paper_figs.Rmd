@@ -134,6 +134,11 @@ data_Leong_mix_10umolal_DIC <-  read_excel("data_raw/Summary_metadata/mixing_leo
 data_Leong_mix_20umolal_DIC <-  read_excel("data_raw/Summary_metadata/mixing_leong_et_al_JGRmanuscript.xlsx", sheet = "ctl_brc_cal_20umolalDIC") %>% rename(g_surface_fluid_added_to_kg_high_pH = `surface fluid added (g) to 1 kg of high pH`,  mixing_extent = `Mixing Extent`, Ca_molal = `Ca (molal)`, Cl_molal = `Cl (molal)`, C_molal = `C (molal)`, Mg_molal = `Mg (molal)`, Na_molal = `Na (molal)`, Si_molal = `Si (molal)`)
 ```
 
+```{r load-Leong-context-data}
+# read context Oman fluid data from Leong et al., 2020
+context_data_Leong_et_al_2020 <-  read_excel("data_raw/Summary_metadata/Leong_et_al_data_for_si_pH.xlsx")
+```
+
 # Water stable isotopes plot
 ## Get and summarize water stable isotope data
 ```{r get-water-isotopes}
@@ -174,7 +179,7 @@ MWL_plot <- data_water_isotopes %>% ggplot(aes(
   annotate("text", label = "LMWL-S", x = -2.4, y = -20, angle = 52) +
 
   # plot Oman well data
-  geom_point(size = 2.5, alpha = 1) +
+  geom_point(size = 3.5, alpha = 1) +
 
   # # symbol styling
   # scale_shape_manual(values=c(1, 4, 0, 6, 5, 17, 3, 18, 16, 12, 18), name = "well", guide = guide_legend(order = 1))+
@@ -297,7 +302,7 @@ CD_plot <-
     y = CH4_dD_permil_VSMOW,
     shape = packer_site_year_interval,
     color = packer_site_year_interval
-    ), alpha = 1) +
+    ), alpha = 1, size = 2.5) +
 
   # axis styling
   scale_y_continuous(name = latex2exp::TeX("$\\delta D_{CH_4}\\,/\\,\\[\U2030  \\, VSMOW \\]$"), limits = c(-450, 100), expand = c(0,0)) +
@@ -421,7 +426,7 @@ C1_C2_C3_plot <-
     y = C1_over_C2_plus_C3,
     shape = packer_site_year_interval,
     color = packer_site_year_interval
-    ), alpha = 1) +
+    ), alpha = 1, size = 2.5) +
 
   # axis styling
   scale_y_continuous(trans = 'log10',
@@ -545,7 +550,7 @@ alkanes_d13C_oman_wells_and_lit_plot <- ggplot() +
     x = C_atoms,
     y = d13C_permil_VPDB,
     shape = packer_site_year_interval,
-    color = packer_site_year_interval)) +
+    color = packer_site_year_interval), size = 2.5) +
   
   # Plot Oman well data
   # lines
@@ -569,7 +574,7 @@ alkanes_d13C_oman_wells_and_lit_plot <- ggplot() +
     x = C_atoms,
     y = d13C_permil_VPDB,
     shape = packer_site_year_interval,
-    color = packer_site_year_interval)) +
+    color = packer_site_year_interval), size = 2.5) +
   
   # symbol styling
   scale_color_manual(name = NULL, values = colors_all_CH4_iso_sites_named, guide = guide_legend(ncol = 2)) +
@@ -630,7 +635,7 @@ sulfate_plot <- ggplot() +
     y = Sulfate_uM/1000,
     shape = packer_site_year_interval,
     color = packer_site_year_interval),
-    width = 0.27) +
+    width = 0.27, size = 3.5) +
   
   scale_color_manual(name = "Sample ID", values = colors_all_packer_site_year_interval_named) +
   scale_shape_manual(name = "Sample ID", values = shapes_all_packer_site_year_interval_named) +
@@ -688,8 +693,8 @@ Si_pH_plot <- ggplot() +
     mapping =  aes(
     x = pH,
     y = Si_total_umolal),
-    size = 2.5,
-    color = "light blue",
+    size = 3.5,
+    color = "blue",
     lineend = "round") +
   
     # mixing path from Leong et al., 8 umolal DIC
@@ -699,7 +704,7 @@ Si_pH_plot <- ggplot() +
     y = Si_molal * 1e6),
     linetype = "dotted",
     size = 0.3,
-    color = "light blue") +
+    color = "blue") +
   
       # mixing path from Leong et al., 10 umolal DIC
     geom_line(data = data_Leong_mix_10umolal_DIC,
@@ -708,7 +713,7 @@ Si_pH_plot <- ggplot() +
     y = Si_molal * 1e6),
     linetype = "dotted",
     size = 0.3,
-    color = "light blue") +
+    color = "blue") +
   
       # mixing path from Leong et al., 20 umolal DIC
     geom_line(data = data_Leong_mix_20umolal_DIC,
@@ -717,7 +722,7 @@ Si_pH_plot <- ggplot() +
     y = Si_molal * 1e6),
     linetype = "dotted",
     size = 0.3,
-    color = "light blue") +
+    color = "blue") +
   
     # 1% mixing from Leong et al.
     geom_line(data = data_Leong_mix_all_endmembers_01_percent_mix,
@@ -726,7 +731,7 @@ Si_pH_plot <- ggplot() +
     y = Si_molal * 1e6),
     linetype = "dashed",
     size = 0.3,
-    color = "light blue") +
+    color = "blue") +
   
       # 1% mixing from Leong et al.
     geom_line(data = data_Leong_mix_all_endmembers_01_percent_mix,
@@ -735,7 +740,7 @@ Si_pH_plot <- ggplot() +
     y = Si_molal * 1e6),
     linetype = "dashed",
     size = 0.3,
-    color = "light blue") +
+    color = "blue") +
   
       # 5% mixing from Leong et al.
     geom_line(data = data_Leong_mix_all_endmembers_05_percent_mix,
@@ -744,7 +749,7 @@ Si_pH_plot <- ggplot() +
     y = Si_molal * 1e6),
     linetype = "dashed",
     size = 0.3,
-    color = "light blue") +
+    color = "blue") +
   
       # 10% mixing from Leong et al.
     geom_line(data = data_Leong_mix_all_endmembers_10_percent_mix,
@@ -753,7 +758,7 @@ Si_pH_plot <- ggplot() +
     y = Si_molal * 1e6),
     linetype = "dashed",
     size = 0.3,
-    color = "light blue") +
+    color = "blue") +
   
       # 50% mixing from Leong et al.
     geom_line(data = data_Leong_mix_all_endmembers_50_percent_mix,
@@ -762,7 +767,7 @@ Si_pH_plot <- ggplot() +
     y = Si_molal * 1e6),
     linetype = "dashed",
     size = 0.3,
-    color = "light blue") +
+    color = "blue") +
   
       # 90% mixing from Leong et al.
     geom_line(data = data_Leong_mix_all_endmembers_90_percent_mix,
@@ -771,7 +776,48 @@ Si_pH_plot <- ggplot() +
     y = Si_molal * 1e6),
     linetype = "dashed",
     size = 0.3,
-    color = "light blue") +
+    color = "blue") +
+  
+    # add directionality to leong rxn path
+    geom_line(data = tribble(
+    ~pH, ~Si_total_uM,
+  6.2,   5.5,
+  7.2,   60),
+    mapping =  aes(
+    x = pH,
+    y = Si_total_uM),
+    linetype = "solid",
+    arrow = arrow(angle = 30, length = unit(0.06, "inches"),
+      ends = "last", type = "open"),
+     size = 0.6,
+    color = "white") +
+  
+      geom_line(data = tribble(
+    ~pH, ~Si_total_uM,
+  8.55,   10,
+  9.5,   0.07),
+    mapping =  aes(
+    x = pH,
+    y = Si_total_uM),
+    linetype = "solid",
+    arrow = arrow(angle = 30, length = unit(0.06, "inches"),
+      ends = "last", type = "open"),
+     size = 0.6,
+    color = "white") +
+  
+      geom_line(data = tribble(
+    ~pH, ~Si_total_uM,
+  10.3,   0.005,
+  11.3,   0.08),
+    mapping =  aes(
+    x = pH,
+    y = Si_total_uM),
+    linetype = "solid",
+    arrow = arrow(angle = 30, length = unit(0.06, "inches"),
+      ends = "last", type = "open"),
+     size = 0.6,
+    color = "white") +
+  
   
   ##### Field data
   
@@ -794,13 +840,29 @@ Si_pH_plot <- ggplot() +
   #   width = 0.25, shape = 21) +
   
   # points
-  geom_point(data = data %>% filter(water_type == "Ca_OH" | water_type == "Mg_HCO3"),
+
+# context data Leong, canovas, stanger, chavagnac
+  geom_point(data = context_data_Leong_et_al_2020 %>% filter(Lithology == "peridotite"),
+    mapping =  aes(
+    x = pH,
+    y = Si_mol_kg * 1e6),     shape = 5,
+    color = "#999999", size = 2.5) +
+
+      # context data Nothaft, rempfert
+  geom_point(data = data %>% filter(water_type == "Ca_OH" | water_type == "Mg_HCO3") %>% filter(str_detect(packer_site_year_interval, "BA1") == FALSE),
     mapping =  aes(
     x = pH,
     y = Si_total_uM,
     shape = packer_site_year_interval,
-    color = packer_site_year_interval)) +
+    color = packer_site_year_interval), size = 2.5) +
   
+    # BA1A / BA1D data
+  geom_point(data = data %>% filter(water_type == "Ca_OH" | water_type == "Mg_HCO3") %>% filter(str_detect(packer_site_year_interval, "BA1") == TRUE),
+    mapping =  aes(
+    x = pH,
+    y = Si_total_uM,
+    shape = packer_site_year_interval,
+    color = packer_site_year_interval), size = 2.5) +
   
   scale_color_manual(name = "Sample ID", values = colors_all_packer_site_year_interval_named, guide = guide_legend(ncol = 2)) +
   scale_shape_manual(name = "Sample ID", values = shapes_all_packer_site_year_interval_named, guide = guide_legend(ncol = 2)) +
@@ -812,12 +874,13 @@ Si_pH_plot <- ggplot() +
     annotate("text", label = TeX("Ca$^{2+}$ - OH$^{-}$"), x = 11.8,  y = 0.09, angle = 50, color = "black", parse = TRUE, size = 3.2) +
     annotate("text", label = "Mix", x = 11,  y = 400, angle = 0, color = "black", size = 3.2) +
   
-    annotate("text", label = "1%", x = 12.7,  y = data_Leong_mix_all_endmembers_01_percent_mix %>% summarise(Si_umolal = max(Si_molal) * 1e6) %>% as.numeric(), angle = 0, color = "light blue", size = 3.2) +
-    annotate("text", label = "5%", x = 12.7,  y = data_Leong_mix_all_endmembers_05_percent_mix %>% summarise(Si_umolal = min(Si_molal) * 1e6) %>% as.numeric(), angle = 0, color = "light blue", size = 3.2) +
-    annotate("text", label = "10%", x = 12.7,  y = data_Leong_mix_all_endmembers_10_percent_mix %>% summarise(Si_umolal = max(Si_molal) * 1e6) %>% as.numeric(), angle = 0, color = "light blue", size = 3.2) +
-    annotate("text", label = "50%", x = 12.45,  y = 170, angle = 0, color = "light blue", size = 3.2) +
-    annotate("text", label = "90%", x = 10,  y = 450, angle = 0, color = "light blue", size = 3.2) +
+    annotate("text", label = "1%", x = 12.7,  y = data_Leong_mix_all_endmembers_01_percent_mix %>% summarise(Si_umolal = max(Si_molal) * 1e6) %>% as.numeric(), angle = 0, color = "blue", size = 3.2) +
+    annotate("text", label = "5%", x = 12.7,  y = data_Leong_mix_all_endmembers_05_percent_mix %>% summarise(Si_umolal = min(Si_molal) * 1e6) %>% as.numeric(), angle = 0, color = "blue", size = 3.2) +
+    annotate("text", label = "10%", x = 12.7,  y = data_Leong_mix_all_endmembers_10_percent_mix %>% summarise(Si_umolal = max(Si_molal) * 1e6) %>% as.numeric(), angle = 0, color = "blue", size = 3.2) +
+    annotate("text", label = "50%", x = 12.45,  y = 170, angle = 0, color = "blue", size = 3.2) +
+    annotate("text", label = "90%", x = 10,  y = 450, angle = 0, color = "blue", size = 3.2) +
   
+
     # axis styling
   scale_y_continuous(trans = 'log10',
     breaks = trans_breaks('log10', function(x) 10 ^ x, n=5),
