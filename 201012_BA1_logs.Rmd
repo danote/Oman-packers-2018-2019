@@ -688,7 +688,7 @@ Oman_Geochem_BA1_longer_depth <- Oman_Geochem_BA1_longer %>%
 Oman_Geochem_BA1_longer_depth
 ```
 ```{r BA1-add-sampling-method}
-BA1_profiles_and_packer_geochem <- full_join((BA1_profiles_longer %>% mutate(sample_method = "Wireline logging")), (Oman_Geochem_BA1_longer_depth %>% mutate(sample_method = "Pumping with packer(s)")))
+BA1_profiles_and_packer_geochem <- full_join((BA1_profiles_longer %>% mutate(sample_method = "Wireline logging")), (Oman_Geochem_BA1_longer_depth %>% mutate(sample_method = "Discrete water sampling using packer(s)")))
 ```
 
 
@@ -705,13 +705,13 @@ BA1_profiles_and_packer_geochem <- BA1_profiles_and_packer_geochem %>%
         # "T / $\\lbrack$$\\degree$C$\\rbrack$" = "T_C",
         "pH" = "pH",
         "$\\textit{Eh}$ / $\\lbrack$mV$\\rbrack$" = "Eh_mV",
-        "Electrical conductivity$\\,$/$\\,$$\\lbrack$mS$\\cdot$cm$^{-1}$$\\rbrack$" = "cond_mS_per_cm"
+        "\\overset{Electrical conductivity$\\,$/$}{$\\lbrack$mS$\\cdot$cm$^{-1}$$\\rbrack$}" = "cond_mS_per_cm"
   )
   )
 ```
 
 ## Plot
-```{r BA1_profiles_plot, fig.width=7, fig.height=5}
+```{r BA1_profiles_plot, fig.width=5.5, fig.height=6}
 BA1_profiles_plot <- BA1_profiles_and_packer_geochem %>% ggplot(aes(
   x = depth_sampled_mbgl,
   # linetype = as.character(year_sampled),
@@ -730,7 +730,7 @@ BA1_profiles_plot <- BA1_profiles_and_packer_geochem %>% ggplot(aes(
   
   # plot styling
   scale_color_manual(name = "Year", values = c("2019" = "#E69F00", "2018" = "black", "2017" = "#0072B2"))+
-  scale_size_manual(name = "Method", values = c("Wireline logging" = 0.2, "Pumping with packer(s)" = 2.5)) +
+  scale_size_manual(name = "Method", values = c("Wireline logging" = 0.15, "Discrete water sampling using packer(s)" = 2.5)) +
   scale_x_reverse(name = "Depth / [m]", limits = c(410, -2), expand = c(0, 0)) + 
   scale_y_continuous(name = NULL, sec.axis = dup_axis()) +
   
@@ -738,10 +738,10 @@ BA1_profiles_plot <- BA1_profiles_and_packer_geochem %>% ggplot(aes(
   facet_rep_grid(cols = vars(tex_params),  rows = vars(sampling_site), scales = "free", labeller = latex_labeller)+
   
     # plot design
-  theme_classic(base_size = 10.5) +
+  theme_classic(base_size = 11) +
   theme(
     legend.position = "bottom",
-    legend.direction = "horizontal",
+    legend.direction = "vertical",
     panel.grid = element_blank(),
     plot.margin = margin(1,1,1,1),
     strip.placement = "outside",
@@ -749,9 +749,9 @@ BA1_profiles_plot <- BA1_profiles_and_packer_geochem %>% ggplot(aes(
     axis.ticks.x.bottom = element_blank(),
     axis.line.x.bottom = element_blank(),
     axis.line.y.left = element_line(),
-    strip.background.x = element_blank(),
-    strip.background.y = element_rect(color = "black", fill = "grey80"),
-    strip.switch.pad.grid	= unit(0, "cm")
+    strip.background = element_blank(),
+    strip.text.y = element_blank(),
+    panel.spacing = unit(-5, "pt")
   )
 
 
