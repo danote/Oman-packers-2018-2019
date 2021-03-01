@@ -1604,6 +1604,7 @@ rmd_files &lt;- tibble(
   type = &quot;RMarkdown&quot;, 
   target_folder = rmd_docs_folder,
   source_file = c(&quot;201013_packer_paper_figs.Rmd&quot;)
+    # source_file = c(&quot;201012_BA1_Logs.Rmd&quot;)
   # source_file = c(&quot;BA1_16S_processing.Rmd&quot;)
   # source_file = list.files(
   #   path = &quot;.&quot;, 
@@ -1667,15 +1668,15 @@ docs_files &lt;-
 
 # file info
 docs_files %&gt;% select(-target_folder) %&gt;% knitr::kable()</code></pre>
-<table>
+<table style="width:100%;">
 <colgroup>
 <col width="4%" />
 <col width="14%" />
 <col width="21%" />
-<col width="16%" />
-<col width="22%" />
+<col width="15%" />
+<col width="21%" />
+<col width="6%" />
 <col width="11%" />
-<col width="4%" />
 <col width="4%" />
 </colgroup>
 <thead>
@@ -1695,10 +1696,10 @@ docs_files %&gt;% select(-target_folder) %&gt;% knitr::kable()</code></pre>
 <td align="left">RMarkdown</td>
 <td align="left">201013_packer_paper_figs.Rmd</td>
 <td align="left">docs/rmarkdown/201013_packer_paper_figs.Rmd</td>
-<td align="left">9a1c230e3be2d8eb0f5317a01ae2c8b4</td>
+<td align="left">b71e37a4324cef3a5498d7cd1ca351bf</td>
 <td align="left">docs/rmarkdown/201013_packer_paper_figs.html</td>
-<td align="left">2020-10-29 02:58:45 MDT</td>
 <td align="left">NA</td>
+<td align="left">2021-02-27 21:04:01 EST</td>
 <td align="left">TRUE</td>
 </tr>
 </tbody>
@@ -1853,7 +1854,7 @@ The following objects are masked from &#39;package:ggplot2&#39;:
 
 
   |                                                                            
-  |.....                                                                 |   7%
+  |....                                                                  |   6%
 label: source
 
   |                                                                            
@@ -1875,7 +1876,7 @@ label: load-Oman-well-data
 label: load-lit-data
 
   |                                                                            
-  |..........                                                            |  15%
+  |..........                                                            |  14%
   ordinary text without R code
 
 
@@ -1884,39 +1885,48 @@ label: load-lit-data
 label: set-plot-aesthetics
 
   |                                                                            
-  |.............                                                         |  18%
+  |............                                                          |  17%
   ordinary text without R code
 
 
   |                                                                            
-  |..............                                                        |  20%
+  |.............                                                         |  19%
 label: load-Leong-mix-data
 
   |                                                                            
-  |...............                                                       |  21%
+  |..............                                                        |  21%
   ordinary text without R code
 
 
   |                                                                            
-  |................                                                      |  23%
+  |................                                                      |  22%
+label: load-Leong-context-data
+
+  |                                                                            
+  |.................                                                     |  24%
+  ordinary text without R code
+
+
+  |                                                                            
+  |..................                                                    |  25%
 label: get-water-isotopes
 
   |                                                                            
-  |.................                                                     |  25%
+  |...................                                                   |  27%
   ordinary text without R code
 
 
   |                                                                            
-  |..................                                                    |  26%
+  |....................                                                  |  29%
 label: summ-water-isotopes-well-year
 
   |                                                                            
-  |....................                                                  |  28%
+  |.....................                                                 |  30%
   ordinary text without R code
 
 
   |                                                                            
-  |.....................                                                 |  30%
+  |......................                                                |  32%
 label: MWL-plot (with options) 
 List of 3
  $ fig.width : num 6.5
@@ -1925,30 +1935,30 @@ List of 3
 
 
   |                                                                            
-  |......................                                                |  31%
+  |.......................                                               |  33%
   ordinary text without R code
 
 
   |                                                                            
-  |.......................                                               |  33%
+  |........................                                              |  35%
 label: summ-CD
 
   |                                                                            
-  |........................                                              |  34%
+  |..........................                                            |  37%
   ordinary text without R code
 
 
   |                                                                            
-  |.........................                                             |  36%
+  |...........................                                           |  38%
 label: CD-factor-levels
 
   |                                                                            
-  |..........................                                            |  38%
+  |............................                                          |  40%
   ordinary text without R code
 
 
   |                                                                            
-  |............................                                          |  39%
+  |.............................                                         |  41%
 label: CD-plot (with options) 
 List of 3
  $ fig.width : num 3.5
@@ -1957,48 +1967,48 @@ List of 3
 
 
   |                                                                            
-  |.............................                                         |  41%
+  |..............................                                        |  43%
   ordinary text without R code
 
-
-  |                                                                            
-  |..............................                                        |  43%
-label: check-lit-data-source
 
   |                                                                            
   |...............................                                       |  44%
-  ordinary text without R code
-
+label: check-lit-data-source
 
   |                                                                            
   |................................                                      |  46%
-label: get-Oman-C1-C2-C3-data
+  ordinary text without R code
+
 
   |                                                                            
   |.................................                                     |  48%
-  ordinary text without R code
-
+label: get-Oman-C1-C2-C3-data
 
   |                                                                            
   |..................................                                    |  49%
-label: get-lit-C1-C2-C3-data
+  ordinary text without R code
+
 
   |                                                                            
   |....................................                                  |  51%
-  ordinary text without R code
-
+label: get-lit-C1-C2-C3-data
 
   |                                                                            
   |.....................................                                 |  52%
-label: C1_C2_C3-factor-levels
-
-  |                                                                            
-  |......................................                                |  54%
   ordinary text without R code
 
 
   |                                                                            
+  |......................................                                |  54%
+label: C1_C2_C3-factor-levels
+
+  |                                                                            
   |.......................................                               |  56%
+  ordinary text without R code
+
+
+  |                                                                            
+  |........................................                              |  57%
 label: C1_C2_C3_plot (with options) 
 List of 3
  $ fig.width : num 3.4
@@ -2007,48 +2017,48 @@ List of 3
 
 
   |                                                                            
-  |........................................                              |  57%
+  |.........................................                             |  59%
   ordinary text without R code
 
 
   |                                                                            
-  |.........................................                             |  59%
+  |..........................................                            |  60%
 label: get-alkane-d13C-data
 
   |                                                                            
-  |..........................................                            |  61%
+  |...........................................                           |  62%
   ordinary text without R code
 
 
   |                                                                            
-  |............................................                          |  62%
+  |............................................                          |  63%
 label: gather-alkane-d13C-data
 
   |                                                                            
-  |.............................................                         |  64%
+  |..............................................                        |  65%
   ordinary text without R code
 
-
-  |                                                                            
-  |..............................................                        |  66%
-label: get-alkane-d13C-lit-data
 
   |                                                                            
   |...............................................                       |  67%
-  ordinary text without R code
-
+label: get-alkane-d13C-lit-data
 
   |                                                                            
-  |................................................                      |  69%
-label: gather-alkane-d13C-data-lit
+  |................................................                      |  68%
+  ordinary text without R code
+
 
   |                                                                            
   |.................................................                     |  70%
+label: gather-alkane-d13C-data-lit
+
+  |                                                                            
+  |..................................................                    |  71%
   ordinary text without R code
 
 
   |                                                                            
-  |..................................................                    |  72%
+  |...................................................                   |  73%
 label: alkanes-d13C-oman-wells-and-lit-plot (with options) 
 List of 3
  $ fig.height: num 3
@@ -2057,21 +2067,21 @@ List of 3
 
 
   |                                                                            
-  |....................................................                  |  74%
+  |....................................................                  |  75%
   ordinary text without R code
 
 
   |                                                                            
-  |.....................................................                 |  75%
+  |.....................................................                 |  76%
 label: factor-levels-water-type
 
   |                                                                            
-  |......................................................                |  77%
+  |......................................................                |  78%
   ordinary text without R code
 
 
   |                                                                            
-  |.......................................................               |  79%
+  |........................................................              |  79%
 label: sulfate-plot-BA1 (with options) 
 List of 3
  $ fig.width : num 7
@@ -2080,12 +2090,12 @@ List of 3
 
 
   |                                                                            
-  |........................................................              |  80%
+  |.........................................................             |  81%
   ordinary text without R code
 
 
   |                                                                            
-  |.........................................................             |  82%
+  |..........................................................            |  83%
 label: join-leong-endmembers
 
   |                                                                            
@@ -2094,7 +2104,7 @@ label: join-leong-endmembers
 
 
   |                                                                            
-  |............................................................          |  85%
+  |............................................................          |  86%
 label: get-mix-extents-Leong
 
   |                                                                            
@@ -2121,7 +2131,7 @@ List of 3
 
 
   |                                                                            
-  |.................................................................     |  93%
+  |..................................................................    |  94%
   ordinary text without R code
 
 
@@ -2145,7 +2155,7 @@ label: predict-mixing
 
 output file: 201013_packer_paper_figs.knit.md
 
-/usr/local/bin/pandoc +RTS -K512m -RTS 201013_packer_paper_figs.utf8.md --to html4 --from markdown+autolink_bare_uris+tex_math_single_backslash --output docs/rmarkdown/201013_packer_paper_figs.html --email-obfuscation none --self-contained --standalone --section-divs --table-of-contents --toc-depth 3 --variable toc_float=1 --variable toc_selectors=h1,h2,h3 --variable toc_collapsed=1 --variable toc_smooth_scroll=1 --variable toc_print=1 --template /Library/Frameworks/R.framework/Versions/4.0/Resources/library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --number-sections --css stylesheet.css --variable &#39;theme:bootstrap&#39; --include-in-header /var/folders/pw/9fk_chms0jl85nfldy5rgfyc0000gn/T//RtmpgLtjW4/rmarkdown-str13da772a99425.html --mathjax --variable &#39;mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&#39; --lua-filter /Library/Frameworks/R.framework/Versions/4.0/Resources/library/rmarkdown/rmd/lua/pagebreak.lua --lua-filter /Library/Frameworks/R.framework/Versions/4.0/Resources/library/rmarkdown/rmd/lua/latex-div.lua --variable code_folding=show --variable code_menu=1 
+/usr/local/bin/pandoc +RTS -K512m -RTS 201013_packer_paper_figs.utf8.md --to html4 --from markdown+autolink_bare_uris+tex_math_single_backslash --output docs/rmarkdown/201013_packer_paper_figs.html --email-obfuscation none --self-contained --standalone --section-divs --table-of-contents --toc-depth 3 --variable toc_float=1 --variable toc_selectors=h1,h2,h3 --variable toc_collapsed=1 --variable toc_smooth_scroll=1 --variable toc_print=1 --template /Library/Frameworks/R.framework/Versions/4.0/Resources/library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --number-sections --css stylesheet.css --variable &#39;theme:bootstrap&#39; --include-in-header /var/folders/pw/9fk_chms0jl85nfldy5rgfyc0000gn/T//RtmpvShUYE/rmarkdown-str15522e8be69b.html --mathjax --variable &#39;mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&#39; --lua-filter /Library/Frameworks/R.framework/Versions/4.0/Resources/library/rmarkdown/rmd/lua/pagebreak.lua --lua-filter /Library/Frameworks/R.framework/Versions/4.0/Resources/library/rmarkdown/rmd/lua/latex-div.lua --variable code_folding=show --variable code_menu=1 
 
 Output created: docs/rmarkdown/201013_packer_paper_figs.html
 There were 50 or more warnings (use warnings() to see the first 50)</code></pre>
@@ -2195,9 +2205,9 @@ summary %&gt;% knitr::kable()</code></pre>
 <td align="left">RMarkdown</td>
 <td align="left">201013_packer_paper_figs.Rmd</td>
 <td align="left">docs/rmarkdown/201013_packer_paper_figs.Rmd</td>
-<td align="left">9a1c230e3be2d8eb0f5317a01ae2c8b4</td>
+<td align="left">b71e37a4324cef3a5498d7cd1ca351bf</td>
 <td align="left">docs/rmarkdown/201013_packer_paper_figs.html</td>
-<td align="left">2020-10-29 04:21:53 MDT</td>
+<td align="left">2021-02-27 21:05:31 EST</td>
 <td align="left">NA</td>
 <td align="left">TRUE</td>
 <td align="left">TRUE</td>
