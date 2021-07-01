@@ -326,6 +326,8 @@ ampli_packer_main_text_taxa_filtered$packer_interval <- factor(ampli_packer_main
 ```
 
 ## Overall taxonomy
+
+### Full names
 ```{r packer_main_text-top20-heat-round, fig.width=9, fig.height=4}
 packer_main_text_heat <- ampli_packer_main_text_taxa_filtered %>%
   ampli_heat_map(x_sample_group_col = packer_interval, text_label_scalar = 100, text_label_decimal_places = 0, text_label_threshold = 0.01, text_label_zero = "n.r.", text_label_threshold_round_priority = "round", top_n = 20, y_taxa_arrangement = "abund", facet_grid_sample_group_col = year_sampling_site)
@@ -344,6 +346,81 @@ packer_main_text_heat +
   theme(
     panel.grid = element_blank(),
     legend.position = "bottom",
+    plot.margin =  margin(1,1,1,1)
+        )
+```
+
+### Shortened names
+
+```{r packer_main_text-top20-heat-round-tbl}
+packer_main_text_heat_names_tbl <- ampli_packer_main_text_taxa_filtered %>%
+  ampli_heat_map(x_sample_group_col = packer_interval, text_label_scalar = 100, text_label_decimal_places = 0, text_label_threshold = 0.01, text_label_zero = "n.r.", text_label_threshold_round_priority = "round", top_n = 20, y_taxa_arrangement = "abund", facet_grid_sample_group_col = year_sampling_site, return_plot_data_tbl = TRUE)
+
+packer_main_text_heat_names_tbl 
+```
+
+```{r get-taxa-names-vector}
+packer_main_text_heat_names_taxonomy_vector <- packer_main_text_heat_names_tbl %>%  group_by(taxonomy) %>% summarise(taxonomy = first(taxonomy)) %>% mutate(taxonomy_char = as.character(taxonomy)) %>% pull(taxonomy_char)
+
+packer_main_text_heat_names_taxonomy_vector
+```
+
+```{r get-full-tax-split}
+ampli_packer_main_text_taxa_filtered %>% ampli_filter_strings(col_to_filter = taxonomy, strings_to_filter = packer_main_text_heat_names_taxonomy_vector, detection_method = "complete", action = "keep")  %>% 
+  # remove taxa with zero reads
+  ampli_rm_0_read_taxa() %>% group_by(taxonomy) %>% summarise(Kingdom = first(Kingdom), Phylum = first(Phylum), Class = first(Class), Order = first(Order), Family = first(Family), Genus = first(Genus), Species = first(Species))
+```
+
+
+```{r packer_main_text-top20-heat-round-tbl-edit}
+packer_main_text_heat_names_tbl_edit <- packer_main_text_heat_names_tbl  %>% mutate(tax_short = case_when(
+  
+  taxonomy == "k__Bacteria; p__Proteobacteria; c__Gammaproteobacteria; o__Burkholderiales; f__Rhodocyclaceae; g__Methyloversatilis; s__NA" ~ "g. \\textit{Methyloversatilis}",
+  taxonomy == "k__Bacteria; p__Acetothermia; c__Acetothermiia; o__NA; f__NA; g__NA; s__NA" ~ "c. Acetothermiia",
+  taxonomy == "k__Bacteria; p__Nitrospirota; c__Nitrospiria; o__Nitrospirales; f__Nitrospiraceae; g__Nitrospira; s__NA" ~ "g. \\textit{Nitrospira}",
+  taxonomy == "k__Bacteria; p__Patescibacteria; c__Parcubacteria; o__NA; f__NA; g__NA; s__NA" ~ "c. Parcubacteria",
+  taxonomy == "k__Bacteria; p__Proteobacteria; c__Gammaproteobacteria; o__Burkholderiales; f__Comamonadaceae; g__Azohydromonas; s__NA" ~ "g. \\textit{Azohydromonas}",
+  taxonomy == "k__Bacteria; p__Proteobacteria; c__Gammaproteobacteria; o__Xanthomonadales; f__Xanthomonadaceae; g__NA; s__NA" ~ "f. Xanthomonadaceae",
+  taxonomy == "k__Bacteria; p__Patescibacteria; c__CPR2; o__NA; f__NA; g__NA; s__NA" ~ "c. CPR2",
+  taxonomy == "k__Bacteria; p__Proteobacteria; c__Gammaproteobacteria; o__Xanthomonadales; f__Xanthomonadaceae; g__Silanimonas; s__NA" ~ "g. \\textit{Silanimonas}",
+  taxonomy == "k__Archaea; p__Crenarchaeota; c__Nitrososphaeria; o__Nitrososphaerales; f__Nitrososphaeraceae; g__Candidatus_Nitrososphaera; s__NA" ~ "g. \\textit{Ca.} Nitrososphaera",
+  taxonomy == "k__Bacteria; p__Verrucomicrobiota; c__Verrucomicrobiae; o__Opitutales; f__Opitutaceae; g__Lacunisphaera; s__NA" ~ "g. \\textit{Lacunisphaera}",
+  taxonomy == "k__Bacteria; p__NA; c__NA; o__NA; f__NA; g__NA; s__NA" ~ "k. Bacteria",
+  taxonomy == "k__Bacteria; p__Bacteroidota; c__Ignavibacteria; o__Ignavibacteriales; f__SM1H02; g__NA; s__NA" ~ "f. SM1H02",
+  taxonomy == "k__Archaea; p__Crenarchaeota; c__Nitrososphaeria; o__Nitrosopumilales; f__Nitrosopumilaceae; g__Candidatus_Nitrosotenuis; s__NA" ~ "g. \\textit{Ca.} Nitrosotenuis",
+  taxonomy == "k__Bacteria; p__Proteobacteria; c__Gammaproteobacteria; o__Burkholderiales; f__Sutterellaceae; g__NA; s__NA" ~ "f. Sutterellaceae",
+  taxonomy == "k__Bacteria; p__Proteobacteria; c__Gammaproteobacteria; o__NA; f__NA; g__NA; s__NA" ~ "c. Gammaproteobacteria",
+  taxonomy == "k__Bacteria; p__GAL15; c__NA; o__NA; f__NA; g__NA; s__NA" ~ "p. GAL15",
+  taxonomy == "k__Bacteria; p__Deinococcota; c__Deinococci; o__Thermales; f__Thermaceae; g__Meiothermus; s__NA" ~ "g. \\textit{Meiothermus}",
+  taxonomy == "k__Bacteria; p__Proteobacteria; c__Alphaproteobacteria; o__Parvibaculales; f__Parvibaculaceae; g__Parvibaculum; s__lavamentivorans" ~ "s. \\textit{lavamentivorans}",
+  taxonomy == "k__Bacteria; p__Proteobacteria; c__Gammaproteobacteria; o__Burkholderiales; f__Comamonadaceae; g__Brachymonas; s__NA" ~ "g. \\textit{Brachymonas}",
+  taxonomy == "k__Bacteria; p__Nitrospirota; c__Thermodesulfovibrionia; o__NA; f__NA; g__NA; s__NA" ~ "c. Thermodesulfovibrionia",
+  taxonomy == "Other taxa" ~ "Other taxa"))
+
+packer_main_text_heat_names_tbl_edit
+```
+
+
+
+
+```{r packer_main_text-top20-heat-round-custom-names, fig.width=7, fig.height=4}
+packer_main_text_heat <- ampli_packer_main_text_taxa_filtered %>%
+  ampli_heat_map(x_sample_group_col = packer_interval, text_label_scalar = 100, text_label_decimal_places = 0, text_label_threshold = 0.01, text_label_zero = "n.r.", text_label_threshold_round_priority = "round", top_n = 20, y_taxa_arrangement = "abund", facet_grid_sample_group_col = year_sampling_site, custom_taxa_names_tbl = packer_main_text_heat_names_tbl_edit, custom_taxa_names_col = tax_short)
+
+packer_main_text_heat +
+  # plot geometry
+  geom_text(parse = FALSE, size = 3) +
+  
+  # plot styling
+  scale_fill_gradient(name = "Read relative\nabundance / [%]", low = "white", high = "red", labels = label_percent(accuracy = 1, suffix = "")) +
+  scale_x_discrete(name = "Depth of sampling interval / [m] grouped by\nyear of sampling and well name", expand = c(0,0)) +
+    scale_y_discrete(name = "Deepest taxonomic assignment", expand = c(0,0), labels = TeX) +
+
+  theme_bw(base_size = 11) +
+
+  theme(
+    panel.grid = element_blank(),
+    # legend.position = "bottom",
     plot.margin =  margin(1,1,1,1)
         )
 ```
