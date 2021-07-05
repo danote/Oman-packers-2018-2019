@@ -348,6 +348,28 @@ packer_main_text_heat +
         )
 ```
 
+```{r packer_main_text-top25-heat-round, fig.width=9, fig.height=4}
+packer_main_text_heat <- ampli_packer_main_text_taxa_filtered %>%
+  ampli_heat_map(x_sample_group_col = packer_interval, text_label_scalar = 100, text_label_decimal_places = 0, text_label_threshold = 0.01, text_label_zero = "n.r.", text_label_threshold_round_priority = "round", top_n = 25, y_taxa_arrangement = "abund", facet_grid_sample_group_col = year_sampling_site)
+
+packer_main_text_heat +
+  # plot geometry
+  geom_text(parse = FALSE, size = 2.5) +
+  
+  # plot styling
+  scale_fill_gradient(name = "Read relative\nabundance / [%]", low = "white", high = "red", labels = label_percent(accuracy = 1, suffix = "")) +
+  scale_x_discrete(name = "Depth of sampling interval / [m] grouped by\nyear of sampling and well name", expand = c(0,0)) +
+  scale_y_discrete(name = "Deepest taxonomic assignment", expand = c(0,0)) +
+
+  theme_bw(base_size = 8.5) +
+
+  theme(
+    panel.grid = element_blank(),
+    legend.position = "bottom",
+    plot.margin =  margin(1,1,1,1)
+        )
+```
+
 ### Shortened names
 
 ```{r packer_main_text-top20-heat-round-tbl}
@@ -553,12 +575,12 @@ ampli_OM17_thru_19_focus_samples_taxa_filtered %>%
 
 There were no species-level assignments to known short-chain alkane oxidizing taxa. The genera shown above contain organisms capable of many metabolic processes unrelated to short-chain alkane oxidation, so their presence is not strong evidence for microbial short-chain alkane oxidation.
 
-# S-oxidizing taxa from Rempfert et al., 2017
+# S-oxidizing taxa
 
 ```{r list-S-ox-taxa}
-# input S-oxidizing taxa found in Rempfert et al., 2017
+# input potential S-oxidizing taxa found in Rempfert et al., 2017 and other internet sources
 
-S_ox_taxa_oman <- c("Sulfuritalea", "Rhodocyclaceae", "Cupriavidus")
+S_ox_taxa_oman <- c("Sulfuritalea", "Rhodocyclaceae", "Cupriavidus", "Sulfolobales", "Thiobacilliaceae", "Beggiatoaceae", "Acidithiobacillus", "Aquaspirillum", "Aquifex", "Bacillus", "Methylobacterium", "Paracoccus", "Pseudomonas", "Starkeya", "Thermithiobacillus", "Xanthobacter", "Desulfobulbaceae", "Chromatiaceae", "Allochromatium", "Chlorobiaceae", "Rhodospirillaceae", "Lyngbya", "Aphanotece", "Microcoleus", "Phormidium", "Thiobacillus", "Thermothrix", "Chloroflexaceae")
 ```
 
 ```{r S-ox-heat, fig.width=8, fig.height=2}
@@ -600,7 +622,7 @@ ampli_OM17_thru_19_focus_samples_taxa_filtered %>% head()
 ```
 
 
-```{r S-ox-heat-fam-deeper, fig.width=7, fig.height=2}
+```{r S-ox-heat-fam-deeper, fig.width=7, fig.height=3}
 ampli_OM17_thru_19_focus_samples_taxa_filtered %>%
   # remove samples taken prior to 2018
   filter(year_sampled > 2017) %>% 
