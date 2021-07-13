@@ -327,15 +327,15 @@ docs_files &lt;-
 
 # file info
 docs_files %&gt;% select(-target_folder) %&gt;% knitr::kable()</code></pre>
-<table>
+<table style="width:100%;">
 <colgroup>
 <col width="5%" />
-<col width="11%" />
-<col width="19%" />
-<col width="16%" />
-<col width="19%" />
 <col width="12%" />
+<col width="20%" />
+<col width="17%" />
+<col width="20%" />
 <col width="12%" />
+<col width="5%" />
 <col width="4%" />
 </colgroup>
 <thead>
@@ -355,10 +355,10 @@ docs_files %&gt;% select(-target_folder) %&gt;% knitr::kable()</code></pre>
 <td align="left">RMarkdown</td>
 <td align="left">BA1_16S_processing.Rmd</td>
 <td align="left">docs/rmarkdown/BA1_16S_processing.Rmd</td>
-<td align="left">6c69bef011e675592b689734396eb5c7</td>
+<td align="left">e659829d6edaccba47f66a3366f4f3b4</td>
 <td align="left">docs/rmarkdown/BA1_16S_processing.html</td>
-<td align="left">2021-07-01 13:30:48 EDT</td>
-<td align="left">2021-07-08 08:38:48 EDT</td>
+<td align="left">2021-07-13 17:04:29 EDT</td>
+<td align="left">NA</td>
 <td align="left">TRUE</td>
 </tr>
 </tbody>
@@ -462,7 +462,7 @@ processing file: BA1_16S_processing.Rmd
 
 
   |                                                                            
-  |..                                                                    |   2%
+  |..                                                                    |   3%
 label: knitting-options
 
   |                                                                            
@@ -471,78 +471,65 @@ label: knitting-options
 
 
   |                                                                            
-  |...                                                                   |   5%
+  |....                                                                  |   5%
 label: setup
 
   |                                                                            
-  |....                                                                  |   6%
+  |.....                                                                 |   7%
   ordinary text without R code
 
 
   |                                                                            
-  |.....                                                                 |   7%
+  |......                                                                |   8%
 label: source
 
   |                                                                            
-  |......                                                                |   9%
+  |.......                                                               |   9%
   ordinary text without R code
 
-
-  |                                                                            
-  |.......                                                               |  10%
-label: load-dada2-output
 
   |                                                                            
   |........                                                              |  11%
+label: load-dada2-output
+
+  |                                                                            
+  |.........                                                             |  12%
   ordinary text without R code
 
 
   |                                                                            
-  |.........                                                             |  12%
+  |.........                                                             |  14%
 label: load-metadata (with options) 
 List of 1
  $ warning: logi FALSE
 
 
   |                                                                            
-  |.........                                                             |  13%
+  |..........                                                            |  15%
   ordinary text without R code
 
-
-  |                                                                            
-  |..........                                                            |  15%
-label: tidy-data
 
   |                                                                            
   |...........                                                           |  16%
+label: tidy-data
+
+  |                                                                            
+  |............                                                          |  18%
   ordinary text without R code
 
 
   |                                                                            
-  |............                                                          |  17%
+  |.............                                                         |  19%
 label: combine-datasets
 
   |                                                                            
-  |.............                                                         |  18%
-  ordinary text without R code
-
-
-  |                                                                            
   |..............                                                        |  20%
-label: initial-data-exam
-
-  |                                                                            
-  |...............                                                       |  21%
   ordinary text without R code
 
 
   |                                                                            
   |...............                                                       |  22%
-label: plot-read-counts (with options) 
-List of 2
- $ fig.width : num 14
- $ fig.height: num 4
-
+label: initial-data-exam
 
   |                                                                            
   |................                                                      |  23%
@@ -551,9 +538,10 @@ List of 2
 
   |                                                                            
   |.................                                                     |  24%
-label: filter-for-interesting-data (with options) 
-List of 1
- $ warning: logi FALSE
+label: plot-read-counts (with options) 
+List of 2
+ $ fig.width : num 14
+ $ fig.height: num 4
 
 
   |                                                                            
@@ -563,7 +551,10 @@ List of 1
 
   |                                                                            
   |...................                                                   |  27%
-label: rm-unwanted-taxa-OM17-18-19
+label: filter-for-interesting-data (with options) 
+List of 1
+ $ warning: logi FALSE
+
 
   |                                                                            
   |....................                                                  |  28%
@@ -571,16 +562,25 @@ label: rm-unwanted-taxa-OM17-18-19
 
 
   |                                                                            
-  |....................                                                  |  29%
-label: tally-reads-OM17-18-19
+  |.....................                                                 |  30%
+label: rm-unwanted-taxa-OM17-18-19
 
   |                                                                            
-  |.....................                                                 |  30%
+  |......................                                                |  31%
   ordinary text without R code
 
 
   |                                                                            
-  |......................                                                |  32%
+  |.......................                                               |  32%
+label: tally-reads-OM17-18-19
+
+  |                                                                            
+  |........................                                              |  34%
+  ordinary text without R code
+
+
+  |                                                                            
+  |.........................                                             |  35%
 label: plot-read-counts-filt (with options) 
 List of 2
  $ fig.height: num 4
@@ -588,30 +588,30 @@ List of 2
 
 
   |                                                                            
-  |.......................                                               |  33%
+  |..........................                                            |  36%
   ordinary text without R code
 
-
-  |                                                                            
-  |........................                                              |  34%
-label: cal-rel-abund-OM17-18-19
-
-  |                                                                            
-  |.........................                                             |  35%
-  ordinary text without R code
-
-
-  |                                                                            
-  |..........................                                            |  37%
-label: check-rel-abund
 
   |                                                                            
   |..........................                                            |  38%
+label: cal-rel-abund-OM17-18-19
+
+  |                                                                            
+  |...........................                                           |  39%
   ordinary text without R code
 
 
   |                                                                            
-  |...........................                                           |  39%
+  |............................                                          |  41%
+label: check-rel-abund
+
+  |                                                                            
+  |.............................                                         |  42%
+  ordinary text without R code
+
+
+  |                                                                            
+  |..............................                                        |  43%
 label: OM17-thru-OM19-top20-heat-round (with options) 
 List of 2
  $ fig.width : num 13
@@ -619,47 +619,25 @@ List of 2
 
 
   |                                                                            
-  |............................                                          |  40%
+  |...............................                                       |  45%
   ordinary text without R code
 
 
   |                                                                            
-  |.............................                                         |  41%
+  |................................                                      |  46%
 label: filter-for-main-text-data (with options) 
 List of 1
  $ warning: logi FALSE
 
 
   |                                                                            
-  |..............................                                        |  43%
-  ordinary text without R code
-
-
-  |                                                                            
-  |...............................                                       |  44%
-label: add-interval-names
-
-  |                                                                            
-  |................................                                      |  45%
-  ordinary text without R code
-
-
-  |                                                                            
-  |................................                                      |  46%
-label: add-factor-levels
-
-  |                                                                            
-  |.................................                                     |  48%
+  |.................................                                     |  47%
   ordinary text without R code
 
 
   |                                                                            
   |..................................                                    |  49%
-label: packer_main_text-top20-heat-round (with options) 
-List of 2
- $ fig.width : num 9
- $ fig.height: num 4
-
+label: add-interval-names
 
   |                                                                            
   |...................................                                   |  50%
@@ -668,6 +646,15 @@ List of 2
 
   |                                                                            
   |....................................                                  |  51%
+label: add-factor-levels
+
+  |                                                                            
+  |.....................................                                 |  53%
+  ordinary text without R code
+
+
+  |                                                                            
+  |......................................                                |  54%
 label: packer_main_text-top23-heat-round (with options) 
 List of 2
  $ fig.width : num 9
@@ -675,48 +662,48 @@ List of 2
 
 
   |                                                                            
-  |.....................................                                 |  52%
+  |.......................................                               |  55%
   ordinary text without R code
 
-
-  |                                                                            
-  |......................................                                |  54%
-label: packer_main_text-top23-heat-round-tbl
-
-  |                                                                            
-  |......................................                                |  55%
-  ordinary text without R code
-
-
-  |                                                                            
-  |.......................................                               |  56%
-label: get-taxa-names-vector
 
   |                                                                            
   |........................................                              |  57%
+label: packer_main_text-top23-heat-round-tbl
+
+  |                                                                            
+  |.........................................                             |  58%
   ordinary text without R code
 
 
   |                                                                            
-  |.........................................                             |  59%
-label: get-full-tax-split
-
-  |                                                                            
-  |..........................................                            |  60%
-  ordinary text without R code
-
+  |..........................................                            |  59%
+label: get-taxa-names-vector
 
   |                                                                            
   |...........................................                           |  61%
-label: packer_main_text-top23-heat-round-tbl-edit
-
-  |                                                                            
-  |............................................                          |  62%
   ordinary text without R code
 
 
   |                                                                            
-  |............................................                          |  63%
+  |............................................                          |  62%
+label: get-full-tax-split
+
+  |                                                                            
+  |............................................                          |  64%
+  ordinary text without R code
+
+
+  |                                                                            
+  |.............................................                         |  65%
+label: packer_main_text-top23-heat-round-tbl-edit
+
+  |                                                                            
+  |..............................................                        |  66%
+  ordinary text without R code
+
+
+  |                                                                            
+  |...............................................                       |  68%
 label: packer_main_text-top23-heat-round-custom-names (with options) 
 List of 2
  $ fig.width : num 7
@@ -724,39 +711,17 @@ List of 2
 
 
   |                                                                            
-  |.............................................                         |  65%
+  |................................................                      |  69%
   ordinary text without R code
 
 
   |                                                                            
-  |..............................................                        |  66%
+  |.................................................                     |  70%
 label: BA1A-2018-size-frac (with options) 
 List of 2
  $ fig.height: num 4.5
  $ fig.width : num 9
 
-
-  |                                                                            
-  |...............................................                       |  67%
-  ordinary text without R code
-
-
-  |                                                                            
-  |................................................                      |  68%
-label: CH4-taxa-tbl (with options) 
-List of 2
- $ fig.width : num 9
- $ fig.height: num 1.7
-
-
-  |                                                                            
-  |.................................................                     |  70%
-  ordinary text without R code
-
-
-  |                                                                            
-  |..................................................                    |  71%
-label: CH4-heat-tbl-add-tax-short
 
   |                                                                            
   |..................................................                    |  72%
@@ -765,7 +730,11 @@ label: CH4-heat-tbl-add-tax-short
 
   |                                                                            
   |...................................................                   |  73%
-label: show_packer_interval_filter_diam
+label: CH4-taxa-tbl (with options) 
+List of 2
+ $ fig.width : num 9
+ $ fig.height: num 1.7
+
 
   |                                                                            
   |....................................................                  |  74%
@@ -774,7 +743,7 @@ label: show_packer_interval_filter_diam
 
   |                                                                            
   |.....................................................                 |  76%
-label: ampli_OM18_thru_19_focus_samples_taxa_filtered_packer_interval_filter_diam
+label: CH4-heat-tbl-add-tax-short
 
   |                                                                            
   |......................................................                |  77%
@@ -783,6 +752,24 @@ label: ampli_OM18_thru_19_focus_samples_taxa_filtered_packer_interval_filter_dia
 
   |                                                                            
   |.......................................................               |  78%
+label: show_packer_interval_filter_diam
+
+  |                                                                            
+  |........................................................              |  80%
+  ordinary text without R code
+
+
+  |                                                                            
+  |.........................................................             |  81%
+label: ampli_OM18_thru_19_focus_samples_taxa_filtered_packer_interval_filter_diam
+
+  |                                                                            
+  |..........................................................            |  82%
+  ordinary text without R code
+
+
+  |                                                                            
+  |...........................................................           |  84%
 label: CH4-heat-structured-pretty (with options) 
 List of 2
  $ fig.width : num 7
@@ -790,21 +777,21 @@ List of 2
 
 
   |                                                                            
-  |.......................................................               |  79%
+  |............................................................          |  85%
   ordinary text without R code
 
 
   |                                                                            
-  |........................................................              |  80%
+  |.............................................................         |  86%
 label: list-SCA-taxa
 
   |                                                                            
-  |.........................................................             |  82%
+  |.............................................................         |  88%
   ordinary text without R code
 
 
   |                                                                            
-  |..........................................................            |  83%
+  |..............................................................        |  89%
 label: SCA-heat-sci (with options) 
 List of 2
  $ fig.width : num 8
@@ -812,56 +799,21 @@ List of 2
 
 
   |                                                                            
-  |...........................................................           |  84%
+  |...............................................................       |  91%
   ordinary text without R code
 
 
   |                                                                            
-  |............................................................          |  85%
-label: list-S-ox-taxa
-
-  |                                                                            
-  |.............................................................         |  87%
-  ordinary text without R code
-
-
-  |                                                                            
-  |.............................................................         |  88%
-label: S-ox-heat (with options) 
-List of 2
- $ fig.width : num 8
- $ fig.height: num 3.5
-
-
-  |                                                                            
-  |..............................................................        |  89%
-  ordinary text without R code
-
-
-  |                                                                            
-  |...............................................................       |  90%
-label: S-ox-heat-fam-deeper (with options) 
-List of 2
- $ fig.width : num 7
- $ fig.height: num 3.5
-
-
-  |                                                                            
-  |................................................................      |  91%
-  ordinary text without R code
-
-
-  |                                                                            
-  |.................................................................     |  93%
+  |................................................................      |  92%
 label: list-Hydrogenophaga-taxa
 
   |                                                                            
-  |..................................................................    |  94%
+  |.................................................................     |  93%
   ordinary text without R code
 
 
   |                                                                            
-  |...................................................................   |  95%
+  |..................................................................    |  95%
 label: Hydrogenophaga-heat (with options) 
 List of 2
  $ fig.width : num 7
@@ -874,7 +826,7 @@ List of 2
 
 
   |                                                                            
-  |....................................................................  |  98%
+  |....................................................................  |  97%
 label: drill-foam-taxa-heat-BA1A (with options) 
 List of 2
  $ fig.height: num 4.5
@@ -892,7 +844,7 @@ label: drill-foam-taxa-heat-BA1A-brach-parvi
 
 output file: BA1_16S_processing.knit.md
 
-/usr/local/bin/pandoc +RTS -K512m -RTS BA1_16S_processing.knit.md --to html4 --from markdown+autolink_bare_uris+tex_math_single_backslash --output docs/rmarkdown/BA1_16S_processing.html --lua-filter /Library/Frameworks/R.framework/Versions/4.1/Resources/library/rmarkdown/rmarkdown/lua/pagebreak.lua --lua-filter /Library/Frameworks/R.framework/Versions/4.1/Resources/library/rmarkdown/rmarkdown/lua/latex-div.lua --self-contained --variable bs3=TRUE --standalone --section-divs --table-of-contents --toc-depth 3 --variable toc_float=1 --variable toc_selectors=h1,h2,h3 --variable toc_collapsed=1 --variable toc_smooth_scroll=1 --variable toc_print=1 --template /Library/Frameworks/R.framework/Versions/4.1/Resources/library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --variable theme=bootstrap --css /Users/melo.d/Desktop/Research/thesis_prep/manuscripts/Oman-packers-2018-2019/Oman-packers-2018-2019/stylesheet.css --include-in-header /var/folders/pw/9fk_chms0jl85nfldy5rgfyc0000gn/T//RtmpxKrmNa/rmarkdown-strb04f33d64520.html --mathjax --variable &#39;mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&#39; --variable code_folding=show --variable code_menu=1 
+/usr/local/bin/pandoc +RTS -K512m -RTS BA1_16S_processing.knit.md --to html4 --from markdown+autolink_bare_uris+tex_math_single_backslash --output docs/rmarkdown/BA1_16S_processing.html --lua-filter /Library/Frameworks/R.framework/Versions/4.1/Resources/library/rmarkdown/rmarkdown/lua/pagebreak.lua --lua-filter /Library/Frameworks/R.framework/Versions/4.1/Resources/library/rmarkdown/rmarkdown/lua/latex-div.lua --self-contained --variable bs3=TRUE --standalone --section-divs --table-of-contents --toc-depth 3 --variable toc_float=1 --variable toc_selectors=h1,h2,h3 --variable toc_collapsed=1 --variable toc_smooth_scroll=1 --variable toc_print=1 --template /Library/Frameworks/R.framework/Versions/4.1/Resources/library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --variable theme=bootstrap --css /Users/melo.d/Desktop/Research/thesis_prep/manuscripts/Oman-packers-2018-2019/Oman-packers-2018-2019/stylesheet.css --include-in-header /var/folders/pw/9fk_chms0jl85nfldy5rgfyc0000gn/T//RtmpwhRFNZ/rmarkdown-str1041d23463496.html --mathjax --variable &#39;mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&#39; --variable code_folding=show --variable code_menu=1 
 
 Output created: docs/rmarkdown/BA1_16S_processing.html
 Warning message:
@@ -945,9 +897,9 @@ Please use the `file` argument instead.</code></pre>
 <td align="left">RMarkdown</td>
 <td align="left">BA1_16S_processing.Rmd</td>
 <td align="left">docs/rmarkdown/BA1_16S_processing.Rmd</td>
-<td align="left">6c69bef011e675592b689734396eb5c7</td>
+<td align="left">e659829d6edaccba47f66a3366f4f3b4</td>
 <td align="left">docs/rmarkdown/BA1_16S_processing.html</td>
-<td align="left">2021-07-08 08:39:32 EDT</td>
+<td align="left">2021-07-13 17:06:13 EDT</td>
 <td align="left">NA</td>
 <td align="left">TRUE</td>
 <td align="left">TRUE</td>
