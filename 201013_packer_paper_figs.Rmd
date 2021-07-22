@@ -807,7 +807,7 @@ Si_pH_plot <- ggplot() +
     mapping =  aes(
     x = pH,
     y = Si_mol_kg * 1e6),     shape = 5,
-    color = "#999999", size = 2.5) +
+    color = "#999999", size = 3.5) +
 
       # context data Nothaft, rempfert
   geom_point(data = data %>% filter(water_type == "Ca_OH" | water_type == "Mg_HCO3") %>% filter(str_detect(packer_site_year_interval, "BA1") == FALSE),
