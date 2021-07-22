@@ -42,7 +42,7 @@ library(scales)
 
 ```{r source}
 # source all relevant scripting files
-source(file.path("scripts", "ampliverse_05.R"))
+source(file.path("scripts", "ampliverse_07.R"))
 source(file.path("scripts", "plotting_functions.R"))
 ```
 
@@ -326,9 +326,11 @@ ampli_packer_main_text_taxa_filtered$packer_interval <- factor(ampli_packer_main
 ```
 
 ## Overall taxonomy
-```{r packer_main_text-top20-heat-round, fig.width=9, fig.height=4}
+
+### Full names
+```{r packer_main_text-top23-heat-round, fig.width=9, fig.height=4.5}
 packer_main_text_heat <- ampli_packer_main_text_taxa_filtered %>%
-  ampli_heat_map(x_sample_group_col = packer_interval, text_label_scalar = 100, text_label_decimal_places = 0, text_label_threshold = 0.01, text_label_zero = "n.r.", text_label_threshold_round_priority = "round", top_n = 20, y_taxa_arrangement = "abund", facet_grid_sample_group_col = year_sampling_site)
+  ampli_heat_map(x_sample_group_col = packer_interval, text_label_scalar = 100, text_label_decimal_places = 0, text_label_threshold = 0.01, text_label_zero = "n.r.", text_label_threshold_round_priority = "round", top_n = 25, y_taxa_arrangement = "abund", facet_grid_sample_group_col = year_sampling_site)
 
 packer_main_text_heat +
   # plot geometry
@@ -348,6 +350,84 @@ packer_main_text_heat +
         )
 ```
 
+### Shortened names
+
+```{r packer_main_text-top23-heat-round-tbl}
+packer_main_text_heat_names_tbl <- ampli_packer_main_text_taxa_filtered %>%
+  ampli_heat_map(x_sample_group_col = packer_interval, text_label_scalar = 100, text_label_decimal_places = 0, text_label_threshold = 0.01, text_label_zero = "n.r.", text_label_threshold_round_priority = "round", top_n = 23, y_taxa_arrangement = "abund", facet_grid_sample_group_col = year_sampling_site, return_plot_data_tbl = TRUE)
+
+packer_main_text_heat_names_tbl 
+```
+
+```{r get-taxa-names-vector}
+packer_main_text_heat_names_taxonomy_vector <- packer_main_text_heat_names_tbl %>%  group_by(taxonomy) %>% summarise(taxonomy = first(taxonomy)) %>% mutate(taxonomy_char = as.character(taxonomy)) %>% pull(taxonomy_char)
+
+packer_main_text_heat_names_taxonomy_vector
+```
+
+```{r get-full-tax-split}
+ampli_packer_main_text_taxa_filtered %>% ampli_filter_strings(col_to_filter = taxonomy, strings_to_filter = packer_main_text_heat_names_taxonomy_vector, detection_method = "complete", action = "keep")  %>% 
+  # remove taxa with zero reads
+  ampli_rm_0_read_taxa() %>% group_by(taxonomy) %>% summarise(Kingdom = first(Kingdom), Phylum = first(Phylum), Class = first(Class), Order = first(Order), Family = first(Family), Genus = first(Genus), Species = first(Species))
+```
+
+
+```{r packer_main_text-top23-heat-round-tbl-edit}
+packer_main_text_heat_names_tbl_edit <- packer_main_text_heat_names_tbl  %>% mutate(tax_short = case_when(
+  taxonomy == "k__Archaea; p__Crenarchaeota; c__Nitrososphaeria; o__Nitrosopumilales; f__Nitrosopumilaceae; g__Candidatus_Nitrosotenuis; s__NA" ~ "g. \\textit{Ca.} Nitrosotenuis",
+  taxonomy == "k__Archaea; p__Crenarchaeota; c__Nitrososphaeria; o__Nitrososphaerales; f__Nitrososphaeraceae; g__Candidatus_Nitrososphaera; s__NA" ~ "g. \\textit{Ca.} Nitrososphaera",
+  taxonomy == "k__Bacteria; p__Acetothermia; c__Acetothermiia; o__NA; f__NA; g__NA; s__NA" ~ "c. Acetothermiia",
+  taxonomy == "k__Bacteria; p__Bacteroidota; c__Ignavibacteria; o__Ignavibacteriales; f__SM1H02; g__NA; s__NA" ~ "f. SM1H02",
+  taxonomy == "k__Bacteria; p__Bacteroidota; c__Kryptonia; o__Kryptoniales; f__BSV26; g__NA; s__NA" ~ "f. BSV26",
+  taxonomy == "k__Bacteria; p__Chloroflexi; c__P2-11E; o__NA; f__NA; g__NA; s__NA" ~ "c. P2-11E",
+  taxonomy == "k__Bacteria; p__Deinococcota; c__Deinococci; o__Thermales; f__Thermaceae; g__Meiothermus; s__NA" ~ "g. \\textit{Meiothermus}",
+  taxonomy == "k__Bacteria; p__Firmicutes; c__Dethiobacteria; o__Dethiobacterales; f__Dethiobacteraceae; g__Dethiobacter; s__NA" ~ "g. \\textit{Dethiobacter}",
+  taxonomy == "k__Bacteria; p__GAL15; c__NA; o__NA; f__NA; g__NA; s__NA" ~ "p. GAL15",
+  taxonomy == "k__Bacteria; p__NA; c__NA; o__NA; f__NA; g__NA; s__NA" ~ "k. Bacteria",
+  taxonomy == "k__Bacteria; p__Nitrospirota; c__Nitrospiria; o__Nitrospirales; f__Nitrospiraceae; g__Nitrospira; s__NA" ~ "g. \\textit{Nitrospira}",
+  taxonomy == "k__Bacteria; p__Nitrospirota; c__Thermodesulfovibrionia; o__NA; f__NA; g__NA; s__NA" ~ "c. Thermodesulfovibrionia",
+  taxonomy == "k__Bacteria; p__Patescibacteria; c__ABY1; o__Candidatus_Magasanikbacteria; f__NA; g__NA; s__NA" ~ "o. \\textit{Ca.} Magasanikbacteria",  
+  taxonomy == "k__Bacteria; p__Patescibacteria; c__CPR2; o__NA; f__NA; g__NA; s__NA" ~ "c. CPR2",
+  taxonomy == "k__Bacteria; p__Patescibacteria; c__Parcubacteria; o__NA; f__NA; g__NA; s__NA" ~ "c. Parcubacteria",
+  taxonomy == "k__Bacteria; p__Proteobacteria; c__Alphaproteobacteria; o__Parvibaculales; f__Parvibaculaceae; g__Parvibaculum; s__lavamentivorans" ~ "s. \\textit{lavamentivorans}",
+  taxonomy == "k__Bacteria; p__Proteobacteria; c__Gammaproteobacteria; o__Burkholderiales; f__Comamonadaceae; g__Azohydromonas; s__NA" ~ "g. \\textit{Azohydromonas}",
+  taxonomy == "k__Bacteria; p__Proteobacteria; c__Gammaproteobacteria; o__Burkholderiales; f__Comamonadaceae; g__Brachymonas; s__NA" ~ "g. \\textit{Brachymonas}",
+  taxonomy == "k__Bacteria; p__Proteobacteria; c__Gammaproteobacteria; o__Burkholderiales; f__Hydrogenophilaceae; g__Thiobacillus; s__thioparus" ~ "s. \\textit{thioparus}",  
+  taxonomy == "k__Bacteria; p__Proteobacteria; c__Gammaproteobacteria; o__Burkholderiales; f__Sutterellaceae; g__NA; s__NA" ~ "f. Sutterellaceae",
+  taxonomy == "k__Bacteria; p__Proteobacteria; c__Gammaproteobacteria; o__NA; f__NA; g__NA; s__NA" ~ "c. Gammaproteobacteria",
+  taxonomy == "k__Bacteria; p__Proteobacteria; c__Gammaproteobacteria; o__Xanthomonadales; f__Xanthomonadaceae; g__NA; s__NA" ~ "f. Xanthomonadaceae",
+  taxonomy == "k__Bacteria; p__Proteobacteria; c__Gammaproteobacteria; o__Xanthomonadales; f__Xanthomonadaceae; g__Silanimonas; s__NA" ~ "g. \\textit{Silanimonas}",
+  taxonomy == "k__Bacteria; p__Verrucomicrobiota; c__Verrucomicrobiae; o__Opitutales; f__Opitutaceae; g__Lacunisphaera; s__NA" ~ "g. \\textit{Lacunisphaera}",
+  taxonomy == "Other taxa" ~ "Other taxa"))
+
+packer_main_text_heat_names_tbl_edit
+```
+
+
+
+
+```{r packer_main_text-top23-heat-round-custom-names, fig.width=7, fig.height=4.5}
+packer_main_text_heat <- ampli_packer_main_text_taxa_filtered %>%
+  ampli_heat_map(x_sample_group_col = packer_interval, text_label_scalar = 100, text_label_decimal_places = 0, text_label_threshold = 0.01, text_label_zero = "n.r.", text_label_threshold_round_priority = "round", top_n = 23, y_taxa_arrangement = "abund", facet_grid_sample_group_col = year_sampling_site, custom_taxa_names_tbl = packer_main_text_heat_names_tbl_edit, custom_taxa_names_col = tax_short)
+
+packer_main_text_heat +
+  # plot geometry
+  geom_text(parse = FALSE, size = 3) +
+  
+  # plot styling
+  scale_fill_gradient(name = "Read relative\nabundance / [%]", low = "white", high = "red", labels = label_percent(accuracy = 1, suffix = "")) +
+  scale_x_discrete(name = "Depth of sampling interval / [m] grouped by\nyear of sampling and well name", expand = c(0,0)) +
+    scale_y_discrete(name = "Deepest taxonomic assignment", expand = c(0,0), labels = TeX) +
+
+  theme_bw(base_size = 11) +
+
+  theme(
+    panel.grid = element_blank(),
+    # legend.position = "bottom",
+    plot.margin =  margin(1,1,1,1)
+        )
+```
+
 # 2018 BA1A filter size fractions
 ```{r BA1A-2018-size-frac, fig.height = 4.5, fig.width=9}
 ampli_OM17_thru_19_focus_samples_taxa_filtered %>%
@@ -356,7 +436,7 @@ ampli_OM17_thru_19_focus_samples_taxa_filtered %>%
   
   # add column for packer interval
 mutate(packer_interval = if_else(str_detect(sampling_method, "packer") == FALSE, NA_character_, paste0(if_else(upper_packer_inflated == FALSE, 0, upper_packer_depth_mbct), "-", if_else(lower_packer_inflated == FALSE, well_depth_mbgl, lower_packer_depth_mbct)))) %>% 
-         # add column for filter pore diamter
+         # add column for filter pore diameter
 mutate(filter_diam = 
        case_when(
   str_detect(sample_id, "_10_") == TRUE ~ "0.10",
@@ -405,6 +485,7 @@ mutate(packer_interval_filter_diam = paste(if_else(str_detect(sampling_method, "
 
 CH4_plotted_taxa_names_tbl
 ```
+
 ```{r CH4-heat-tbl-add-tax-short}
 CH4_plotted_taxa_names_tbl_edit <- CH4_plotted_taxa_names_tbl  %>% mutate(tax_short = case_when(
   taxonomy == "k__Archaea; p__Euryarchaeota; c__Methanobacteria; o__Methanobacteriales; f__Methanobacteriaceae; g__Methanobacterium; s__NA" ~ "g. $\\textit{Methanobacterium}$",
@@ -415,13 +496,18 @@ CH4_plotted_taxa_names_tbl_edit <- CH4_plotted_taxa_names_tbl  %>% mutate(tax_sh
 CH4_plotted_taxa_names_tbl_edit
 ```
 
-```{r CH4-heat-structured-pretty, fig.width=7, fig.height = 2.5}
-ampli_OM17_thru_19_focus_samples_taxa_filtered %>%
+```{r show_packer_interval_filter_diam}
+CH4_plotted_taxa_names_tbl_edit %>% group_by(year_sampling_site, packer_interval_filter_diam) %>% summarise()
+```
+
+
+```{r ampli_OM18_thru_19_focus_samples_taxa_filtered_packer_interval_filter_diam}
+ampli_OM18_thru_19_focus_samples_taxa_filtered_packer_interval_filter_diam <- ampli_OM17_thru_19_focus_samples_taxa_filtered %>%
   # remove samples taken prior to 2018
   filter(year_sampled > 2017) %>% 
 # add column combining year and well
 mutate(year_sampling_site = paste(year_sampled, sampling_site)) %>% 
-# add column combining site, packer_interval, and filter pore diamter
+# add column combining site, packer_interval, and filter pore diameter
 mutate(packer_interval_filter_diam = paste(if_else(str_detect(sampling_method, "packer") == FALSE, NA_character_, paste0(if_else(upper_packer_inflated == FALSE, 0, upper_packer_depth_mbct), "-", if_else(lower_packer_inflated == FALSE, well_depth_mbgl, lower_packer_depth_mbct))),# "\n0.22 µm")
                                           
        case_when(
@@ -429,7 +515,27 @@ mutate(packer_interval_filter_diam = paste(if_else(str_detect(sampling_method, "
   str_detect(sample_id, "_45_")  == TRUE ~ "\n0.45",
   TRUE ~ "\n0.22"
 ))
-) %>% 
+)
+
+# sort levels for plotting
+ampli_OM18_thru_19_focus_samples_taxa_filtered_packer_interval_filter_diam$packer_interval_filter_diam <- factor(ampli_OM18_thru_19_focus_samples_taxa_filtered_packer_interval_filter_diam$packer_interval_filter_diam, levels = c(
+  "55-66 \n0.10",
+  "55-66 \n0.22",
+  "55-66 \n0.45",
+  "100-400 \n0.10",
+  "100-400 \n0.22",
+  "100-400 \n0.45",
+  "0-30 \n0.22",
+  "41-65 \n0.22",
+  "108-132 \n0.22",
+  "45-75 \n0.22",
+  "102-132 \n0.22"
+))
+```
+
+
+```{r CH4-heat-structured-pretty, fig.width=7, fig.height = 2.5}
+ampli_OM18_thru_19_focus_samples_taxa_filtered_packer_interval_filter_diam  %>% 
   ampli_heat_map(x_sample_group_col = packer_interval_filter_diam, taxa_selection_method = "custom_taxa_char_vector", custom_taxa_char_vector = CH4_taxa, plot_other_taxa_bin = FALSE, y_taxa_arrangement = "alpha", text_label_scalar = 100, text_label_decimal_places = 0, text_label_threshold = 0.01, text_label_zero = "n.r.", text_label_threshold_round_priority = "round", top_n = 20, facet_grid_sample_group_col = year_sampling_site, custom_taxa_names_tbl = CH4_plotted_taxa_names_tbl_edit, custom_taxa_names_col = tax_short) +
 
   # plot geometry
@@ -478,30 +584,15 @@ ampli_OM17_thru_19_focus_samples_taxa_filtered %>%
 
 There were no species-level assignments to known short-chain alkane oxidizing taxa. The genera shown above contain organisms capable of many metabolic processes unrelated to short-chain alkane oxidation, so their presence is not strong evidence for microbial short-chain alkane oxidation.
 
-# S-oxidizing taxa from Rempfert et al., 2017
+# Hydrogenophaga
 
-```{r list-S-ox-taxa}
-# input S-oxidizing taxa found in Rempfert et al., 2017
-
-S_ox_taxa_oman <- c("Sulfuritalea", "Rhodocyclaceae", "Cupriavidus")
+```{r list-Hydrogenophaga-taxa}
+hydrogenophaga_taxa_oman <- c("Hydrogenophaga")
 ```
 
-```{r S-ox-heat, fig.width=8, fig.height=2}
-ampli_OM17_thru_19_focus_samples_taxa_filtered %>%
-  # remove samples taken prior to 2018
-  filter(year_sampled > 2017) %>% 
-# add column combining year and well
-mutate(year_sampling_site = paste(year_sampled, sampling_site)) %>% 
-# add column combining site, packer_interval, and filter pore diameter
-mutate(packer_interval_filter_diam = paste(if_else(str_detect(sampling_method, "packer") == FALSE, NA_character_, paste0(if_else(upper_packer_inflated == FALSE, 0, upper_packer_depth_mbct), "-", if_else(lower_packer_inflated == FALSE, well_depth_mbgl, lower_packer_depth_mbct))),# "\n0.22 µm")
-                                          
-       case_when(
-  str_detect(sample_id, "_10_") == TRUE ~ "\n0.10",
-  str_detect(sample_id, "_45_")  == TRUE ~ "\n0.45",
-  TRUE ~ "\n0.22"
-))
-) %>% 
-  ampli_heat_map(x_sample_group_col = packer_interval_filter_diam, taxa_selection_method = "custom_taxa_char_vector", custom_taxa_char_vector = S_ox_taxa_oman, plot_other_taxa_bin = FALSE, text_label_scalar = 100, text_label_decimal_places = 0, text_label_threshold = 0.01, text_label_zero = "n.r.", text_label_threshold_round_priority = "round", top_n = 20, facet_grid_sample_group_col = year_sampling_site) +
+```{r Hydrogenophaga-heat, fig.width=7, fig.height=1.3}
+ampli_OM18_thru_19_focus_samples_taxa_filtered_packer_interval_filter_diam %>% 
+  ampli_heat_map(x_sample_group_col = packer_interval_filter_diam, taxa_selection_method = "custom_taxa_char_vector", custom_taxa_char_vector = hydrogenophaga_taxa_oman, plot_other_taxa_bin = FALSE, text_label_scalar = 100, text_label_decimal_places = 0, text_label_threshold = 0.01, text_label_zero = "n.r.", text_label_threshold_round_priority = "round", top_n = 50, facet_grid_sample_group_col = year_sampling_site, y_taxa_col = Genus) +
 
   # plot geometry
   geom_text(parse = FALSE) +
@@ -509,54 +600,16 @@ mutate(packer_interval_filter_diam = paste(if_else(str_detect(sampling_method, "
   # plot styling
   scale_fill_gradient(name = "Read relative\nabundance / [%]", low = "white", high = "white", labels = label_percent(accuracy = 1, suffix = "")) +
   scale_x_discrete(name = "Depth of sampling interval / [m] and filter pore diameter / [µm]\ngrouped by year of sampling and well name", expand = c(0,0)) +
-  scale_y_discrete(name = "Deepest\ntaxonomic assignment", expand = c(0,0)) +
+  scale_y_discrete(name = NULL, expand = c(0,0)) +
 
-  theme_bw(base_size = 7) +
-
-  theme(
-    legend.position = "none",
-    panel.grid = element_blank(),
-    plot.margin =  margin(1,1,1,1)
-        )
-```
-
-```{r}
-ampli_OM17_thru_19_focus_samples_taxa_filtered %>% head()
-```
-
-
-```{r S-ox-heat-fam-deeper, fig.width=7, fig.height=2}
-ampli_OM17_thru_19_focus_samples_taxa_filtered %>%
-  # remove samples taken prior to 2018
-  filter(year_sampled > 2017) %>% 
-# add column combining year and well
-mutate(year_sampling_site = paste(year_sampled, sampling_site)) %>% 
-# add column combining site, packer_interval, and filter pore diameter
-mutate(packer_interval_filter_diam = paste(if_else(str_detect(sampling_method, "packer") == FALSE, NA_character_, paste0(if_else(upper_packer_inflated == FALSE, 0, upper_packer_depth_mbct), "-", if_else(lower_packer_inflated == FALSE, well_depth_mbgl, lower_packer_depth_mbct))),# "\n0.22 µm")
-                                          
-       case_when(
-  str_detect(sample_id, "_10_") == TRUE ~ "\n0.10",
-  str_detect(sample_id, "_45_")  == TRUE ~ "\n0.45",
-  TRUE ~ "\n0.22"
-))) %>%
-  # concatenate taxa at family level and deeper
-  mutate(tax_family_further = paste0("f__", Family, "; g__", Genus, "; s__", Species)) %>% 
-  ampli_heat_map(x_sample_group_col = packer_interval_filter_diam, taxa_selection_method = "custom_taxa_char_vector", custom_taxa_char_vector = S_ox_taxa_oman, plot_other_taxa_bin = FALSE, text_label_scalar = 100, text_label_decimal_places = 0, text_label_threshold = 0.01, text_label_zero = "n.r.", text_label_threshold_round_priority = "round", top_n = 20, facet_grid_sample_group_col = year_sampling_site, y_taxa_col = tax_family_further) +
-
-  # plot geometry
-  geom_text(parse = FALSE, size = 3) +
-
-  # plot styling
-  scale_fill_gradient(name = "Read relative\nabundance / [%]", low = "white", high = "white", labels = label_percent(accuracy = 1, suffix = "")) +
-  scale_x_discrete(name = "Depth of sampling interval / [m] and filter pore diameter / [µm]\ngrouped by year of sampling and well name", expand = c(0,0)) +
-  scale_y_discrete(name = "Taxonomic assignment,\nfamily and deeper", expand = c(0,0)) +
-
-  theme_bw(base_size = 9) +
+  theme_bw(base_size = 11) +
 
   theme(
     legend.position = "none",
     panel.grid = element_blank(),
-    plot.margin =  margin(1,1,1,1)
+    plot.margin =  margin(1,1,1,1),
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank()
         )
 ```
 

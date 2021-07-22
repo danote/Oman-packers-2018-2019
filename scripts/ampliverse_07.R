@@ -308,17 +308,11 @@ ampli_heat_map <- function(ampli_tidy_tbl, y_taxa_col = taxonomy, x_sample_group
     
     # extract y_taxa_col as character for later use with group_by()
     y_taxa_col_char <- ampli_tidy_tbl %>% select({{y_taxa_col}}) %>% colnames()
-    
-    # # extract y_taxa_col as character for later use with group_by()
-    # col_to_weight_for_abund_summ_char <- ampli_tidy_tbl %>% select({{col_to_weight_for_abund_summ}}) %>% colnames()
 
     # summarize sample groupings, counting number of samples in each group
     ampli_tidy_tbl_sample_groupings_summ <- ampli_tidy_tbl %>%
       group_by({{x_sample_group_col}}, {{facet_grid_sample_group_col}}) %>%
       summarise(n_samples := n_distinct(as.character({{col_to_weight_for_abund_summ}})), .groups = "drop")
-      # summarise("n_samples" = n_distinct({{col_to_weight_for_abund_summ}}), .groups = "drop")
-    
-    # return(ampli_tidy_tbl_sample_groupings_summ)
     
     # add number of samples per group to full tbl
     ampli_tidy_tbl_n_samples <- ampli_tidy_tbl %>%
@@ -329,13 +323,19 @@ ampli_heat_map <- function(ampli_tidy_tbl, y_taxa_col = taxonomy, x_sample_group
       group_by({{x_sample_group_col}}, {{facet_grid_sample_group_col}}, {{y_taxa_col}}) %>%
       summarise("{{z_abundance_col}}" := sum({{z_abundance_col}}/n_samples), .groups = "drop")
 
-    # summarize taxonomic abundances of full dataset, respecting sample groupings
+    # summarize taxonomic abundances of full dataset
+    # best to get n total x axis columns first and calculate means from that so that no ordering issues arise when
+    # to pick top n taxa when each data set does not necessarily have all taxa in it
+    n_total_x_axis_columns <- obs_struc_for_plot %>%
+      group_by({{x_sample_group_col}}, {{facet_grid_sample_group_col}}) %>% summarize(.groups = "drop") %>% summarise(n = n()) %>%
+      as.numeric()
+    
     ampli_tidy_tbl_grouped_overall <- obs_struc_for_plot %>%
       group_by({{x_sample_group_col}}, {{facet_grid_sample_group_col}}, {{y_taxa_col}}) %>%
-      summarize("{{z_abundance_col}}" := mean({{z_abundance_col}}), .groups = "drop") %>%
+      summarize("{{z_abundance_col}}" := sum({{z_abundance_col}})/n_total_x_axis_columns, .groups = "drop") %>%
       group_by({{y_taxa_col}}) %>%
-      summarize("{{z_abundance_col}}" := mean({{z_abundance_col}}), .groups = "drop")
-
+      summarize("{{z_abundance_col}}" := sum({{z_abundance_col}})/n_total_x_axis_columns, .groups = "drop")
+    
     # selecting taxa to plot based on taxa_selection_method
     if (taxa_selection_method == "top_n") {
 
