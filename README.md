@@ -12,8 +12,8 @@ The code can be run on [binder](https://mybinder.org/v2/gh/danote/Oman-packers-2
 [![Launch Rstudio Binder](http://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/danote/Oman-packers-2018-2019/master?urlpath=rstudio)
 <!-- badges: end -->
 
-For data processing of 16S rRNA gene amplicon sequencing from the Samail Ophiolite, see the companion [repository](https://github.com/danote/Samail_16S_compilation).
-
 This repository is archived with Zenodo, and is accessible via the following DOI:
 
 [![DOI](https://zenodo.org/badge/256393773.svg)](https://zenodo.org/badge/latestdoi/256393773)
+
+For data processing of 16S rRNA gene amplicon sequencing from the Samail Ophiolite, see the companion [repository](https://github.com/danote/Samail_16S_compilation).
