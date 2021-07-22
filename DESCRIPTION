@@ -1,0 +1,43 @@
+Type: Compendium
+Package: Aqueous geochemical and microbial variation across discrete depth
+    intervals in a peridotite aquifer assessed using a packer system in
+    the Samail Ophiolite, Oman
+Title: Samail Ophiolite packer biogeochemistry data analysis
+Version: 0.0.1
+Authors@R:
+    person(given = "Daniel",
+           family = "Nothaft",
+           role = c("aut", "cre"),
+           email = "daniel.nothaft@colorado.edu")
+Description: Data analysis for the above paper, including isotopic
+    calibration and generating figures
+License: MIT
+Depends:
+    chemCal,
+    cowplot,
+    dplyr,
+    ggplot2,
+    ggpmisc,
+    ggrepel,
+    glue,
+    isoprocessor,
+    isoreader,
+    knitr,
+    latex2exp,
+    lemon,
+    modelr,
+    plotly,
+    purrr,
+    readxl,
+    rlang,
+    rmarkdown,
+    scales,
+    stringr,
+    tibble,
+    tidyr,
+    tidyverse,
+    tools
+Remotes:
+    isoverse/isoprocessor
+Encoding: UTF-8
+LazyData: true
