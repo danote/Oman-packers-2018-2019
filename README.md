@@ -14,16 +14,6 @@ The code can be run on [binder](https://mybinder.org/v2/gh/danote/Oman-packers-2
 
 For data processing of 16S rRNA gene amplicon sequencing from the Samail Ophiolite, see the companion [repository](https://github.com/danote/Samail_16S_compilation).
 
-This repository is archived with Zenodo, and is accessible via this DOI:
+This repository is archived with Zenodo, and is accessible via the following DOI:
 
-[![DOI](https://zenodo.org/badge/263106780.svg)](https://zenodo.org/badge/latestdoi/263106780)
-reStructedText
-.. image:: https://zenodo.org/badge/263106780.svg
-   :target: https://zenodo.org/badge/latestdoi/263106780
-HTML
-<a href="https://zenodo.org/badge/latestdoi/263106780"><img src="https://zenodo.org/badge/263106780.svg" alt="DOI"></a>
-Image URL
-https://zenodo.org/badge/263106780.svg
-Target URL
-https://zenodo.org/badge/latestdoi/263106780
- 
+[![DOI](https://zenodo.org/badge/256393773.svg)](https://zenodo.org/badge/latestdoi/256393773)
