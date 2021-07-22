@@ -1,6 +1,6 @@
 # Supplementary Materials
 
-This repository holds all supplementary source code needed to reproduce the calculations and plots of the research article “Aqueous geochemical and microbial variation across discrete depth intervals in a peridotite aquifer assessed using a packer system in the Samail Ophiolite, Oman” by Daniel B. Nothaft, Alexis S. Templeton, Eric S. Boyd, Juerg M. Matter, Martin Stuted, Amelia N. Paukert Vankeuren, and The Oman Drilling Project Science Team. The article can be viewed on [ESSOAR](https://doi.org/10.1002/essoar.10506402.2).
+This repository holds all supplementary source code needed to reproduce the calculations and plots of the research article “Aqueous geochemical and microbial variation across discrete depth intervals in a peridotite aquifer assessed using a packer system in the Samail Ophiolite, Oman” by Daniel B. Nothaft, Alexis S. Templeton, Eric S. Boyd, Juerg M. Matter, Martin Stute, Amelia N. Paukert Vankeuren, and The Oman Drilling Project Science Team. The article can be viewed on [ESSOAR](https://doi.org/10.1002/essoar.10506402.2).
 
 The compiled analysis files are available as [HTML reports](https://danote.github.io/Oman-packers-2018-2019/).
 
