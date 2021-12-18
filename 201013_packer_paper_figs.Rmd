@@ -665,7 +665,7 @@ Leong_rxn_path <- tribble(
 
 
 ## Plot
-```{r Si-pH-plot-BA1, fig.width=6, fig.height=3, warning=FALSE}
+```{r Si-pH-plot-BA1, fig.width=10, fig.height=5, warning=FALSE}
 # create plot
 Si_pH_plot <- ggplot() +
   
@@ -674,7 +674,7 @@ Si_pH_plot <- ggplot() +
     mapping =  aes(
     x = pH,
     y = Si_total_umolal),
-    size = 3.5,
+    size = 5,
     color = "blue",
     lineend = "round") +
   
@@ -770,7 +770,7 @@ Si_pH_plot <- ggplot() +
     linetype = "solid",
     arrow = arrow(angle = 30, length = unit(0.06, "inches"),
       ends = "last", type = "open"),
-     size = 0.6,
+     size = 1,
     color = "white") +
   
       geom_line(data = tribble(
@@ -783,7 +783,7 @@ Si_pH_plot <- ggplot() +
     linetype = "solid",
     arrow = arrow(angle = 30, length = unit(0.06, "inches"),
       ends = "last", type = "open"),
-     size = 0.6,
+     size = 1,
     color = "white") +
   
       geom_line(data = tribble(
@@ -796,7 +796,7 @@ Si_pH_plot <- ggplot() +
     linetype = "solid",
     arrow = arrow(angle = 30, length = unit(0.06, "inches"),
       ends = "last", type = "open"),
-     size = 0.6,
+     size = 1,
     color = "white") +
   
 
@@ -807,7 +807,7 @@ Si_pH_plot <- ggplot() +
     mapping =  aes(
     x = pH,
     y = Si_mol_kg * 1e6),     shape = 5,
-    color = "#999999", size = 3.5) +
+    color = "#999999", size = 5.5) +
 
       # context data Nothaft, rempfert
   geom_point(data = data %>% filter(water_type == "Ca_OH" | water_type == "Mg_HCO3") %>% filter(str_detect(packer_site_year_interval, "BA1") == FALSE),
@@ -815,7 +815,7 @@ Si_pH_plot <- ggplot() +
     x = pH,
     y = Si_total_uM,
     shape = packer_site_year_interval,
-    color = packer_site_year_interval), size = 3.5) +
+    color = packer_site_year_interval), size = 5.5) +
   
     # BA1A / BA1D data
   geom_point(data = data %>% filter(water_type == "Ca_OH" | water_type == "Mg_HCO3") %>% filter(str_detect(packer_site_year_interval, "BA1") == TRUE),
@@ -823,33 +823,33 @@ Si_pH_plot <- ggplot() +
     x = pH,
     y = Si_total_uM,
     shape = packer_site_year_interval,
-    color = packer_site_year_interval), size = 3.5) +
+    color = packer_site_year_interval), size = 5.5) +
   
   scale_color_manual(name = "Sample ID", values = colors_all_packer_site_year_interval_named) +
   scale_shape_manual(name = "Sample ID", values = shapes_all_packer_site_year_interval_named) +
   
   # annotations
-  ggplot2::annotate("text", label = "Rain", x = 5.8,  y = 0.4, color = "black", size = 3.2) +
-  ggplot2::annotate("text", label = TeX("Mg$^{2+}$ - HCO$_{3}^{-}$"), x = 7.6,  y = 700, angle = 0, color = "black", parse = TRUE, size = 3.2) +
-  ggplot2::annotate("text", label = "Intermediate", x = 8.9,  y = 0.3, angle = -63, color = "black", size = 3.2) +
-  ggplot2::annotate("text", label = TeX("Ca$^{2+}$ - OH$^{-}$"), x = 11.8,  y = 0.09, angle = 50, color = "black", parse = TRUE, size = 3.2) +
-  ggplot2::annotate("text", label = "Mix", x = 11,  y = 400, angle = 0, color = "black", size = 3.2) +
+  ggplot2::annotate("text", label = "Rain", x = 5.8,  y = 0.4, color = "black", size = 5) +
+  ggplot2::annotate("text", label = TeX("Mg$^{2+}$ - HCO$_{3}^{-}$"), x = 7.6,  y = 700, angle = 0, color = "black", parse = TRUE, size = 5) +
+  ggplot2::annotate("text", label = "Intermediate", x = 8.9,  y = 0.3, angle = -63, color = "black", size = 5) +
+  ggplot2::annotate("text", label = TeX("Ca$^{2+}$ - OH$^{-}$"), x = 11.8,  y = 0.09, angle = 50, color = "black", parse = TRUE, size = 5) +
+  ggplot2::annotate("text", label = "Mix", x = 11,  y = 400, angle = 0, color = "black", size = 5) +
 
-    ggplot2::annotate("text", label = "1%", x = 12.7,  y = data_Leong_mix_all_endmembers_01_percent_mix %>% summarise(Si_umolal = max(Si_molal) * 1e6) %>% as.numeric(), angle = 0, color = "blue", size = 3.2) +
-    ggplot2::annotate("text", label = "5%", x = 12.7,  y = data_Leong_mix_all_endmembers_05_percent_mix %>% summarise(Si_umolal = min(Si_molal) * 1e6) %>% as.numeric(), angle = 0, color = "blue", size = 3.2) +
-    ggplot2::annotate("text", label = "10%", x = 12.7,  y = data_Leong_mix_all_endmembers_10_percent_mix %>% summarise(Si_umolal = max(Si_molal) * 1e6) %>% as.numeric(), angle = 0, color = "blue", size = 3.2) +
-    ggplot2::annotate("text", label = "50%", x = 12.45,  y = 170, angle = 0, color = "blue", size = 3.2) +
-  ggplot2::annotate("text", label = "90%", x = 10,  y = 450, angle = 0, color = "blue", size = 3.2) +
+    ggplot2::annotate("text", label = "1%", x = 12.7,  y = data_Leong_mix_all_endmembers_01_percent_mix %>% summarise(Si_umolal = max(Si_molal) * 1e6) %>% as.numeric(), angle = 0, color = "blue", size = 5) +
+    ggplot2::annotate("text", label = "5%", x = 12.7,  y = data_Leong_mix_all_endmembers_05_percent_mix %>% summarise(Si_umolal = min(Si_molal) * 1e6) %>% as.numeric(), angle = 0, color = "blue", size = 5) +
+    ggplot2::annotate("text", label = "10%", x = 12.7,  y = data_Leong_mix_all_endmembers_10_percent_mix %>% summarise(Si_umolal = max(Si_molal) * 1e6) %>% as.numeric(), angle = 0, color = "blue", size = 5) +
+    ggplot2::annotate("text", label = "50%", x = 12.45,  y = 170, angle = 0, color = "blue", size = 5) +
+  ggplot2::annotate("text", label = "90%", x = 10,  y = 450, angle = 0, color = "blue", size = 5) +
 
-  ggplot2::annotate("text", label = "Intermediate", x = 8.9,  y = 0.3, angle = -63, color = "black", size = 3.2) +
-  ggplot2::annotate("text", label = TeX("Ca$^{2+}$ - OH$^{-}$"), x = 11.8,  y = 0.09, angle = 50, color = "black", parse = TRUE, size = 3.2) +
-  ggplot2::annotate("text", label = "Mix", x = 11,  y = 400, angle = 0, color = "black", size = 3.2) +
+  ggplot2::annotate("text", label = "Intermediate", x = 8.9,  y = 0.3, angle = -63, color = "black", size = 5) +
+  ggplot2::annotate("text", label = TeX("Ca$^{2+}$ - OH$^{-}$"), x = 11.8,  y = 0.09, angle = 50, color = "black", parse = TRUE, size = 5) +
+  ggplot2::annotate("text", label = "Mix", x = 11,  y = 400, angle = 0, color = "black", size = 5) +
 
-    ggplot2::annotate("text", label = "1%", x = 12.7,  y = data_Leong_mix_all_endmembers_01_percent_mix %>% summarise(Si_umolal = max(Si_molal) * 1e6) %>% as.numeric(), angle = 0, color = "blue", size = 3.2) +
-    ggplot2::annotate("text", label = "5%", x = 12.7,  y = data_Leong_mix_all_endmembers_05_percent_mix %>% summarise(Si_umolal = min(Si_molal) * 1e6) %>% as.numeric(), angle = 0, color = "blue", size = 3.2) +
-    ggplot2::annotate("text", label = "10%", x = 12.7,  y = data_Leong_mix_all_endmembers_10_percent_mix %>% summarise(Si_umolal = max(Si_molal) * 1e6) %>% as.numeric(), angle = 0, color = "blue", size = 3.2) +
-    ggplot2::annotate("text", label = "50%", x = 12.45,  y = 170, angle = 0, color = "blue", size = 3.2) +
-    ggplot2::annotate("text", label = "90%", x = 10,  y = 450, angle = 0, color = "blue", size = 3.2) +
+    ggplot2::annotate("text", label = "1%", x = 12.7,  y = data_Leong_mix_all_endmembers_01_percent_mix %>% summarise(Si_umolal = max(Si_molal) * 1e6) %>% as.numeric(), angle = 0, color = "blue", size = 5) +
+    ggplot2::annotate("text", label = "5%", x = 12.7,  y = data_Leong_mix_all_endmembers_05_percent_mix %>% summarise(Si_umolal = min(Si_molal) * 1e6) %>% as.numeric(), angle = 0, color = "blue", size = 5) +
+    ggplot2::annotate("text", label = "10%", x = 12.7,  y = data_Leong_mix_all_endmembers_10_percent_mix %>% summarise(Si_umolal = max(Si_molal) * 1e6) %>% as.numeric(), angle = 0, color = "blue", size = 5) +
+    ggplot2::annotate("text", label = "50%", x = 12.45,  y = 170, angle = 0, color = "blue", size = 5) +
+    ggplot2::annotate("text", label = "90%", x = 10,  y = 450, angle = 0, color = "blue", size = 5) +
   
 
     # axis styling
@@ -861,7 +861,7 @@ Si_pH_plot <- ggplot() +
   scale_x_continuous(breaks = c(6,8,10,12))+
 
   # design
-  theme_classic(base_size = 11)+
+  theme_classic(base_size = 20)+
   theme(
     plot.margin = margin(1, 1, 0, 1, "pt")
   )

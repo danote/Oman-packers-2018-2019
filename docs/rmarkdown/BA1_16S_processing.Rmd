@@ -428,6 +428,29 @@ packer_main_text_heat +
         )
 ```
 
+
+```{r packer_main_text-top5-heat-round-custom-names, fig.width=11, fig.height=5}
+packer_main_text_heat <- ampli_packer_main_text_taxa_filtered %>%
+  ampli_heat_map(x_sample_group_col = packer_interval, text_label_scalar = 100, text_label_decimal_places = 0, text_label_threshold = 0.01, text_label_zero = "n.r.", text_label_threshold_round_priority = "round", top_n = 5, y_taxa_arrangement = "abund", facet_grid_sample_group_col = year_sampling_site, custom_taxa_names_tbl = packer_main_text_heat_names_tbl_edit, custom_taxa_names_col = tax_short)
+
+packer_main_text_heat +
+  # plot geometry
+  geom_text(parse = FALSE, size = 5.5) +
+  
+  # plot styling
+  scale_fill_gradient(name = "Read relative\nabundance / [%]", low = "white", high = "red", labels = label_percent(accuracy = 1, suffix = "")) +
+  scale_x_discrete(name = "Depth of sampling interval / [m] grouped by\nyear of sampling and well name", expand = c(0,0)) +
+    scale_y_discrete(name = "Deepest taxonomic assignment", expand = c(0,0), labels = TeX) +
+
+  theme_bw(base_size = 18) +
+
+  theme(
+    panel.grid = element_blank(),
+    # legend.position = "bottom",
+    plot.margin =  margin(1,1,1,1)
+        )
+```
+
 # 2018 BA1A filter size fractions
 ```{r BA1A-2018-size-frac, fig.height = 4.5, fig.width=9}
 ampli_OM17_thru_19_focus_samples_taxa_filtered %>%
